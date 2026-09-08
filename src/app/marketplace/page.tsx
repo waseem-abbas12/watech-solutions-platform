@@ -49,6 +49,13 @@ function MarketplaceContent() {
     initialTab === "furniture" ? "furniture" : initialTab === "events" ? "events" : "properties"
   );
 
+  React.useEffect(() => {
+    const currentTab = searchParams.get("tab");
+    if (currentTab === "furniture" || currentTab === "events" || currentTab === "properties") {
+      setActiveTab(currentTab);
+    }
+  }, [searchParams]);
+
   // Global Unified Search
   const [searchQuery, setSearchQuery] = useState("");
 

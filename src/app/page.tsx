@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import { Building2, Armchair, Cake, ArrowRight, Mouse } from "lucide-react";
+import { Building2, Sofa, Utensils, ArrowRight, Mouse } from "lucide-react";
 
 export default function HomePage() {
   // Typewriter effect for subheading
@@ -176,7 +176,7 @@ export default function HomePage() {
             <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div className="flex items-start gap-6">
                 <div className="p-4 rounded-2xl bg-[#16A34A]/10 text-[#16A34A] shadow-sm shrink-0">
-                  <Armchair className="w-8 h-8" />
+                  <Sofa className="w-8 h-8" />
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#16A34A]">
@@ -213,7 +213,7 @@ export default function HomePage() {
             <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div className="flex items-start gap-6">
                 <div className="p-4 rounded-2xl bg-[#EA580C]/10 text-[#EA580C] shadow-sm shrink-0">
-                  <Cake className="w-8 h-8" />
+                  <Utensils className="w-8 h-8" />
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#EA580C]">
