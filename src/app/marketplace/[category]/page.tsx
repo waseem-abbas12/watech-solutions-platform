@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useState, useMemo, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState, useMemo } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Bed,
@@ -12,20 +10,17 @@ import {
   Maximize2,
   MapPin,
   Trees,
-  SlidersHorizontal,
-  ArrowRight,
+  ArrowLeft,
   MessageCircle,
   Users,
   Utensils,
-  ChevronDown,
+  Sofa,
+  Building2,
 } from "lucide-react";
 import {
   INITIAL_PROPERTIES,
   INITIAL_FURNITURE,
   INITIAL_EVENTS,
-  PropertyItem,
-  FurnitureItem,
-  EventItem,
 } from "@/lib/mock-data";
 import { InquiryModal, ModalItemDetails } from "@/components/marketplace/inquiry-modal";
 
@@ -41,29 +36,38 @@ function formatPKR(num: number): string {
   return `PKR ${num.toLocaleString()}`;
 }
 
-function MarketplaceContent() {
-  const searchParams = useSearchParams();
-  const initialTab = searchParams.get("tab") || "properties";
+export default function CategoryBrowsePage() {
+  const params = useParams();
 
-  // Active Tab state: 'properties' | 'furniture' | 'events'
-  const [activeTab, setActiveTab] = useState<"properties" | "furniture" | "events">(
-    initialTab === "furniture" ? "furniture" : initialTab === "events" ? "events" : "properties"
-  );
+  const rawCategory = (params.category as string) || "";
+  const normCategory = rawCategory.toLowerCase();
 
-  React.useEffect(() => {
-    const currentTab = searchParams.get("tab");
-    if (currentTab === "furniture" || currentTab === "events" || currentTab === "properties") {
-      setActiveTab(currentTab);
+  // Map category aliases: "real-estate" -> "properties", etc.
+  const resolvedCategory = useMemo(() => {
+    if (
+      normCategory === "property" ||
+      normCategory === "properties" ||
+      normCategory === "real-estate" ||
+      normCategory === "realestate"
+    ) {
+      return "properties";
     }
-  }, [searchParams]);
+    if (normCategory === "furniture") {
+      return "furniture";
+    }
+    if (normCategory === "event" || normCategory === "events") {
+      return "events";
+    }
+    return "unknown";
+  }, [normCategory]);
 
-  // Global Unified Search
+  // Global Search state
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filters for Properties
   const [propertyCity, setPropertyCity] = useState("All");
   const [propertyType, setPropertyType] = useState("All");
-  const [propertyMaxPrice, setPropertyMaxPrice] = useState(200000000); // 20 Crore max
+  const [propertyMaxPrice, setPropertyMaxPrice] = useState(200000000);
 
   // Filters for Furniture
   const [woodType, setWoodType] = useState("All");
@@ -81,9 +85,7 @@ function MarketplaceContent() {
   // Inquiry Modal State
   const [modalItem, setModalItem] = useState<ModalItemDetails | null>(null);
 
-  // ----------------------------------------------------
-  // Filtered Lists & Grouped Search Counts
-  // ----------------------------------------------------
+  // Filtered Properties
   const filteredProperties = useMemo(() => {
     return INITIAL_PROPERTIES.filter((p) => {
       const matchSearch =
@@ -98,6 +100,7 @@ function MarketplaceContent() {
     });
   }, [searchQuery, propertyCity, propertyType, propertyMaxPrice]);
 
+  // Filtered Furniture
   const filteredFurniture = useMemo(() => {
     return INITIAL_FURNITURE.filter((f) => {
       const matchSearch =
@@ -112,6 +115,7 @@ function MarketplaceContent() {
     });
   }, [searchQuery, woodType, furnitureCategory, furnitureMaxPrice]);
 
+  // Filtered Events
   const filteredEvents = useMemo(() => {
     return INITIAL_EVENTS.filter((e) => {
       const matchSearch =
@@ -127,6 +131,52 @@ function MarketplaceContent() {
     });
   }, [searchQuery, eventCity, eventMenuType, eventMinCapacity]);
 
+  // If unknown category, show graceful not found
+  if (resolvedCategory === "unknown") {
+    return (
+      <div className="min-h-[75vh] flex flex-col items-center justify-center p-8 text-center bg-white">
+        <h2 className="text-2xl font-black text-slate-900 mb-2">Category Not Found</h2>
+        <p className="text-sm text-slate-500 max-w-md mb-6">
+          The requested sector &quot;{rawCategory}&quot; does not exist. Please browse verified properties, Chinioti furniture, or events.
+        </p>
+        <Link
+          href="/marketplace"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#16A34A] text-white font-semibold text-sm hover:bg-emerald-700 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Marketplace
+        </Link>
+      </div>
+    );
+  }
+
+  const categoryMeta = {
+    properties: {
+      title: "Real Estate & Properties",
+      subtitle: "Verified residential plots, luxury villas, and commercial spaces across Pakistan.",
+      accent: "#2563EB",
+      badge: "Real Estate Sector",
+      icon: Building2,
+      count: filteredProperties.length,
+    },
+    furniture: {
+      title: "Chinioti Handcrafted Furniture",
+      subtitle: "Pure Sheesham and Teak wood masterpieces handcrafted by master Chiniot artisans.",
+      accent: "#16A34A",
+      badge: "Woodcraft Sector",
+      icon: Sofa,
+      count: filteredFurniture.length,
+    },
+    events: {
+      title: "Banquet Halls & Event Services",
+      subtitle: "Signature wedding marquees, catering packages, and corporate banquet venues.",
+      accent: "#EA580C",
+      badge: "Celebrations Sector",
+      icon: Utensils,
+      count: filteredEvents.length,
+    },
+  }[resolvedCategory];
+
   return (
     <div className="w-full min-h-screen bg-slate-50/50 pb-24 text-slate-900 selection:bg-[#16A34A] selection:text-white">
       {/* Inquiry Modal */}
@@ -139,38 +189,68 @@ function MarketplaceContent() {
       {/* Header Banner */}
       <section className="bg-white border-b border-slate-200 py-12 px-6">
         <div className="max-w-7xl mx-auto">
+          {/* Breadcrumb Navigation */}
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">
+            <Link href="/marketplace" className="hover:text-slate-700 transition-colors flex items-center gap-1">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              All Marketplace
+            </Link>
+            <span>/</span>
+            <span className="text-slate-900">{categoryMeta.badge}</span>
+          </div>
+
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#16A34A]">
-                Unified Marketplace
+              <span
+                className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-3"
+                style={{ backgroundColor: `${categoryMeta.accent}15`, color: categoryMeta.accent }}
+              >
+                {categoryMeta.badge}
               </span>
-              <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mt-1">
-                Browse, Compare & Inquire
+              <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
+                {categoryMeta.title}
               </h1>
               <p className="text-slate-600 mt-2 text-sm md:text-base max-w-xl">
-                Verified real estate, authentic Chinioti woodcraft, and banquet packages straight from direct sellers.
+                {categoryMeta.subtitle}
               </p>
             </div>
 
-            {/* Live Search Counts Badge Bar */}
-            {searchQuery && (
-              <div className="flex flex-wrap gap-2 text-xs">
-                <span className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 font-medium">
-                  Properties: <strong className="text-[#16A34A]">{filteredProperties.length}</strong>
-                </span>
-                <span className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 font-medium">
-                  Furniture: <strong className="text-[#16A34A]">{filteredFurniture.length}</strong>
-                </span>
-                <span className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 font-medium">
-                  Events: <strong className="text-[#16A34A]">{filteredEvents.length}</strong>
-                </span>
-              </div>
-            )}
+            {/* Quick Sector Switcher */}
+            <div className="flex items-center gap-2">
+              <Link
+                href="/marketplace/properties"
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                  resolvedCategory === "properties"
+                    ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/20"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                Properties
+              </Link>
+              <Link
+                href="/marketplace/furniture"
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                  resolvedCategory === "furniture"
+                    ? "bg-[#16A34A] text-white shadow-md shadow-emerald-500/20"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                Furniture
+              </Link>
+              <Link
+                href="/marketplace/events"
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                  resolvedCategory === "events"
+                    ? "bg-[#EA580C] text-white shadow-md shadow-orange-500/20"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                Events
+              </Link>
+            </div>
           </div>
 
-          {/* =========================================
-              SINGLE SEARCH BAR (ABOVE TABS)
-              ========================================= */}
+          {/* Search Bar */}
           <div className="mt-8 relative max-w-3xl">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -178,7 +258,7 @@ function MarketplaceContent() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search properties, furniture, or events by city, name, or style..."
+                placeholder={`Search ${categoryMeta.title.toLowerCase()} by city, keyword, or specifications...`}
                 className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-slate-200 shadow-sm text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#16A34A] focus:border-transparent transition-all"
               />
               {searchQuery && (
@@ -191,62 +271,13 @@ function MarketplaceContent() {
               )}
             </div>
           </div>
-
-          {/* =========================================
-              3 TABS (Properties | Furniture | Events)
-              ========================================= */}
-          <div className="mt-8 flex items-center gap-2 border-b border-slate-200 overflow-x-auto no-scrollbar">
-            <button
-              onClick={() => {
-                setActiveTab("properties");
-                setVisibleCount(6);
-              }}
-              className={`pb-3.5 px-4 font-bold text-sm tracking-wide transition-all border-b-2 whitespace-nowrap cursor-pointer ${
-                activeTab === "properties"
-                  ? "border-[#16A34A] text-[#16A34A]"
-                  : "border-transparent text-slate-500 hover:text-slate-900"
-              }`}
-            >
-              🏡 Properties ({filteredProperties.length})
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveTab("furniture");
-                setVisibleCount(6);
-              }}
-              className={`pb-3.5 px-4 font-bold text-sm tracking-wide transition-all border-b-2 whitespace-nowrap cursor-pointer ${
-                activeTab === "furniture"
-                  ? "border-[#16A34A] text-[#16A34A]"
-                  : "border-transparent text-slate-500 hover:text-slate-900"
-              }`}
-            >
-              🪑 Furniture ({filteredFurniture.length})
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveTab("events");
-                setVisibleCount(6);
-              }}
-              className={`pb-3.5 px-4 font-bold text-sm tracking-wide transition-all border-b-2 whitespace-nowrap cursor-pointer ${
-                activeTab === "events"
-                  ? "border-[#16A34A] text-[#16A34A]"
-                  : "border-transparent text-slate-500 hover:text-slate-900"
-              }`}
-            >
-              🎉 Events ({filteredEvents.length})
-            </button>
-          </div>
         </div>
       </section>
 
-      {/* Main Content Area with Filters */}
+      {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-6 pt-8">
-        {/* =========================================
-            TAB 1: PROPERTIES TAB
-            ========================================= */}
-        {activeTab === "properties" && (
+        {/* PROPERTIES SECTOR CONTENT */}
+        {resolvedCategory === "properties" && (
           <div className="space-y-8">
             {/* Filter Bar */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
@@ -257,7 +288,7 @@ function MarketplaceContent() {
                 <select
                   value={propertyCity}
                   onChange={(e) => setPropertyCity(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB] bg-white"
                 >
                   <option value="All">All Cities</option>
                   <option value="Lahore">Lahore</option>
@@ -275,7 +306,7 @@ function MarketplaceContent() {
                 <select
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB] bg-white"
                 >
                   <option value="All">All Types</option>
                   <option value="House">House / Villa</option>
@@ -287,7 +318,7 @@ function MarketplaceContent() {
               <div>
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
                   <span>Max Budget</span>
-                  <span className="text-[#16A34A]">{formatPKR(propertyMaxPrice)}</span>
+                  <span className="text-[#2563EB]">{formatPKR(propertyMaxPrice)}</span>
                 </div>
                 <input
                   type="range"
@@ -296,62 +327,67 @@ function MarketplaceContent() {
                   step={5000000}
                   value={propertyMaxPrice}
                   onChange={(e) => setPropertyMaxPrice(Number(e.target.value))}
-                  className="w-full accent-[#16A34A] cursor-pointer"
+                  className="w-full accent-[#2563EB] cursor-pointer"
                 />
               </div>
             </div>
 
-            {/* Properties Grid */}
+            {/* Results Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProperties.slice(0, visibleCount).map((prop) => (
                 <div
                   key={prop.id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200/70 overflow-hidden flex flex-col justify-between group"
+                  className="group bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
-                    {/* 16:9 Image container */}
                     <Link href={`/marketplace/properties/${prop.id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100">
                       <img
                         src={prop.image}
                         alt={prop.title}
-                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
+                      <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/90 text-slate-900 shadow-sm backdrop-blur-sm">
                         {prop.type}
+                      </span>
+                      <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-[#2563EB] text-white shadow-sm">
+                        {prop.city}
                       </span>
                     </Link>
 
                     <div className="p-6">
-                      <div className="text-xl font-black text-slate-900 tracking-tight mb-1 text-[#16A34A]">
-                        {formatPKR(prop.price)}
+                      <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-2xl font-black text-[#2563EB] tracking-tight">
+                          {formatPKR(prop.price)}
+                        </span>
                       </div>
-                      <Link href={`/marketplace/properties/${prop.id}`} className="block group-hover:text-[#16A34A] transition-colors">
-                        <h3 className="text-base font-bold text-slate-900 leading-snug line-clamp-1 mb-2">
+
+                      <Link href={`/marketplace/properties/${prop.id}`} className="block group-hover:text-[#2563EB] transition-colors">
+                        <h3 className="text-lg font-bold text-slate-900 leading-snug line-clamp-1">
                           {prop.title}
                         </h3>
                       </Link>
-                      <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-4">
+
+                      <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
                         <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                         <span className="truncate">{prop.location}</span>
                       </div>
 
-                      <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                      <div className="grid grid-cols-3 gap-2 py-4 mt-4 border-t border-slate-100 text-xs text-slate-600">
                         {prop.bedrooms > 0 && (
                           <div className="flex items-center gap-1">
-                            <Bed className="w-4 h-4 text-slate-400" />
+                            <Bed className="w-3.5 h-3.5 text-slate-400" />
                             <span>{prop.bedrooms} Beds</span>
                           </div>
                         )}
                         {prop.bathrooms > 0 && (
                           <div className="flex items-center gap-1">
-                            <Bath className="w-4 h-4 text-slate-400" />
+                            <Bath className="w-3.5 h-3.5 text-slate-400" />
                             <span>{prop.bathrooms} Baths</span>
                           </div>
                         )}
                         <div className="flex items-center gap-1">
-                          <Maximize2 className="w-4 h-4 text-slate-400" />
-                          <span>{prop.area}</span>
+                          <Maximize2 className="w-3.5 h-3.5 text-slate-400" />
+                          <span className="truncate">{prop.area}</span>
                         </div>
                       </div>
                     </div>
@@ -368,9 +404,9 @@ function MarketplaceContent() {
                           partnerPhone: prop.partnerPhone,
                         })
                       }
-                      className="w-full py-3 px-4 rounded-xl bg-[#16A34A] text-white font-semibold text-xs tracking-wider uppercase hover:bg-emerald-700 shadow-md hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-3 px-4 rounded-xl bg-[#2563EB] text-white font-semibold text-xs tracking-wider uppercase hover:bg-blue-700 shadow-md hover:shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>Inquire Now</span>
+                      <span>Inquire Direct</span>
                       <MessageCircle className="w-4 h-4" />
                     </button>
                   </div>
@@ -378,7 +414,7 @@ function MarketplaceContent() {
               ))}
             </div>
 
-            {/* Infinite Scroll / Load More */}
+            {/* Load More */}
             {visibleCount < filteredProperties.length && (
               <div className="text-center pt-8">
                 <button
@@ -392,10 +428,8 @@ function MarketplaceContent() {
           </div>
         )}
 
-        {/* =========================================
-            TAB 2: FURNITURE TAB
-            ========================================= */}
-        {activeTab === "furniture" && (
+        {/* FURNITURE SECTOR CONTENT */}
+        {resolvedCategory === "furniture" && (
           <div className="space-y-8">
             {/* Filter Bar */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
@@ -410,7 +444,7 @@ function MarketplaceContent() {
                 >
                   <option value="All">All Woods</option>
                   <option value="Sheesham">Pure Sheesham</option>
-                  <option value="Teak">Teak Wood</option>
+                  <option value="Teak">Burma Teak</option>
                   <option value="Rosewood">Rosewood</option>
                 </select>
               </div>
@@ -425,21 +459,21 @@ function MarketplaceContent() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
                 >
                   <option value="All">All Categories</option>
-                  <option value="Bed">Bed Sets</option>
                   <option value="Sofa">Sofa Sets</option>
+                  <option value="Bed">Bed Sets</option>
                   <option value="Dining">Dining Tables</option>
                 </select>
               </div>
 
               <div>
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  <span>Max Price</span>
+                  <span>Max Budget</span>
                   <span className="text-[#16A34A]">{formatPKR(furnitureMaxPrice)}</span>
                 </div>
                 <input
                   type="range"
-                  min={100000}
-                  max={600000}
+                  min={50000}
+                  max={500000}
                   step={25000}
                   value={furnitureMaxPrice}
                   onChange={(e) => setFurnitureMaxPrice(Number(e.target.value))}
@@ -448,45 +482,49 @@ function MarketplaceContent() {
               </div>
             </div>
 
-            {/* Furniture Grid */}
+            {/* Results Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredFurniture.slice(0, visibleCount).map((furn) => (
                 <div
                   key={furn.id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200/70 overflow-hidden flex flex-col justify-between group"
+                  className="group bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
-                    {/* 16:9 Image container */}
                     <Link href={`/marketplace/furniture/${furn.id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100">
                       <img
                         src={furn.image}
                         alt={furn.name}
-                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
+                      <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/90 text-slate-900 shadow-sm backdrop-blur-sm">
                         {furn.woodType}
+                      </span>
+                      <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-[#16A34A] text-white shadow-sm">
+                        {furn.category}
                       </span>
                     </Link>
 
                     <div className="p-6">
-                      <div className="text-xl font-black text-slate-900 tracking-tight mb-1 text-[#16A34A]">
-                        {formatPKR(furn.price)}
+                      <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-2xl font-black text-[#16A34A] tracking-tight">
+                          {formatPKR(furn.price)}
+                        </span>
                       </div>
+
                       <Link href={`/marketplace/furniture/${furn.id}`} className="block group-hover:text-[#16A34A] transition-colors">
-                        <h3 className="text-base font-bold text-slate-900 leading-snug line-clamp-1 mb-2">
+                        <h3 className="text-lg font-bold text-slate-900 leading-snug line-clamp-1">
                           {furn.name}
                         </h3>
                       </Link>
-                      <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3">
-                        <Trees className="w-3.5 h-3.5 text-[#16A34A] shrink-0" />
-                        <span>Chinioti Handcrafted Solid {furn.woodType}</span>
+
+                      <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
+                        <Trees className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span>{furn.dimensions}</span>
                       </div>
 
-                      <div className="pt-3 border-t border-slate-100 text-xs text-slate-600">
-                        <span className="font-semibold text-slate-700">Specs: </span>
-                        {furn.dimensions}
-                      </div>
+                      <p className="text-xs text-slate-500 mt-3 line-clamp-2 leading-relaxed">
+                        {furn.description}
+                      </p>
                     </div>
                   </div>
 
@@ -503,7 +541,7 @@ function MarketplaceContent() {
                       }
                       className="w-full py-3 px-4 rounded-xl bg-[#16A34A] text-white font-semibold text-xs tracking-wider uppercase hover:bg-emerald-700 shadow-md hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>Inquire Now</span>
+                      <span>Inquire Woodcraft</span>
                       <MessageCircle className="w-4 h-4" />
                     </button>
                   </div>
@@ -525,102 +563,103 @@ function MarketplaceContent() {
           </div>
         )}
 
-        {/* =========================================
-            TAB 3: EVENTS TAB
-            ========================================= */}
-        {activeTab === "events" && (
+        {/* EVENTS SECTOR CONTENT */}
+        {resolvedCategory === "events" && (
           <div className="space-y-8">
             {/* Filter Bar */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  Venue City
+                  City
                 </label>
                 <select
                   value={eventCity}
                   onChange={(e) => setEventCity(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#EA580C] bg-white"
                 >
                   <option value="All">All Cities</option>
                   <option value="Lahore">Lahore</option>
                   <option value="Islamabad">Islamabad</option>
-                  <option value="Karachi">Karachi</option>
-                  <option value="Faisalabad">Faisalabad</option>
                   <option value="Rawalpindi">Rawalpindi</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  Menu Cuisine
+                  Menu Style
                 </label>
                 <select
                   value={eventMenuType}
                   onChange={(e) => setEventMenuType(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#EA580C] bg-white"
                 >
-                  <option value="All">All Cuisines</option>
-                  <option value="Desi">Desi Traditional</option>
-                  <option value="Chinese">Chinese / Pan-Asian</option>
-                  <option value="BBQ">Live BBQ</option>
+                  <option value="All">All Menus</option>
+                  <option value="Desi">Traditional Desi</option>
+                  <option value="BBQ">Live Charcoal BBQ</option>
                   <option value="Continental">Continental</option>
+                  <option value="Chinese">Chinese & Pan-Asian</option>
                 </select>
               </div>
 
               <div>
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
                   <span>Min Capacity</span>
-                  <span className="text-[#16A34A]">{eventMinCapacity} Guests</span>
+                  <span className="text-[#EA580C]">{eventMinCapacity} Guests</span>
                 </div>
                 <input
                   type="range"
                   min={100}
-                  max={1500}
+                  max={1200}
                   step={50}
                   value={eventMinCapacity}
                   onChange={(e) => setEventMinCapacity(Number(e.target.value))}
-                  className="w-full accent-[#16A34A] cursor-pointer"
+                  className="w-full accent-[#EA580C] cursor-pointer"
                 />
               </div>
             </div>
 
-            {/* Events Grid */}
+            {/* Results Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredEvents.slice(0, visibleCount).map((event) => (
                 <div
                   key={event.id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200/70 overflow-hidden flex flex-col justify-between group"
+                  className="group bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
-                    {/* 16:9 Image container */}
                     <Link href={`/marketplace/events/${event.id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100">
                       <img
                         src={event.image}
                         alt={event.title}
-                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
-                        {event.menuType} Menu
+                      <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/90 text-slate-900 shadow-sm backdrop-blur-sm">
+                        {event.city}
+                      </span>
+                      <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-[#EA580C] text-white shadow-sm">
+                        {event.menuType}
                       </span>
                     </Link>
 
                     <div className="p-6">
-                      <div className="text-xl font-black text-slate-900 tracking-tight mb-1 text-[#16A34A]">
-                        PKR {event.packagePrice.toLocaleString()}{" "}
-                        <span className="text-xs text-slate-500 font-normal">/ head</span>
+                      <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-2xl font-black text-[#EA580C] tracking-tight">
+                          PKR {event.packagePrice.toLocaleString()}
+                          <span className="text-xs font-normal text-slate-500"> / head</span>
+                        </span>
                       </div>
-                      <Link href={`/marketplace/events/${event.id}`} className="block group-hover:text-[#16A34A] transition-colors">
-                        <h3 className="text-base font-bold text-slate-900 leading-snug line-clamp-1 mb-2">
+
+                      <Link href={`/marketplace/events/${event.id}`} className="block group-hover:text-[#EA580C] transition-colors">
+                        <h3 className="text-lg font-bold text-slate-900 leading-snug line-clamp-1">
                           {event.title}
                         </h3>
                       </Link>
-                      <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3">
+
+                      <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
                         <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span>{event.venue}</span>
+                        <span className="truncate">{event.venue}</span>
                       </div>
 
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                      <div className="flex items-center gap-4 py-4 mt-4 border-t border-slate-100 text-xs text-slate-600">
                         <div className="flex items-center gap-1.5">
                           <Users className="w-4 h-4 text-slate-400" />
                           <span>Up to {event.capacity.toLocaleString()} Guests</span>
@@ -644,7 +683,7 @@ function MarketplaceContent() {
                           partnerPhone: event.partnerPhone,
                         })
                       }
-                      className="w-full py-3 px-4 rounded-xl bg-[#16A34A] text-white font-semibold text-xs tracking-wider uppercase hover:bg-emerald-700 shadow-md hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-3 px-4 rounded-xl bg-[#EA580C] text-white font-semibold text-xs tracking-wider uppercase hover:bg-orange-700 shadow-md hover:shadow-orange-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <span>Book Event</span>
                       <MessageCircle className="w-4 h-4" />
@@ -669,13 +708,5 @@ function MarketplaceContent() {
         )}
       </main>
     </div>
-  );
-}
-
-export default function MarketplacePage() {
-  return (
-    <Suspense fallback={<div className="p-12 text-center text-slate-400">Loading Marketplace...</div>}>
-      <MarketplaceContent />
-    </Suspense>
   );
 }

@@ -375,7 +375,12 @@ export const INITIAL_EVENTS: EventItem[] = [
 // Helper functions for item lookup and related items
 export function getItemByCategoryAndId(category: string, id: string) {
   const normCategory = category.toLowerCase();
-  if (normCategory === "property" || normCategory === "properties") {
+  if (
+    normCategory === "property" ||
+    normCategory === "properties" ||
+    normCategory === "real-estate" ||
+    normCategory === "realestate"
+  ) {
     const item = INITIAL_PROPERTIES.find((p) => p.id === id);
     const related = INITIAL_PROPERTIES.filter((p) => p.id !== id).slice(0, 3);
     return { type: "property" as const, item, related };
