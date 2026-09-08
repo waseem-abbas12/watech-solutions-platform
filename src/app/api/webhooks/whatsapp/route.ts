@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
 
 /**
  * Meta WhatsApp Cloud API Webhook Handler
