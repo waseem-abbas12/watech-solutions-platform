@@ -23,8 +23,7 @@ import {
   Sparkles,
   ArrowRight,
   PhoneCall,
-  Armchair,
-  Cake,
+  Sofa,
 } from "lucide-react";
 import { getItemByCategoryAndId, PropertyItem, FurnitureItem, EventItem } from "@/lib/mock-data";
 import { InquiryModal } from "@/components/marketplace/inquiry-modal";
@@ -322,7 +321,7 @@ export default function ItemDetailPage() {
           <div className="p-8 md:p-10 rounded-3xl bg-gradient-to-r from-emerald-50/70 via-white to-emerald-50/40 border border-emerald-200 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex items-center gap-5">
               <div className="p-4 rounded-2xl bg-emerald-100 text-[#16A34A] shrink-0">
-                <Armchair className="w-8 h-8" />
+                <Sofa className="w-8 h-8" />
               </div>
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#16A34A]">
@@ -353,7 +352,7 @@ export default function ItemDetailPage() {
           <div className="p-8 md:p-10 rounded-3xl bg-gradient-to-r from-orange-50/70 via-white to-orange-50/40 border border-orange-200 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex items-center gap-5">
               <div className="p-4 rounded-2xl bg-orange-100 text-[#EA580C] shrink-0">
-                <Cake className="w-8 h-8" />
+                <Utensils className="w-8 h-8" />
               </div>
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#EA580C]">
