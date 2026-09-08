@@ -23,6 +23,8 @@ import {
   Sparkles,
   ArrowRight,
   PhoneCall,
+  Armchair,
+  Cake,
 } from "lucide-react";
 import { getItemByCategoryAndId, PropertyItem, FurnitureItem, EventItem } from "@/lib/mock-data";
 import { InquiryModal } from "@/components/marketplace/inquiry-modal";
