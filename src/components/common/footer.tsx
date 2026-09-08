@@ -70,18 +70,28 @@ export const Footer = () => {
           <ul className="space-y-2 text-sm">
             <li>Lahore, Faisalabad & Islamabad, Pakistan</li>
             <li>
-              <a href="mailto:info@watechsolutions.com" className="hover:text-white transition-colors">
-                info@watechsolutions.com
+              <a href="mailto:waseem000094@gmail.com" className="hover:text-white transition-colors">
+                waseem000094@gmail.com
               </a>
             </li>
             <li>
               <a
-                href="https://wa.me/923001234567"
+                href="https://waseemabbas.online"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                waseemabbas.online
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://wa.me/923270831470"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
               >
-                Direct WhatsApp Support →
+                Direct WhatsApp Support (0327-0831470) →
               </a>
             </li>
           </ul>

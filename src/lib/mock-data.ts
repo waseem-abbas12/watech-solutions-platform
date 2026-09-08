@@ -65,7 +65,7 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     ],
     description: "Architect-designed brand new bungalow in the heart of DHA Phase 6. Features Spanish porcelain tile flooring, imported SMEG kitchen fittings, master jacuzzi bathrooms, servant quarters, and a manicured rooftop terrace garden. Direct access to Main Boulevard and top international schools.",
     features: ["Corner Lot", "Spanish Tiles", "Smart Home Automation", "Servant Quarter", "Generator Backup Ready", "Rooftop Garden"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "prop-2",
@@ -85,7 +85,7 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     ],
     description: "Centrally located in Sector C, walking distance to Grand Jamia Mosque and commercial market. Double-unit layout perfect for joint family living. Solid ash-wood doors, Grohe bathroom sanitary, and false ceilings with warm ambient LED profiles.",
     features: ["Double Unit", "Ash Wood Doors", "Grohe Sanitary", "Walking Distance to Mosque", "Covered Car Porch"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "prop-3",
@@ -105,7 +105,7 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     ],
     description: "High-yield commercial asset offering immediate rental ROI. Basement + Ground + 3 Floors with passenger elevator shaft, dedicated basement parking, and complete CDA commercial building compliance.",
     features: ["Commercial CDA Approved", "Elevator Shaft", "Basement Parking", "High Rental Yield", "Dual Main Road Facing"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "prop-4",
@@ -124,7 +124,7 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     ],
     description: "100% on-ground possession plot with all utility connection dues cleared. Peaceful residential sector with 40-feet wide street and adjacent family park.",
     features: ["Possession Available", "Utilities Paid", "Park Facing", "40ft Wide Carpeted Road"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "prop-5",
@@ -143,7 +143,7 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     ],
     description: "Panoramic Arabian Sea views with floor-to-ceiling double-glazed windows. Private resident beach access, infinity pool, fitness center, and round-the-clock 3-tier biometric security.",
     features: ["Direct Sea View", "Private Beach Access", "Infinity Pool", "Biometric Security", "Dedicated Parking"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "prop-6",
@@ -161,7 +161,7 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     ],
     description: "Unmatched commercial frontage on Canal Road. Suitable for hospital, brand flagship showroom, or corporate headquarters.",
     features: ["Frontage 50ft", "Canal Road Main Access", "Commercial Approved", "High Footfall"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
 ];
 
@@ -181,7 +181,7 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     ],
     description: "Master carved by generational artisans in Chiniot. Made from seasoned 100% pure Pakistani Sheesham (Rosewood). Features opulent crown headboard carving with antique gold leaf touch-ups and high-density Turkish velvet tufting.",
     features: ["100% Pure Seasoned Sheesham", "Hand-Carved Crown Details", "Termite Treated 10-Year Guarantee", "High Gloss Lacquer Polish", "Includes 2 Side Tables & Dressing"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "furn-2",
@@ -198,7 +198,7 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     ],
     description: "Classic Mughal floral relief carvings running along the crown and cabriole legs. Upholstered with imported stain-resistant jacquard fabric and high-resilience Molty Foam padding.",
     features: ["Original Master Carving", "Molty Master Foam (10-yr warranty)", "Stain Resistant Jacquard Fabric", "Solid Rosewood Structure"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "furn-3",
@@ -214,7 +214,7 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     ],
     description: "Grand dining experience built to last decades. Hand-planed solid teak frame with tempered 12mm beveled glass top and ergonomically carved high-back chairs.",
     features: ["12mm Tempered Glass Top", "8 Ergonomic High-Back Chairs", "Durable Natural Teak Stain", "Seamless Mortise & Tenon Joints"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "furn-4",
@@ -230,7 +230,7 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     ],
     description: "Custom bridal series featuring extended wings and deep diamond button tufting. Finished with export-grade polyurethane clear coat.",
     features: ["Bridal Extended Wings", "Diamond Button Tufting", "Export Grade Finish", "Reinforced Bed Base"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "furn-5",
@@ -245,7 +245,7 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     ],
     description: "Signature blend of European Chesterfield styling with traditional Chinioti wood carving on top crown and feet.",
     features: ["Gold Leaf Accents", "Deep Tufted Back", "Heavy Solid Sheesham Base"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "furn-6",
@@ -260,7 +260,7 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     ],
     description: "Compact luxury for cozy dining spaces. Sturdy single-pedestal lion-claw base handcrafted from seasoned rosewood.",
     features: ["Intricate Center Pedestal", "Round Space-Saving Layout", "Includes 6 Cushioned Chairs"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
 ];
 
@@ -282,7 +282,7 @@ export const INITIAL_EVENTS: EventItem[] = [
     ],
     description: "Premier wedding and corporate banquet destination in Lahore. Features 24ft high pillarless hall, crystal chandeliers, dedicated bride & groom VIP dressing suites, golf course lawn access, and state-of-the-art climate control.",
     amenities: ["Pillarless Hall", "Dedicated VIP Bridal Suite", "Valet Parking for 500+ Cars", "Standby 500kVA Generator", "Catering & Live Cooking Stations"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "event-2",
@@ -300,7 +300,7 @@ export const INITIAL_EVENTS: EventItem[] = [
     ],
     description: "Nestled at the foothills of Margalla, offering scenic open-terrace views for Barat, Walima, and high-profile diplomatic summits. World-class continental and fusion menu curated by five-star executive chefs.",
     amenities: ["Scenic Mountain View", "Outdoor Cocktail Terrace", "Executive Chef Custom Menus", "Central Air Conditioning", "Sound & Lighting Rigging"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "event-3",
@@ -317,7 +317,7 @@ export const INITIAL_EVENTS: EventItem[] = [
     ],
     description: "Creek-side breeze and open lawn setting famous for live BBQ stations, traditional Karahi, and festive Mehndi nights.",
     amenities: ["Live BBQ Counters", "Seaside Waterfront Breeze", "Custom Floral Decor Packages", "Spacious Lawn"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "event-4",
@@ -334,7 +334,7 @@ export const INITIAL_EVENTS: EventItem[] = [
     ],
     description: "Largest luxury air-conditioned complex in Faisalabad, capable of hosting grand wedding gatherings up to 1,500 guests with complete protocol.",
     amenities: ["Grand Capacity up to 1,500", "Full Air-Conditioned Halls", "Huge Parking Lot", "Security Guards & CCTV"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "event-5",
@@ -351,7 +351,7 @@ export const INITIAL_EVENTS: EventItem[] = [
     ],
     description: "Intimate banquet hall tailored for corporate dinners, engagements, and Qawwali nights with gourmet Chinese and Pan-Asian spreads.",
     amenities: ["Intimate Luxury Ambience", "Acoustic Treated Sound", "Premium Pan-Asian Menu", "Central Gulberg Location"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
   {
     id: "event-6",
@@ -368,7 +368,7 @@ export const INITIAL_EVENTS: EventItem[] = [
     ],
     description: "Grand marquee setting with lush lawn areas, traditional Sufi lighting fixtures, and traditional Pakistani wedding menus.",
     amenities: ["Lush Grass Lawns", "Traditional Decor Setup", "Bridal Suites", "Wide Road Entrance"],
-    partnerPhone: "923001234567",
+    partnerPhone: "923270831470",
   },
 ];
 
