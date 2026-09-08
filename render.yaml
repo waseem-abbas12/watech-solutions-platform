@@ -1,0 +1,30 @@
+services:
+  # Self-Hosted n8n on Render.com (Free Tier: 750 hours/month)
+  - type: web
+    name: watech-n8n-automation
+    env: docker
+    image:
+      url: docker.n8n.io/n8nio/n8n:latest
+    plan: free
+    region: frankfurt # or singapore for lower latency to Pakistan
+    envVars:
+      - key: N8N_PORT
+        value: 5678
+      - key: N8N_PROTOCOL
+        value: https
+      - key: WEBHOOK_URL
+        value: https://watech-n8n-automation.onrender.com
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: "true"
+      - key: N8N_BASIC_AUTH_USER
+        value: admin
+      - key: N8N_BASIC_AUTH_PASSWORD
+        generateValue: true
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: EXECUTIONS_DATA_PRUNE
+        value: "true"
+      - key: EXECUTIONS_DATA_MAX_AGE
+        value: "168" # Prune after 7 days to preserve free storage

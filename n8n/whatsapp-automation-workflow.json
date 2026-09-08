@@ -1,0 +1,309 @@
+{
+  "name": "Watech WhatsApp AI Automation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-incoming",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "name": "Webhook: Incoming WhatsApp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "webhookId": "watech-whatsapp-webhook-01"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract Meta WhatsApp Payload Details\nconst body = $input.item.json.body || $input.item.json;\n\n// Check if valid WhatsApp message\nconst entry = body.entry?.[0];\nconst change = entry?.changes?.[0];\nconst value = change?.value;\nconst message = value?.messages?.[0];\nconst contact = value?.contacts?.[0];\n\nif (!message) {\n  return [];\n}\n\nconst senderPhone = message.from; // e.g. 923001234567\nconst senderName = contact?.profile?.name || \"Valued Client\";\nconst messageBody = message.text?.body?.toLowerCase() || \"\";\nconst messageId = message.id;\n\nreturn [{\n  json: {\n    senderPhone,\n    senderName,\n    messageBody,\n    messageId,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "name": "Parse Meta Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID}}/databases/(default)/documents:runQuery",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.FIREBASE_AUTH_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"structuredQuery\": {\n    \"from\": [{\"collectionId\": \"users\"}],\n    \"where\": {\n      \"fieldFilter\": {\n        \"field\": {\"fieldPath\": \"phone\"},\n        \"op\": \"EQUAL\",\n        \"value\": {\"stringValue\": \"{{$json.senderPhone}}\"}\n      }\n    }\n  }\n}"
+      },
+      "name": "Firestore: Check User Exists",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [540, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ Boolean($json.document) }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IF: User Exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID}}/databases/(default)/documents/users",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.FIREBASE_AUTH_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"fullName\": {\"stringValue\": \"{{$('Parse Meta Payload').item.json.senderName}}\"},\n    \"phone\": {\"stringValue\": \"{{$('Parse Meta Payload').item.json.senderPhone}}\"},\n    \"role\": {\"stringValue\": \"buyer\"},\n    \"createdAt\": {\"timestampValue\": \"{{new Date().toISOString()}}\"}\n  }\n}"
+      },
+      "name": "Firestore: Create Buyer Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [980, 420],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $('Parse Meta Payload').item.json.messageBody;\nconst name = $('Parse Meta Payload').item.json.senderName;\n\nlet replyMessage = \"\";\nlet detectedCategory = \"none\";\nlet alertPartner = false;\n\nif (text.includes(\"property\") || text.includes(\"plot\") || text.includes(\"ghar\") || text.includes(\"house\") || text.includes(\"flat\")) {\n  detectedCategory = \"property\";\n  replyMessage = `Assalam-o-Alaikum ${name}! 🏡 Watech Real Estate mein khush-amdeed.\\n\\nHamare paas verified listings dastiyab hain:\\n1. 1 Kanal Luxury Villa (DHA Phase 6, LHE) - PKR 8.5 Crore\\n2. 10 Marla Brand New House (Bahria Town) - PKR 4.2 Crore\\n3. 5 Marla Ready Plot (Bahria Phase 8) - PKR 95 Lac\\n\\nKya aap buy ya rent karna chahte hain? Detail ke liye 1, 2, ya 3 reply karein.`;\n  alertPartner = true;\n} else if (text.includes(\"furniture\") || text.includes(\"sofa\") || text.includes(\"wood\") || text.includes(\"bed\") || text.includes(\"dining\")) {\n  detectedCategory = \"furniture\";\n  replyMessage = `Assalam-o-Alaikum ${name}! 🪑 Watech Authentic Chinioti Furniture catalog:\\n\\n1. Maharaja Royal Bed Set (Pure Sheesham) - PKR 345,000\\n2. Hand-Carved Floral 7-Seater Sofa - PKR 285,000\\n3. Antique 8-Seater Dining Suite (Solid Teak) - PKR 395,000\\n\\nTamam items export-grade polish aur 10-year termite warranty ke sath aate hain. Custom polish ya sizing ke liye reply karein.`;\n  alertPartner = true;\n} else if (text.includes(\"event\") || text.includes(\"catering\") || text.includes(\"banquet\") || text.includes(\"hall\") || text.includes(\"marquee\")) {\n  detectedCategory = \"event\";\n  replyMessage = `Assalam-o-Alaikum ${name}! 🎉 Watech Signature Venues & Catering:\\n\\n1. Grand Crystal Ballroom (Royal Palm Lahore) - PKR 3,800/head (Desi Menu)\\n2. Margalla View Marquee (Islamabad) - PKR 4,500/head (Continental)\\n3. Creek Heritage Live BBQ Lawn (Karachi) - PKR 3,200/head (BBQ)\\n\\nApni expected date aur guest count share karein taake slot lock kiya ja sake.`;\n  alertPartner = true;\n} else if (text.includes(\"price\") || text.includes(\"rate\") || text.includes(\"cost\") || text.includes(\"pese\")) {\n  replyMessage = `Watech Verified Pricing Guide:\\n• Plots: PKR 95 Lac se 5 Crore+\\n• Luxury Villas: PKR 4.2 Cr se 8.5 Cr+\\n• Chinioti Bed Sets: PKR 2.2 Lac se 4.1 Lac\\n• Banquet Menu Packages: PKR 2,800 se 4,500 per head.\\n\\nKis sector ki quotation chahiye?`;\n} else if (text.includes(\"available\") || text.includes(\"khali\") || text.includes(\"slot\")) {\n  replyMessage = `Ji bilkul! Hamari DHA Phase 6 villa aur Chiniot factory inventory active status par hain. Banquet dates September aur October ke liye open hain.\\n\\nKripya apna shahar aur requirement batayein.`;\n} else {\n  replyMessage = `Assalam-o-Alaikum ${name}! Watech Solutions Ecosystem mein khush-amdeed.\\n\\nKya aap Property, Chinioti Furniture, ya Event Booking ke baare mein maloomat lena chahte hain?\\n\\n• Type *Property* for Plots & Villas\\n• Type *Furniture* for Sheesham Woodwork\\n• Type *Event* for Banquet & Catering\\n• Or visit: https://watechsolutions.com/marketplace`;\n}\n\nreturn [{\n  json: {\n    replyMessage,\n    detectedCategory,\n    alertPartner,\n    senderPhone: $('Parse Meta Payload').item.json.senderPhone,\n    senderName: $('Parse Meta Payload').item.json.senderName\n  }\n}];"
+      },
+      "name": "NLP: Intent & Auto-Reply Generator",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID}}/databases/(default)/documents/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.FIREBASE_AUTH_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"phone\": {\"stringValue\": \"{{$json.senderPhone}}\"},\n    \"customerName\": {\"stringValue\": \"{{$json.senderName}}\"},\n    \"incomingText\": {\"stringValue\": \"{{$('Parse Meta Payload').item.json.messageBody}}\"},\n    \"replyText\": {\"stringValue\": \"{{$json.replyMessage}}\"},\n    \"category\": {\"stringValue\": \"{{$json.detectedCategory}}\"},\n    \"timestamp\": {\"timestampValue\": \"{{new Date().toISOString()}}\"}\n  }\n}"
+      },
+      "name": "Firestore: Log Conversation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1420, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$json.senderPhone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"{{$json.replyMessage}}\"\n  }\n}"
+      },
+      "name": "Meta API: Send WhatsApp Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1640, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.alertPartner }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IF: Alert Partner?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1860, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$env.PARTNER_ALERT_PHONE_NUMBER || '923001234567'}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"⚡ New High-Intent Lead on Watech!\\nCategory: {{$json.detectedCategory.toUpperCase()}}\\nBuyer Name: {{$json.senderName}}\\nBuyer Phone: +{{$json.senderPhone}}\\nInitial Inquiry: \\\"{{$('Parse Meta Payload').item.json.messageBody}}\\\"\\n\\nReply direct on WhatsApp: https://wa.me/{{$json.senderPhone}}\"\n  }\n}"
+      },
+      "name": "Meta API: Notify Partner",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2080, 240]
+    }
+  ],
+  "connections": {
+    "Webhook: Incoming WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Parse Meta Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Meta Payload": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Check User Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Check User Exists": {
+      "main": [
+        [
+          {
+            "node": "IF: User Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: User Exists?": {
+      "main": [
+        [
+          {
+            "node": "NLP: Intent & Auto-Reply Generator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Firestore: Create Buyer Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Create Buyer Lead": {
+      "main": [
+        [
+          {
+            "node": "NLP: Intent & Auto-Reply Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NLP: Intent & Auto-Reply Generator": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Log Conversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Log Conversation": {
+      "main": [
+        [
+          {
+            "node": "Meta API: Send WhatsApp Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meta API: Send WhatsApp Reply": {
+      "main": [
+        [
+          {
+            "node": "IF: Alert Partner?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Alert Partner?": {
+      "main": [
+        [
+          {
+            "node": "Meta API: Notify Partner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

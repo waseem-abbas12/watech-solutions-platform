@@ -1,0 +1,217 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ==========================================
+    // Helper Functions
+    // ==========================================
+
+    // Check if request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if user is operating on their own resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Check if user is an Admin
+    function isAdmin() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Check if user is a Super Admin
+    function isSuperAdmin() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'superAdmin';
+    }
+
+    // Check if user is a registered Partner
+    function isPartner() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'partner';
+    }
+
+    // ==========================================
+    // 1. Users Collection
+    // ==========================================
+    match /users/{userId} {
+      // User can read their own profile, or admin can read any
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // User can create their initial profile upon signup
+      allow create: if isOwner(userId) 
+                    && request.resource.data.uid == userId
+                    && request.resource.data.role in ['buyer', 'partner'];
+      
+      // User can update basic info, but cannot promote themselves to 'admin'
+      allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) 
+                    || isAdmin();
+      
+      // Only Admin can delete user documents
+      allow delete: if isAdmin();
+    }
+
+    // ==========================================
+    // 2. Properties Collection (Real Estate)
+    // ==========================================
+    match /properties/{propertyId} {
+      // Public can read active properties; owners and admins can view inactive/sold
+      allow read: if resource.data.status == 'active' 
+                  || (isAuthenticated() && resource.data.partnerId == request.auth.uid) 
+                  || isAdmin();
+      
+      // Only approved partners or admins can create listings
+      allow create: if isAuthenticated() 
+                    && (isPartner() || isAdmin()) 
+                    && request.resource.data.partnerId == request.auth.uid;
+      
+      // Listing owner partner or admin can update
+      allow update: if (isAuthenticated() && resource.data.partnerId == request.auth.uid) 
+                    || isAdmin();
+      
+      // Listing owner partner or admin can delete
+      allow delete: if (isAuthenticated() && resource.data.partnerId == request.auth.uid) 
+                    || isAdmin();
+    }
+
+    // ==========================================
+    // 3. Furniture Collection (Chinioti Catalog)
+    // ==========================================
+    match /furniture/{furnitureId} {
+      // Public can read all furniture items
+      allow read: if true;
+      
+      // Partners or admins can create furniture listings
+      allow create: if isAuthenticated() 
+                    && (isPartner() || isAdmin()) 
+                    && request.resource.data.partnerId == request.auth.uid;
+      
+      // Owner or admin can edit details or update stock
+      allow update: if (isAuthenticated() && resource.data.partnerId == request.auth.uid) 
+                    || isAdmin();
+      
+      // Owner or admin can delete
+      allow delete: if (isAuthenticated() && resource.data.partnerId == request.auth.uid) 
+                    || isAdmin();
+    }
+
+    // ==========================================
+    // 4. Events Collection (Banquet & Catering)
+    // ==========================================
+    match /events/{eventId} {
+      // Public can view active/confirmed event halls and services
+      allow read: if true;
+      
+      // Event partners or admins can create listings
+      allow create: if isAuthenticated() 
+                    && (isPartner() || isAdmin()) 
+                    && request.resource.data.partnerId == request.auth.uid;
+      
+      // Owner or admin can update
+      allow update: if (isAuthenticated() && resource.data.partnerId == request.auth.uid) 
+                    || isAdmin();
+      
+      // Owner or admin can delete
+      allow delete: if (isAuthenticated() && resource.data.partnerId == request.auth.uid) 
+                    || isAdmin();
+    }
+
+    // ==========================================
+    // 5. Inquiries Collection (Unified Leads)
+    // ==========================================
+    match /inquiries/{inquiryId} {
+      // Buyer who submitted, partner who received, or admin can read
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.partnerId == request.auth.uid ||
+        isAdmin()
+      );
+      
+      // Authenticated buyers/clients can create inquiry leads
+      allow create: if isAuthenticated() 
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.category in ['property', 'furniture', 'event'];
+      
+      // Partner can update status (new -> contacted -> closed) or admin can update
+      allow update: if isAuthenticated() && (
+        resource.data.partnerId == request.auth.uid ||
+        isAdmin()
+      );
+      
+      // Only Admin can delete inquiry records
+      allow delete: if isAdmin();
+    }
+
+    // ==========================================
+    // 6. Favorites Collection (Saved Listings)
+    // ==========================================
+    match /favorites/{favoriteId} {
+      // Only the user who saved the favorite can read or manage it
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ==========================================
+    // 7. Partners Collection (Commission & Earnings)
+    // ==========================================
+    match /partners/{partnerId} {
+      // Partner can read their own commission and stats, admin can read all
+      allow read: if isOwner(partnerId) || isAdmin();
+      
+      // Created on partner onboarding with default values
+      allow create: if isOwner(partnerId) 
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.totalSales == 0
+                    && request.resource.data.totalCommissionEarned == 0;
+      
+      // Only Admin can update commission rates or audit earnings
+      allow update: if isAdmin();
+      
+      // Only Admin can delete
+      allow delete: if isAdmin();
+    }
+
+    // ==========================================
+    // 8. Orders Collection (Sales & Bookings)
+    // ==========================================
+    match /orders/{orderId} {
+      // Client who ordered, partner who sold, or admin can read
+      allow read: if isAuthenticated() && (
+        resource.data.clientId == request.auth.uid ||
+        resource.data.partnerId == request.auth.uid ||
+        isAdmin()
+      );
+      
+      // Orders are created and updated strictly via Admin or Cloud Functions / Server Actions
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ==========================================
+    // 9. Admins Collection
+    // ==========================================
+    match /admins/{adminId} {
+      // Admins can read admin records
+      allow read: if isAdmin();
+      
+      // Only SuperAdmin can add or modify admin privileges
+      allow write: if isSuperAdmin();
+    }
+
+    // ==========================================
+    // 10. Settings Collection (Global Branding/Config)
+    // ==========================================
+    match /settings/{settingId} {
+      // Public can read global settings (logo, contact info, company name)
+      allow read: if true;
+      
+      // Only Admin can modify settings
+      allow write: if isAdmin();
+    }
+  }
+}
