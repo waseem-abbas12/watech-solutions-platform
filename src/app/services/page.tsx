@@ -43,14 +43,25 @@ export default function ServicesPage() {
   const services = [
     {
       id: "srv-1",
+      slug: "social-media-marketing",
       icon: Megaphone,
-      badge: "Paid Ads",
-      title: "Social Media Marketing & Meta Ads",
-      description: "Targeted Facebook, Instagram & TikTok campaigns engineered to generate qualified local inquiries for plots, furniture, and banquets.",
-      points: ["High-converting Meta & TikTok Ads", "Creative ad visual reels", "Audience retargeting & lookalikes"],
+      badge: "Organic Reach",
+      title: "Social Media Marketing",
+      description: "Organic content creation, video reels, and brand authority campaigns for Real Estate, Chinioti furniture, and banquets.",
+      points: ["High-converting video reels", "Creative visual storytelling", "Audience retargeting & growth"],
     },
     {
       id: "srv-2",
+      slug: "meta-ads",
+      icon: Target,
+      badge: "Paid Inbound",
+      title: "Meta Ads & Paid Campaigns",
+      description: "Targeted Facebook & Instagram ads engineered to generate phone-verified local and overseas buyer leads daily.",
+      points: ["High-converting Meta ad sets", "Lead pre-qualification forms", "Direct WhatsApp routing"],
+    },
+    {
+      id: "srv-3",
+      slug: "google-ads",
       icon: Search,
       badge: "High Intent",
       title: "Google Ads & Search PPC",
@@ -58,15 +69,17 @@ export default function ServicesPage() {
       points: ["Google Search & Maps PPC", "Negative keyword optimization", "High ROI conversion tracking"],
     },
     {
-      id: "srv-3",
+      id: "srv-4",
+      slug: "website-development",
       icon: Globe,
       badge: "Web & Mobile",
       title: "Website & App Development",
-      description: "Custom Next.js & WordPress platforms engineered for blazing speed, mobile-first responsiveness, and top Google SEO ranking.",
+      description: "Custom Next.js platforms engineered for blazing speed, mobile-first responsiveness, and top Google SEO ranking.",
       points: ["High-speed Next.js portals", "Property & catalog search engines", "PWA mobile app integration"],
     },
     {
-      id: "srv-4",
+      id: "srv-5",
+      slug: "whatsapp-automation",
       icon: Bot,
       badge: "Instant Chat",
       title: "WhatsApp Automation & Bots",
@@ -74,7 +87,8 @@ export default function ServicesPage() {
       points: ["Instant lead response in <30s", "Catalog sent directly on WhatsApp", "Automated follow-up sequences"],
     },
     {
-      id: "srv-5",
+      id: "srv-6",
+      slug: "crm-consulting",
       icon: BarChart3,
       badge: "Operations & Sales",
       title: "CRM & Lead Management",
@@ -82,28 +96,13 @@ export default function ServicesPage() {
       points: ["Lead pipeline tracking", "Agent commission accounting", "Staff workflow training"],
     },
     {
-      id: "srv-6",
+      id: "srv-7",
+      slug: "ai-automation",
       icon: Sparkles,
       badge: "Autonomous",
       title: "AI Automation & Workflows",
       description: "Self-hosted n8n workflows that synchronize your Meta leads, website inquiries, and WhatsApp notifications automatically.",
       points: ["Zero-touch lead routing", "Automated customer SMS/WhatsApp alerts", "Custom AI business assistants"],
-    },
-    {
-      id: "srv-7",
-      icon: Target,
-      badge: "Inquiries",
-      title: "B2B & B2C Lead Generation",
-      description: "Dedicated lead funnels designed to deliver genuine, phone-verified buyer leads directly to your sales team daily.",
-      points: ["Verified buyer phone numbers", "Budget-filtered inquiries", "Exclusive leads (no sharing)"],
-    },
-    {
-      id: "srv-8",
-      icon: TrendingUp,
-      badge: "Scale",
-      title: "Marketing & Growth Strategy",
-      description: "Quarterly growth roadmaps, pricing strategy, brand positioning, and competitor analysis to dominate your local market.",
-      points: ["Full business market audit", "Pricing & positioning strategy", "Scale & franchise blueprint"],
     },
   ];
 
@@ -282,13 +281,19 @@ export default function ServicesPage() {
                 </ul>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-slate-100">
-                <a
-                  href="#contact"
+              <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
+                <Link
+                  href={`/services/${srv.slug}`}
                   className="text-xs font-bold text-[#2563EB] group-hover:text-blue-700 flex items-center gap-1"
                 >
-                  <span>Inquire Solution</span>
+                  <span>Learn More & Pricing</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <a
+                  href="#contact"
+                  className="text-[11px] font-semibold text-slate-400 hover:text-slate-700"
+                >
+                  Book Free Call
                 </a>
               </div>
             </motion.div>
