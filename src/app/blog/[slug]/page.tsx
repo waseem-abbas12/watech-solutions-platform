@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -98,33 +98,67 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://watech-solutions-platform-eight.vercel.app";
   const postUrl = `${siteUrl}/blog/${post.slug}`;
 
-  // Article JSON-LD Structured Data
+  // Article & BreadcrumbList JSON-LD Structured Data
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.excerpt,
-    image: post.featuredImage,
-    datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
-    author: {
-      "@type": "Person",
-      name: post.author.name,
-      jobTitle: post.author.role,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Watech Solutions",
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/favicon.ico`,
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${postUrl}/#article`,
+        headline: post.title,
+        description: post.excerpt,
+        image: post.featuredImage,
+        datePublished: post.publishedAt,
+        dateModified: post.publishedAt,
+        author: {
+          "@type": "Person",
+          name: post.author.name,
+          jobTitle: post.author.role,
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Watech Solutions",
+          logo: {
+            "@type": "ImageObject",
+            url: `${siteUrl}/favicon.ico`,
+          },
+        },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": postUrl,
+        },
+        keywords: post.tags.join(", "),
       },
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": postUrl,
-    },
-    keywords: post.tags.join(", "),
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: siteUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: `${siteUrl}/blog`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: post.category,
+            item: `${siteUrl}/blog`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: post.title,
+            item: postUrl,
+          },
+        ],
+      },
+    ],
   };
 
   const getCategoryBadgeColor = (cat: BlogCategory) => {
