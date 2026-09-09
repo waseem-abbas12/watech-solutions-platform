@@ -17,6 +17,8 @@ import {
   ShieldCheck,
   Zap,
   TrendingUp,
+  Award,
+  Briefcase,
 } from "lucide-react";
 import { SmartSalesFunnel } from "@/components/common/smart-sales-funnel";
 import { HomeFaqs } from "@/components/common/home-faqs";
@@ -24,7 +26,7 @@ import { SocialIcons } from "@/components/common/social-icons";
 
 export default function HomePage() {
   // Typewriter effect for subheading
-  const fullText = "Digital Services · Real Estate · Chinioti Furniture · FMCG Wholesale";
+  const fullText = "Digital Performance Agency · 17+ Yrs FMCG Authority · Real Estate · Chinioti Craft";
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function HomePage() {
       if (index >= fullText.length) {
         clearInterval(interval);
       }
-    }, 50);
+    }, 45);
     return () => clearInterval(interval);
   }, []);
 
@@ -105,7 +107,7 @@ export default function HomePage() {
           </motion.h1>
 
           <p className="text-base sm:text-lg text-slate-600 mt-6 max-w-2xl leading-relaxed">
-            Pakistan ka pehla integrated ecosystem — Digital Agency Services, Verified Properties, 774+ Asal Chinioti Furniture aur Mill-Direct Kiryana Wholesale Stock.
+            17+ saala ground tajurba aur cutting-edge technology ka sangam — Enterprise Digital Marketing, FMCG Distribution & Direct Supply, Verified Properties aur Asal Chinioti Woodcraft.
           </p>
 
           {/* Hero CTAs */}
@@ -114,13 +116,13 @@ export default function HomePage() {
               href="/services"
               className="px-8 py-4 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 hover:shadow-xl hover:scale-105 transition-all"
             >
-              Digital Services & Agency
+              Enterprise Digital Services
             </Link>
             <Link
               href="/marketplace"
               className="px-8 py-4 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md hover:scale-105 transition-all"
             >
-              Explore Products Marketplace
+              Products & Wholesale Marketplace
             </Link>
           </div>
         </div>
@@ -140,7 +142,7 @@ export default function HomePage() {
       </section>
 
       {/* =========================================
-          SMART INTERACTIVE SALES FUNNEL CONCIERGE
+          SMART INTERACTIVE SALES FUNNEL CONCIERGE (5 VISIBLE TILES)
           ========================================= */}
       <SmartSalesFunnel />
 
@@ -160,10 +162,10 @@ export default function HomePage() {
                 <span>Primary Journey · WATECH Digital Agency</span>
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
-                Business Growth & Tech Solutions
+                Enterprise Business Growth & Tech Solutions
               </h2>
               <p className="text-sm sm:text-base text-slate-400 mt-2 max-w-2xl">
-                Pakistani businesses ke liye high-ROI Meta & TikTok Ads, Automated WhatsApp CRM Systems, aur Modern Next.js Web Platforms.
+                Pakistani businesses ke liye high-ROI Omnichannel Performance Marketing (Meta & Google Ads), Automated WhatsApp CRM Systems, aur Modern Web Platforms.
               </p>
             </div>
 
@@ -183,27 +185,27 @@ export default function HomePage() {
             {[
               {
                 icon: Zap,
-                title: "Meta & TikTok Paid Ads",
-                desc: "Laser-targeted campaigns across Facebook, Instagram aur TikTok for real converting leads.",
-                tag: "High ROI Leads",
+                title: "Omnichannel Paid Ads",
+                desc: "Laser-targeted customer acquisition campaigns across Meta & Google Ads for high-ticket verified buyers.",
+                tag: "Meta & Google Ads",
               },
               {
                 icon: MessageCircle,
-                title: "WhatsApp Automation & CRM",
-                desc: "24/7 automated inquiry responses, customer categorization aur bulk broadcast setup.",
-                tag: "0s Lead Delay",
+                title: "Automated WhatsApp CRM",
+                desc: "Instant zero-second inquiry responses, smart customer qualification aur automated broadcast lead funnels.",
+                tag: "0s Lead Latency",
               },
               {
                 icon: TrendingUp,
-                title: "Custom Web & App Portals",
-                desc: "Lightning fast Next.js 16 platforms with local Pakistani payment and catalog systems.",
-                tag: "Next.js 16 Architecture",
+                title: "Custom Web Platforms",
+                desc: "Lightning fast Next.js 16 portals with local Pakistani payment systems, WhatsApp checkout & analytics.",
+                tag: "Next.js 16 Speed",
               },
               {
                 icon: ShieldCheck,
-                title: "Real Estate & FMCG Tech",
-                desc: "Specialized inventory management, lead tracking aur partner commission dashboards.",
-                tag: "Turnkey Enterprise",
+                title: "FMCG & Real Estate Tech",
+                desc: "Specialized inventory management, on-ground sales force tracking aur automated dealer commission engines.",
+                tag: "Enterprise Systems",
               },
             ].map((srv, idx) => {
               const SrvIcon = srv.icon;
@@ -239,13 +241,13 @@ export default function HomePage() {
           <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-900/50 via-slate-900 to-indigo-950/60 border border-blue-800/40 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-blue-400">
-                Limited Time Offer
+                Corporate Consultation
               </span>
               <h4 className="text-lg sm:text-xl font-bold text-white mt-1">
                 Apne Karobar Ke Liye Free 15-Minute WhatsApp Growth Audit Hasil Karein
               </h4>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Hum aapke social media aur sales process ka jaiza le kar specific sales barhane ka plan banayenge.
+                Hum aapke digital marketing, current sales pipeline aur lead conversion ka audit karke practical scaling blueprint share karenge.
               </p>
             </div>
             <a
@@ -308,7 +310,7 @@ export default function HomePage() {
                     Real Estate Marketplace
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Buy, sell, and invest in premium properties across Pakistan. Verified plots, luxury houses, and commercial opportunities.
+                    Buy, sell, and invest in premium properties across Pakistan. Verified plots, luxury houses, and commercial opportunities in LDA/RDA approved prime societies.
                   </p>
                 </div>
               </div>
@@ -342,10 +344,10 @@ export default function HomePage() {
                     Sector 02 · Craftsmanship (774+ Designs)
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    Chinioti Wood & Furniture
+                    Chinioti Wood & Handcrafted Furniture
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Handcrafted luxury for your home — authentic Sheesham wood, bridal sets, royal sofas, jhoolas and dining suites straight from Chiniot.
+                    Handcrafted luxury for your home — authentic 100% seasoned Sheesham wood, bridal sets, royal sofas, jhoolas and dining suites straight from Chiniot master artisans.
                   </p>
                 </div>
               </div>
@@ -363,11 +365,11 @@ export default function HomePage() {
           </motion.div>
 
           {/* ------------------------------------------------
-              STRIP 3: ROZMARRAH ASHIYA & KIRYANA WHOLESALE (FMCG GOODS)
+              STRIP 3: WATECH FMCG DIVISION (17+ YEARS AUTHORITY)
               ------------------------------------------------ */}
           <motion.div
             variants={itemVariants}
-            className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-amber-50/40 via-white to-white transition-all hover:bg-amber-50/60"
+            className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-amber-50/50 via-orange-50/30 to-white transition-all hover:bg-amber-50/70"
           >
             <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div className="flex items-start gap-6">
@@ -375,26 +377,49 @@ export default function HomePage() {
                   <Package className="w-8 h-8" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-600">
-                    Sector 03 · FMCG Goods Wholesale
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-600">
+                      Sector 03 · FMCG Corporate Hub
+                    </span>
+                    <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 text-[10px] font-black uppercase font-mono">
+                      17+ Yrs On-Ground
+                    </span>
+                  </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    Rozmarrah Ashiya & Kiryana Wholesale
+                    FMCG Corporate Services, Direct Supply & Investment
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Mill-Direct Ghee, Atta, Chawal, Daalein, Masala Jaat aur FMCG Brands — Kiryana Dukaandaron, Canteens aur Bulk Buyers ke liye Wholesale Rates par.
+                    17 saala on-ground tajurba — FMCG Brands ke liye Distribution Expansion & Route Planning, Dukaandaron ke liye Mill-Direct Wholesale Maal, aur Investors ke liye High-Turnover Dealership Joint Ventures.
                   </p>
+                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-600">
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
+                      <Award className="w-3.5 h-3.5 text-amber-600" />
+                      Brand Distribution Setup
+                    </span>
+                    <span>·</span>
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      Mill-Direct Wholesale Stock
+                    </span>
+                    <span>·</span>
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
+                      <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
+                      Secured Working Capital JVs
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="shrink-0">
-                <Link
-                  href="/marketplace?tab=food-catering"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md hover:shadow-amber-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+              <div className="shrink-0 flex flex-col sm:flex-row gap-3">
+                <a
+                  href="https://wa.me/923270831470?text=Assalam%20o%20Alaikum%20WATECH%2C%20Main%20FMCG%20Services%20%2F%20Direct%20Maal%20%2F%20Investment%20ke%20bare%20mein%20baat%20karna%20chahta%20hoon."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md hover:shadow-amber-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
-                  Wholesale Stock Dekhein
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                  <MessageCircle className="w-4 h-4" />
+                  <span>FMCG Direct Rabta</span>
+                </a>
               </div>
             </div>
           </motion.div>

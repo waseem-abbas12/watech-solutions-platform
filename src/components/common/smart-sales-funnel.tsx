@@ -13,14 +13,17 @@ import {
   MessageCircle,
   CheckCircle2,
   Sparkles,
-  PhoneCall,
   ShieldCheck,
   TrendingUp,
+  Briefcase,
+  Layers,
+  Award,
 } from "lucide-react";
 
 interface FunnelGoal {
   id: string;
   tabLabel: string;
+  shortTag: string;
   badge: string;
   title: string;
   tagline: string;
@@ -35,104 +38,109 @@ interface FunnelGoal {
 
 const FUNNEL_GOALS: FunnelGoal[] = [
   {
-    id: "business",
-    tabLabel: "🚀 Karobar / Sales Barhani Hai",
-    badge: "WATECH Tech & Marketing Agency",
-    title: "Apne Business Ki Sales 10x Karein",
-    tagline: "Meta/TikTok Ads, Automated WhatsApp CRM aur High-Speed Web App ke zariye verified leads hasil karein.",
+    id: "digital-growth",
+    tabLabel: "🚀 Corporate Growth & Ads",
+    shortTag: "Meta & Google Ads",
+    badge: "WATECH Digital Performance Agency",
+    title: "Omnichannel Growth & Enterprise Revenue Engine",
+    tagline: "Meta & Google Ads, Automated WhatsApp CRM Systems, aur High-Speed Web Platforms ke zariye scalable revenue generate karein.",
     accentColor: "#2563EB",
-    bgGradient: "from-blue-600 via-blue-700 to-indigo-800",
+    bgGradient: "from-blue-600 via-blue-700 to-indigo-900",
     icon: Rocket,
     benefits: [
-      "Targeted Meta & TikTok Paid Ads (Pakistani Audience)",
-      "Automated WhatsApp CRM & Instant Chatbot Funnels",
-      "Custom High-Speed Next.js Web Portals & E-commerce",
-      "Direct Sales Reporting & ROI Tracking",
+      "Omnichannel Performance Marketing (Meta & Google Ads)",
+      "Automated WhatsApp CRM & Zero-Latency Lead Capture",
+      "High-Converting Next.js 16 Web Apps & B2B Portals",
+      "Transparent ROI Tracking & Direct Sales Pipeline Setup",
     ],
     primaryCtaText: "Digital Services Dekhein",
     primaryCtaLink: "/services",
-    whatsappMessage: "Assalam o Alaikum WATECH, Mujhe apne business ki digital marketing aur automated sales funnel ke liye free consultation chahiye.",
+    whatsappMessage: "Assalam o Alaikum WATECH, Mujhe apne business ki sales grow karne aur Meta & Google Ads / WhatsApp CRM setup ke liye consultation chahiye.",
   },
   {
-    id: "property",
-    tabLabel: "🏡 Ghar ya Plot Kharidna / Bechna Hai",
-    badge: "Verified Real Estate Hub",
-    title: "Transparent & Verified Property Deals",
-    tagline: "Lahore, Islamabad, Rawalpindi aur Karachi mein LDA/RDA approved plots, luxury ghar aur commercial plazas.",
-    accentColor: "#2563EB",
-    bgGradient: "from-sky-600 via-blue-700 to-slate-900",
-    icon: Building2,
+    id: "fmcg-services",
+    tabLabel: "🏢 FMCG Brand Services",
+    shortTag: "Distribution Setup",
+    badge: "17+ Years On-Ground FMCG Authority",
+    title: "FMCG Brands & Factories Ki Distribution Expansion",
+    tagline: "17 saala on-ground tajurba — Brands ke liye retail route planning, sales force automation, aur nationwide distributor network deployment.",
+    accentColor: "#D97706",
+    bgGradient: "from-amber-600 via-orange-600 to-stone-900",
+    icon: Briefcase,
     benefits: [
-      "100% Documentation & Title Deed Verification",
-      "Direct Owner & Verified Partner Contact (No Hidden Fees)",
-      "DHA, Bahria, New Metro City & Prime Urban Locations",
-      "Instant Property Value & Installment Calculator",
+      "On-Ground Route Planning & Retail Territory Mapping",
+      "Distributor Onboarding & Punjab / Nationwide Network Setup",
+      "Sales Force Training & Automated Order Booking Workflow",
+      "Trade Marketing & Retailer Push Strategy Implementation",
     ],
-    primaryCtaText: "Available Properties Dekhein",
-    primaryCtaLink: "/marketplace?tab=properties",
-    whatsappMessage: "Assalam o Alaikum WATECH, Mujhe verified property kharidne / bechne ke silsilay mein inquiry karni hai.",
+    primaryCtaText: "FMCG Corporate Solutions",
+    primaryCtaLink: "/services",
+    whatsappMessage: "Assalam o Alaikum WATECH, Main ek FMCG Brand / Factory owner hoon aur mujhe apni product ki distribution network & on-ground sales force expand karni hai.",
   },
   {
-    id: "furniture",
-    tabLabel: "🛋️ Chinioti Shahi Furniture Chahiye",
-    badge: "Authentic Master Woodcraft",
-    title: "Chiniot Se Direct 100% Asal Lakri Furniture",
-    tagline: "774+ Handcrafted Designs — Bridal Bed Sets, Royal Sofas, Shahi Jhoolas aur Dining Suites factory-direct rates par.",
-    accentColor: "#16A34A",
-    bgGradient: "from-emerald-600 via-emerald-700 to-teal-900",
-    icon: Sofa,
-    benefits: [
-      "100% Pure Seasoned Sheesham & Rosewood",
-      "Generational Artisans ki Master Hand Carving",
-      "Termite-Treated 10-Year Structure Guarantee",
-      "Doorstep Safe Delivery Across Pakistan & Worldwide Export",
-    ],
-    primaryCtaText: "Furniture Catalog Khursheed Karein",
-    primaryCtaLink: "/marketplace?tab=furniture",
-    whatsappMessage: "Assalam o Alaikum WATECH, Mujhe Chinioti Handcrafted Furniture ke rates aur custom order ki information chahiye.",
-  },
-  {
-    id: "fmcg",
-    tabLabel: "📦 Wholesale Kiryana / FMCG Stock",
-    badge: "Rozmarrah Ashiya Wholesale",
+    id: "fmcg-supply",
+    tabLabel: "📦 FMCG Direct Maal / Supply",
+    shortTag: "Wholesale Kiryana",
+    badge: "Mill-Direct B2B Supply Hub",
     title: "Kiryana Dukaandar & Bulk Buyers Wholesale Hub",
-    tagline: "Mill-Direct Ghee, Atta, Chawal, Daalein, Masala Jaat aur FMCG Brands — Dukaandaron ke liye Wholesale Rate par.",
+    tagline: "Mill-Direct Ghee, Atta, Chawal, Daalein, Cooking Oil, aur Masala Jaat — Dukaandaron aur Marts ke liye guaranteed wholesale margins par.",
     accentColor: "#EA580C",
-    bgGradient: "from-amber-600 via-orange-600 to-red-700",
+    bgGradient: "from-orange-600 via-red-600 to-amber-900",
     icon: Package,
     benefits: [
-      "Mill-Direct Wholesale Pricing (B2B Bulk Savings)",
+      "Mill-Direct Bulk Pricing (High Retailer Profit Margins)",
       "Daily Essentials: Atta, Ghee, Rice, Pulses, Spices & Tea",
-      "Fast Delivery to Retail Shops, Hotels, & Canteens",
-      "Transparent Digital Invoicing & Easy Re-ordering",
+      "Fast Doorstep Logistics for Marts, Kiryana & Canteens",
+      "Transparent Digital Invoicing & Bulk Contract Supply",
     ],
-    primaryCtaText: "FMCG Wholesale Stock Dekhein",
-    primaryCtaLink: "/marketplace?tab=fmcg",
-    whatsappMessage: "Assalam o Alaikum WATECH, Mujhe Rozmarrah Ashiya & Kiryana Wholesale items ki price list aur bulk order detail chahiye.",
+    primaryCtaText: "Wholesale Stock Inquiry",
+    primaryCtaLink: "/marketplace?tab=food-catering",
+    whatsappMessage: "Assalam o Alaikum WATECH, Mujhe Rozmarrah Ashiya & Kiryana Wholesale items ka direct maal aur price list chahiye.",
   },
   {
-    id: "partner",
-    tabLabel: "🤝 Partner / Vendor Ban Kar Kamayein",
-    badge: "WATECH Partner Ecosystem",
-    title: "Bagher Kisi Investment Ke Humare Sath Judein",
-    tagline: "Real Estate Agents, Furniture Manufacturers aur FMCG Suppliers hamari digital marketing se apni sales barhayein.",
-    accentColor: "#D97706",
-    bgGradient: "from-orange-600 via-amber-600 to-yellow-700",
-    icon: Handshake,
+    id: "fmcg-investor",
+    tabLabel: "💼 FMCG Dealership & Investment",
+    shortTag: "Secured Capital JV",
+    badge: "High-Turnover Capital Venture",
+    title: "FMCG Warehouse & Wholesale Dealership Joint Ventures",
+    tagline: "FMCG sector mein high-turnover working capital aur warehousing joint ventures — Documented profit sharing aur daily cashflow security.",
+    accentColor: "#16A34A",
+    bgGradient: "from-emerald-600 via-teal-700 to-slate-900",
+    icon: TrendingUp,
     benefits: [
-      "Zero Registration Fee — 100% Free Onboarding",
-      "Hamara Platform Aapka Stock Poore Pakistan Mein Promote Karega",
-      "Direct Customer Calls & WhatsApp Verified Leads",
-      "Transparent Commission Tracking Dashboard",
+      "Secured Inventory-Backed Working Capital Financing",
+      "Fast Moving Essentials (Daily Cashflow & Zero Dead Stock)",
+      "Complete Legal Documentation & Formal Partnership Deeds",
+      "Transparent Monthly Profit Distribution & Audited Accounts",
     ],
-    primaryCtaText: "Partner Portal Par Join Karein",
+    primaryCtaText: "Investor Proposal Discuss Karein",
     primaryCtaLink: "/partners",
-    whatsappMessage: "Assalam o Alaikum WATECH, Main ba-hesiyat vendor / partner register ho kar apna stock list karna chahta hoon.",
+    whatsappMessage: "Assalam o Alaikum WATECH, Main FMCG sector / wholesale distribution mein investment & dealership joint venture ke liye baat karna chahta hoon.",
+  },
+  {
+    id: "real-estate-furniture",
+    tabLabel: "🏡 Properties & Chinioti Wood",
+    shortTag: "Real Estate & Craft",
+    badge: "Verified Marketplace Hub",
+    title: "Verified Real Estate Deals & Shahi Chinioti Furniture",
+    tagline: "Approved LDA/RDA residential & commercial properties aur Chiniot se direct 774+ master handcrafted pure Sheesham furniture designs.",
+    accentColor: "#2563EB",
+    bgGradient: "from-sky-700 via-blue-800 to-slate-900",
+    icon: Building2,
+    benefits: [
+      "Verified Real Estate (Plots, Luxury Homes, Commercial)",
+      "774+ Pure Sheesham Handcrafted Chinioti Furniture Items",
+      "100% Title Deed & Document Verification by WATECH",
+      "Direct Artisan Rates & Doorstep Delivery Across Pakistan",
+    ],
+    primaryCtaText: "Marketplace Browse Karein",
+    primaryCtaLink: "/marketplace",
+    whatsappMessage: "Assalam o Alaikum WATECH, Mujhe Verified Properties ya Chinioti Furniture ke silsilay mein inquiry karni hai.",
   },
 ];
 
 export const SmartSalesFunnel = () => {
-  const [activeGoalId, setActiveGoalId] = useState<string>("business");
+  const [activeGoalId, setActiveGoalId] = useState<string>("digital-growth");
 
   const currentGoal = FUNNEL_GOALS.find((g) => g.id === activeGoalId) || FUNNEL_GOALS[0];
   const IconComponent = currentGoal.icon;
@@ -148,31 +156,57 @@ export const SmartSalesFunnel = () => {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3 shadow-xs">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>10-Second Smart Solution Finder</span>
+            <span>Interactive Goal Concierge</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             Aap Aaj WATECH Par Kis Maqsad Se Aaye Hain?
           </h2>
           <p className="text-sm sm:text-base text-slate-600 mt-3 max-w-2xl mx-auto">
-            Neeche apna maqsad select karein — hamara smart platform aapko seedha right solution, exact products aur instant WhatsApp advisor tak le jayega!
+            Neeche apna maqsad select karein — hamara smart platform aapko seedha right solution, direct supply, investment details aur instant WhatsApp advisor tak le jayega.
           </p>
         </div>
 
-        {/* Goal Selector Buttons (Funnel Pills) */}
-        <div className="flex items-center justify-start md:justify-center gap-2.5 overflow-x-auto pb-4 scrollbar-none mb-8">
-          {FUNNEL_GOALS.map((goal) => {
+        {/* Goal Selector Buttons: Responsive 5-Tile Grid so ALL 5 are 100% visible on all screens */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-8">
+          {FUNNEL_GOALS.map((goal, idx) => {
             const isActive = goal.id === activeGoalId;
+            const BtnIcon = goal.icon;
             return (
               <button
                 key={goal.id}
                 onClick={() => setActiveGoalId(goal.id)}
-                className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-300 cursor-pointer border ${
+                className={`flex flex-col items-start text-left p-3.5 sm:p-4 rounded-2xl transition-all duration-300 cursor-pointer border ${
                   isActive
-                    ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/15 scale-105"
-                    : "bg-white text-slate-700 hover:bg-slate-100/80 border-slate-200 hover:border-slate-300"
+                    ? "bg-slate-900 text-white border-slate-900 shadow-xl shadow-slate-900/15 scale-[1.02]"
+                    : "bg-white text-slate-700 hover:bg-slate-100/80 border-slate-200/90 hover:border-slate-300 shadow-xs"
                 }`}
               >
-                <span>{goal.tabLabel}</span>
+                <div className="flex items-center justify-between w-full mb-2">
+                  <div
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                      isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-700"
+                    }`}
+                  >
+                    <BtnIcon className="w-3.5 h-3.5" />
+                  </div>
+                  <span
+                    className={`text-[10px] font-bold font-mono px-1.5 py-0.5 rounded ${
+                      isActive ? "bg-white/15 text-white/90" : "bg-slate-100 text-slate-500"
+                    }`}
+                  >
+                    0{idx + 1}
+                  </span>
+                </div>
+                <span className="text-xs sm:text-sm font-bold leading-snug line-clamp-1">
+                  {goal.tabLabel.replace(/^[^\s]+\s/, "")}
+                </span>
+                <span
+                  className={`text-[11px] mt-0.5 font-medium ${
+                    isActive ? "text-blue-300" : "text-slate-500"
+                  }`}
+                >
+                  {goal.shortTag}
+                </span>
               </button>
             );
           })}
@@ -185,10 +219,10 @@ export const SmartSalesFunnel = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className="w-full bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12"
           >
-            {/* Left Col: Visual & Branding */}
+            {/* Left Col: Visual & Strategic Authority */}
             <div
               className={`lg:col-span-5 p-8 sm:p-12 bg-gradient-to-br ${currentGoal.bgGradient} text-white flex flex-col justify-between relative overflow-hidden`}
             >
@@ -204,25 +238,25 @@ export const SmartSalesFunnel = () => {
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight tracking-tight">
                   {currentGoal.title}
                 </h3>
-                <p className="text-sm sm:text-base text-white/85 mt-3 leading-relaxed">
+                <p className="text-sm sm:text-base text-white/90 mt-3 leading-relaxed">
                   {currentGoal.tagline}
                 </p>
               </div>
 
               {/* Quick Trust Badge */}
               <div className="relative z-10 pt-8 mt-6 border-t border-white/20 flex items-center gap-3">
-                <ShieldCheck className="w-6 h-6 text-white/90 shrink-0" />
+                <Award className="w-6 h-6 text-white/90 shrink-0" />
                 <span className="text-xs text-white/90 font-medium">
-                  Verified by WATECH Solutions Ecosystem · 100% Quality & Security Guarantee
+                  Backed by 17+ Years of Ground Business & Technology Expertise
                 </span>
               </div>
             </div>
 
-            {/* Right Col: Concrete Benefits & Direct Conversion CTAs */}
+            {/* Right Col: Concrete Deliverables & Direct Conversion CTAs */}
             <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between bg-white">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Aapko Kya Milega:
+                  Hamari Deliverables & Scope:
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-8">
                   {currentGoal.benefits.map((benefit, i) => (
@@ -256,7 +290,7 @@ export const SmartSalesFunnel = () => {
                   className="py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-emerald-500/20 transition-all cursor-pointer shrink-0"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp Mashwara</span>
+                  <span>WhatsApp Direct Rabta</span>
                 </a>
               </div>
             </div>

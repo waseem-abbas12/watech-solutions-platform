@@ -21,19 +21,31 @@ const FAQS_DATA: FAQItem[] = [
     category: "Services",
     question: "WATECH Digital Agency hamare business ki sales aur leads kaise barha sakti hai?",
     answer:
-      "Hum Pakistani consumers ke behavior ke mutabiq targeted Meta & TikTok Ads run karte hain, automated WhatsApp CRM setup karte hain jo har aane wali inquiry ko foran reply karta hai, aur high-converting modern web portals banate hain. Hamara main focus vanity metrics nahi balki direct cashflow aur confirmed customer orders hain.",
+      "Hum Pakistani consumers aur B2B buyers ke behavior ke mutabiq targeted Omnichannel Performance Marketing (Meta & Google Ads) run karte hain, automated WhatsApp CRM setup karte hain jo zero-latency mein har aane wali inquiry ko capture karta hai, aur high-converting modern web portals banate hain. Hamara main focus direct confirmed orders aur scalable cashflow hai.",
+  },
+  {
+    category: "FMCG Wholesale",
+    question: "FMCG Brands & Factories ke liye WATECH kya services provide karta hai?",
+    answer:
+      "Hamari 17+ saala on-ground FMCG sales leadership ke zariye hum nayi aur existing FMCG brands ke liye Punjab aur nationwide distribution network build karte hain, retail route mapping karte hain, order bookers ki training & automated workflow deploy karte hain, aur retailer push marketing setup karte hain.",
+  },
+  {
+    category: "FMCG Wholesale",
+    question: "FMCG Dealership aur Warehousing mein Investors ke liye kya opportunity hai?",
+    answer:
+      "FMCG daily essentials (Atta, Ghee, Cooking Oil, Rice, Spices) fast-moving consumer goods hain jin mein zero dead-stock risk hota hai. WATECH verified working capital aur warehousing joint ventures offer karta hai jismein 100% legal partnership deeds, high-turnover daily cashflow rotation, aur transparent audited profit sharing milti hai.",
+  },
+  {
+    category: "FMCG Wholesale",
+    question: "Rozmarrah Ashiya & Kiryana Wholesale mein dukaandar direct maal kaise le sakte hain?",
+    answer:
+      "Kiryana dukaandar, mart owners, canteens aur bulk buyers direct WhatsApp helpline par apni required items ki list bhejte hain. Hamein mill-direct rate par bulk supply provide karte hain aur fast logistics ke zariye doorstep delivery karte hain.",
   },
   {
     category: "Furniture",
     question: "Kya aapka Chinioti Furniture 100% authentic aur pure lakri ka hota hai?",
     answer:
       "Ji 100%! Hamare tamam 774+ designs Chiniot ke puraney maahir karigaron ke hath se bani hui 100% seasoned Sheesham aur Rosewood se tayyar kiye jate hain. Har furniture piece termite-treated hota hai aur structure ki 10 saal tak ki guarantee di jaati hai. Delivery poore Pakistan aur international export ke zariye hoti hai.",
-  },
-  {
-    category: "FMCG Wholesale",
-    question: "Rozmarrah Ashiya & Kiryana Wholesale (FMCG) mein order kaise place hota hai?",
-    answer:
-      "Kiryana dukaandar, mart owners, canteens aur caterers hamare portal ya direct WhatsApp helpline par apni required items (Atta, Ghee, Cooking Oil, Rice, Daalein, Spices, Beverages) ki list bhejte hain. Hamein mill-direct rate par bulk supply provide karte hain aur fast logistics ke zariye doorstep delivery karte hain.",
   },
   {
     category: "Real Estate",
