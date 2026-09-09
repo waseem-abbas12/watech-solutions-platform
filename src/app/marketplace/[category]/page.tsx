@@ -474,9 +474,14 @@ export default function CategoryBrowsePage() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
                 >
                   <option value="All">All Categories</option>
-                  <option value="Sofa">Sofa Sets</option>
-                  <option value="Bed">Bed Sets</option>
-                  <option value="Dining">Dining Tables</option>
+                  <option value="Bed">Beds & Bedroom Sets</option>
+                  <option value="Sofa">Sofa & Living Room Sets</option>
+                  <option value="Dining">Dining Suites & Chairs</option>
+                  <option value="Cabinet">Cabinets & Showcases</option>
+                  <option value="Console">Consoles & Mirrors</option>
+                  <option value="Jhoola">Jhoolas & Swings</option>
+                  <option value="Tables">Coffee & Nesting Tables</option>
+                  <option value="Custom">Custom & Bespoke Carvings</option>
                 </select>
               </div>
 
@@ -487,14 +492,41 @@ export default function CategoryBrowsePage() {
                 </div>
                 <input
                   type="range"
-                  min={50000}
-                  max={500000}
+                  min={30000}
+                  max={600000}
                   step={25000}
                   value={furnitureMaxPrice}
                   onChange={(e) => setFurnitureMaxPrice(Number(e.target.value))}
                   className="w-full accent-[#16A34A] cursor-pointer"
                 />
               </div>
+            </div>
+
+            {/* Quick Category Badges */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {[
+                { id: "All", label: "All Items" },
+                { id: "Bed", label: "Beds & Suites" },
+                { id: "Sofa", label: "Sofas & Living" },
+                { id: "Dining", label: "Dining & Chairs" },
+                { id: "Cabinet", label: "Cabinets & Showcases" },
+                { id: "Console", label: "Consoles & Mirrors" },
+                { id: "Jhoola", label: "Royal Jhoolas" },
+                { id: "Tables", label: "Coffee & Nesting Tables" },
+                { id: "Custom", label: "Custom Art" },
+              ].map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => setFurnitureCategory(c.id)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                    furnitureCategory === c.id
+                      ? "bg-[#16A34A] text-white shadow-md shadow-emerald-500/20"
+                      : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
             </div>
 
             {/* Results Grid */}

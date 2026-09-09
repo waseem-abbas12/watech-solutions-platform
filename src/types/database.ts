@@ -13,7 +13,7 @@ export type SectorCategory = "property" | "furniture" | "event" | "food-catering
 
 export type PropertyStatus = "active" | "sold" | "inactive" | "pending";
 export type FurnitureWoodType = "Sheesham" | "Teak" | "Rosewood" | "Walnut";
-export type FurnitureCategory = "Sofa" | "Bed" | "Dining" | "Cabinet" | "Decor";
+export type FurnitureCategory = "Bed" | "Sofa" | "Dining" | "Cabinet" | "Console" | "Jhoola" | "Tables" | "Custom" | "Decor";
 export type FurnitureStatus = "inStock" | "outOfStock" | "discontinued";
 
 export type EventMenuType = "Desi" | "Chinese" | "BBQ" | "Continental" | "Fusion";
