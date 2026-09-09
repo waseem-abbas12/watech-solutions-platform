@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Armchair,
   Search,
@@ -12,466 +12,707 @@ import {
   MinusCircle,
   X,
   Trees,
+  CheckCircle2,
+  Download,
+  Printer,
+  CheckSquare,
+  Square,
+  SlidersHorizontal,
+  Layers,
+  ArrowUpDown,
 } from "lucide-react";
-
-interface FurnitureRow {
-  id: string;
-  name: string;
-  woodType: "Sheesham" | "Teak" | "Rosewood";
-  price: number;
-  stockQuantity: number;
-  supplier: string;
-  dimensions: string;
-  color: string;
-  description: string;
-  status: "In Stock" | "Out of Stock";
-}
+import { INITIAL_FURNITURE, FurnitureItem } from "@/lib/firebase/admin-service";
+import { formatPKR, formatDate, getStockStatus } from "@/lib/utils/formatters";
+import { exportToCSV, printOrExportPDF } from "@/lib/utils/export";
 
 export default function AdminFurniturePage() {
-  const [furniture, setFurniture] = useState<FurnitureRow[]>([
-    {
-      id: "FURN-201",
-      name: "Maharaja Royal Chinioti Bed Set",
-      woodType: "Sheesham",
-      price: 345000,
-      stockQuantity: 3, // LOW STOCK (< 5)
-      supplier: "Chiniot Royal Woodcraft",
-      dimensions: "King Size 72x78 in with 2 Side Tables",
-      color: "Antique Gold Polish",
-      description: "100% Pure solid seasoned Sheesham with master crown relief carvings.",
-      status: "In Stock",
-    },
-    {
-      id: "FURN-202",
-      name: "Hand-Carved Floral 7-Seater Sofa Set",
-      woodType: "Rosewood",
-      price: 285000,
-      stockQuantity: 8,
-      supplier: "Chiniot Royal Woodcraft",
-      dimensions: "3+2+1+1 with Center Table",
-      color: "Rosewood Dark Polish",
-      description: "Mughal floral carving with Molty Master foam warranty.",
-      status: "In Stock",
-    },
-    {
-      id: "FURN-203",
-      name: "Antique 8-Seater Luxury Dining Suite",
-      woodType: "Teak",
-      price: 395000,
-      stockQuantity: 2, // LOW STOCK (< 5)
-      supplier: "Mian Artisans Chiniot",
-      dimensions: "8x4 ft Glass Top Table with 8 Chairs",
-      color: "Natural Teak Polyurethane",
-      description: "Tempered 12mm glass top with solid teak high-back chairs.",
-      status: "In Stock",
-    },
-    {
-      id: "FURN-204",
-      name: "Crown Carved Chesterfield Sofa 5-Seater",
-      woodType: "Sheesham",
-      price: 220000,
-      stockQuantity: 0, // OUT OF STOCK
-      supplier: "Heritage Woods Chiniot",
-      dimensions: "3+1+1",
-      color: "Turkish Gold Leaf",
-      description: "Chesterfield tufted back with solid Sheesham carvings.",
-      status: "Out of Stock",
-    },
-  ]);
+  const [furniture, setFurniture] = useState<FurnitureItem[]>(INITIAL_FURNITURE);
 
-  const [search, setSearch] = useState("");
-  const [filterWood, setFilterWood] = useState("All");
+  // Search & Filters
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedWood, setSelectedWood] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
+  const [maxPrice, setMaxPrice] = useState<number>(500000);
 
-  // Modal
+  // Selection for Bulk Actions
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingItem, setEditingItem] = useState<FurnitureItem | null>(null);
+
+  // Form State
   const [formData, setFormData] = useState({
     name: "",
-    woodType: "Sheesham" as "Sheesham" | "Teak" | "Rosewood",
+    woodType: "Sheesham" as "Sheesham" | "Teak" | "Rosewood" | "Walnut",
+    category: "Bed" as "Sofa" | "Bed" | "Dining" | "Cabinet" | "Decor",
     price: "",
     stockQuantity: "5",
     supplier: "Chiniot Royal Woodcraft",
-    dimensions: "King Size 72x78 in",
-    color: "Natural Polish",
+    dimensions: "",
+    color: "",
     description: "",
+    images: "",
   });
 
-  const handleStockChange = (id: string, delta: number) => {
+  const woodTypes = ["Sheesham", "Teak", "Rosewood", "Walnut"];
+  const categories = ["Sofa", "Bed", "Dining", "Cabinet", "Decor"];
+
+  // Filtered List
+  const filteredFurniture = useMemo(() => {
+    return furniture.filter((item) => {
+      const matchesSearch =
+        !searchQuery ||
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.supplier.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.dimensions.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesWood =
+        selectedWood === "all" || item.woodType.toLowerCase() === selectedWood.toLowerCase();
+
+      const matchesCat =
+        selectedCategory === "all" || item.category.toLowerCase() === selectedCategory.toLowerCase();
+
+      const matchesStatus =
+        selectedStatus === "all" || item.status.toLowerCase() === selectedStatus.toLowerCase();
+
+      const matchesPrice = item.price <= maxPrice;
+
+      return matchesSearch && matchesWood && matchesCat && matchesStatus && matchesPrice;
+    });
+  }, [furniture, searchQuery, selectedWood, selectedCategory, selectedStatus, maxPrice]);
+
+  // Quick Stock Adjustment (+/-)
+  const adjustStock = (id: string, delta: number) => {
     setFurniture((prev) =>
       prev.map((item) => {
-        if (item.id === id) {
-          const newQty = Math.max(0, item.stockQuantity + delta);
-          return {
-            ...item,
-            stockQuantity: newQty,
-            status: newQty > 0 ? "In Stock" : "Out of Stock",
-          };
-        }
-        return item;
+        if (item.id !== id) return item;
+        const newStock = Math.max(0, item.stockQuantity + delta);
+        let newStatus: "In Stock" | "Low Stock" | "Out of Stock" = "In Stock";
+        if (newStock === 0) newStatus = "Out of Stock";
+        else if (newStock < 5) newStatus = "Low Stock";
+
+        return {
+          ...item,
+          stockQuantity: newStock,
+          status: newStatus,
+        };
       })
     );
   };
 
-  const handleOpenEdit = (item: FurnitureRow) => {
-    setEditingId(item.id);
+  // Bulk Actions Handlers
+  const toggleSelectAll = () => {
+    if (selectedIds.length === filteredFurniture.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(filteredFurniture.map((f) => f.id));
+    }
+  };
+
+  const toggleSelectRow = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkStockIncrement = (amount: number) => {
+    if (!selectedIds.length) return;
+    setFurniture((prev) =>
+      prev.map((item) => {
+        if (!selectedIds.includes(item.id)) return item;
+        const newStock = Math.max(0, item.stockQuantity + amount);
+        return {
+          ...item,
+          stockQuantity: newStock,
+          status: newStock === 0 ? "Out of Stock" : newStock < 5 ? "Low Stock" : "In Stock",
+        };
+      })
+    );
+  };
+
+  const handleBulkDelete = () => {
+    if (!selectedIds.length) return;
+    if (confirm(`Are you sure you want to delete ${selectedIds.length} furniture items?`)) {
+      setFurniture((prev) => prev.filter((item) => !selectedIds.includes(item.id)));
+      setSelectedIds([]);
+    }
+  };
+
+  // Modal Open/Submit
+  const handleOpenAddModal = () => {
+    setEditingItem(null);
+    setFormData({
+      name: "",
+      woodType: "Sheesham",
+      category: "Bed",
+      price: "",
+      stockQuantity: "5",
+      supplier: "Chiniot Royal Woodcraft",
+      dimensions: "",
+      color: "Antique Polish",
+      description: "",
+      images: "",
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (item: FurnitureItem) => {
+    setEditingItem(item);
     setFormData({
       name: item.name,
       woodType: item.woodType,
+      category: item.category,
       price: String(item.price),
       stockQuantity: String(item.stockQuantity),
       supplier: item.supplier,
       dimensions: item.dimensions,
       color: item.color,
       description: item.description,
+      images: (item.images || []).join(", "),
     });
     setIsModalOpen(true);
   };
 
-  const handleOpenAdd = () => {
-    setEditingId(null);
-    setFormData({
-      name: "",
-      woodType: "Sheesham",
-      price: "",
-      stockQuantity: "5",
-      supplier: "Chiniot Royal Woodcraft",
-      dimensions: "King Size 72x78 in",
-      color: "Natural Polish",
-      description: "",
-    });
-    setIsModalOpen(true);
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleSaveFurniture = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.price) return;
+    if (!formData.name || !formData.price) {
+      alert("Please enter product name and price.");
+      return;
+    }
 
-    const qty = Number(formData.stockQuantity) || 0;
-    const itemStatus = qty > 0 ? "In Stock" : "Out of Stock";
+    const priceNum = Number(formData.price) || 0;
+    const stockNum = Number(formData.stockQuantity) || 0;
+    const imagesArr = formData.images
+      ? formData.images.split(",").map((s) => s.trim()).filter(Boolean)
+      : ["/images/furniture/default.jpg"];
 
-    if (editingId) {
+    let calculatedStatus: "In Stock" | "Low Stock" | "Out of Stock" = "In Stock";
+    if (stockNum === 0) calculatedStatus = "Out of Stock";
+    else if (stockNum < 5) calculatedStatus = "Low Stock";
+
+    if (editingItem) {
+      // Edit
       setFurniture((prev) =>
         prev.map((item) =>
-          item.id === editingId
+          item.id === editingItem.id
             ? {
                 ...item,
                 name: formData.name,
                 woodType: formData.woodType,
-                price: Number(formData.price),
-                stockQuantity: qty,
+                category: formData.category,
+                price: priceNum,
+                stockQuantity: stockNum,
                 supplier: formData.supplier,
                 dimensions: formData.dimensions,
                 color: formData.color,
                 description: formData.description,
-                status: itemStatus,
+                images: imagesArr,
+                status: calculatedStatus,
               }
             : item
         )
       );
     } else {
-      const newItem: FurnitureRow = {
-        id: `FURN-${Math.floor(200 + Math.random() * 800)}`,
+      // Add
+      const newId = `FURN-${Math.floor(200 + Math.random() * 800)}`;
+      const newItem: FurnitureItem = {
+        id: newId,
         name: formData.name,
         woodType: formData.woodType,
-        price: Number(formData.price),
-        stockQuantity: qty,
+        category: formData.category,
+        price: priceNum,
+        stockQuantity: stockNum,
         supplier: formData.supplier,
         dimensions: formData.dimensions,
         color: formData.color,
         description: formData.description,
-        status: itemStatus,
+        images: imagesArr,
+        status: calculatedStatus,
+        views: 0,
+        inquiries: 0,
+        createdAt: new Date().toISOString().split("T")[0],
       };
       setFurniture([newItem, ...furniture]);
     }
+
     setIsModalOpen(false);
   };
 
-  const filteredItems = furniture.filter((f) => {
-    const matchSearch =
-      !search ||
-      f.name.toLowerCase().includes(search.toLowerCase()) ||
-      f.supplier.toLowerCase().includes(search.toLowerCase());
-    const matchWood = filterWood === "All" || f.woodType === filterWood;
-    return matchSearch && matchWood;
-  });
+  const handleDeleteSingle = (id: string) => {
+    if (confirm("Are you sure you want to remove this furniture item?")) {
+      setFurniture((prev) => prev.filter((item) => item.id !== id));
+      setSelectedIds((prev) => prev.filter((i) => i !== id));
+    }
+  };
+
+  const handleExportCSV = () => {
+    exportToCSV(
+      "watech_furniture_inventory",
+      filteredFurniture.map((f) => ({
+        id: f.id,
+        name: f.name,
+        woodType: f.woodType,
+        category: f.category,
+        price: f.price,
+        stockQuantity: f.stockQuantity,
+        supplier: f.supplier,
+        dimensions: f.dimensions,
+        color: f.color,
+        status: f.status,
+        views: f.views,
+        inquiries: f.inquiries,
+      }))
+    );
+  };
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-[#16A34A] font-mono">
-            Craftsmanship Inventory
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-0.5">
-            Chinioti Furniture Catalog
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-500 font-mono">
+              Sector Management
+            </span>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              {furniture.length} Products in Catalog
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1">
+            Chinioti Handcrafted Furniture
           </h1>
-          <p className="text-xs text-slate-400">
-            Monitor stock levels, manage Chinioti suppliers, and adjust inventory quantities.
+          <p className="text-xs text-slate-400 mt-1">
+            Real-time woodcraft stock monitoring, artisan workshops, and price control.
           </p>
         </div>
 
-        <button
-          onClick={handleOpenAdd}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition-all cursor-pointer shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Add Furniture Item</span>
-        </button>
-      </div>
-
-      {/* Search & Wood filter */}
-      <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="relative">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search item name, supplier..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-          />
-        </div>
-
-        <div>
-          <select
-            value={filterWood}
-            onChange={(e) => setFilterWood(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={handleExportCSV}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
           >
-            <option value="All">All Wood Types</option>
-            <option value="Sheesham">Pure Sheesham</option>
-            <option value="Teak">Teak Wood</option>
-            <option value="Rosewood">Rosewood</option>
-          </select>
+            <Download className="w-3.5 h-3.5" />
+            <span>Export CSV</span>
+          </button>
+          <button
+            onClick={() => printOrExportPDF("Watech Furniture Inventory")}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            <span>Print Report</span>
+          </button>
+          <button
+            onClick={handleOpenAddModal}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/20 transition-all cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add Furniture</span>
+          </button>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
+      {/* Filter & Search Bar */}
+      <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {/* Keyword Search */}
+          <div className="relative lg:col-span-2">
+            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search product name, artisan supplier, dimensions..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          {/* Wood Type */}
+          <div>
+            <select
+              value={selectedWood}
+              onChange={(e) => setSelectedWood(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+            >
+              <option value="all">All Wood Types</option>
+              {woodTypes.map((w) => (
+                <option key={w} value={w}>
+                  {w} Wood
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Category */}
+          <div>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+            >
+              <option value="all">All Categories</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Price Range Slider */}
+          <div className="flex items-center gap-2 text-xs text-slate-400">
+            <SlidersHorizontal className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+            <span className="truncate">Max: {formatPKR(maxPrice)}</span>
+            <input
+              type="range"
+              min="50000"
+              max="500000"
+              step="25000"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              className="w-full accent-emerald-500 cursor-pointer"
+            />
+          </div>
+        </div>
+
+        {/* Bulk Actions Toolbar */}
+        {selectedIds.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-800/80 text-xs animate-in fade-in">
+            <div className="flex items-center gap-2 text-emerald-400 font-bold">
+              <CheckSquare className="w-4 h-4" />
+              <span>{selectedIds.length} furniture items selected</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400 text-[11px]">Stock Adjustment:</span>
+              <button
+                onClick={() => handleBulkStockIncrement(5)}
+                className="px-2.5 py-1 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600/30 font-semibold cursor-pointer"
+              >
+                +5 Units
+              </button>
+              <button
+                onClick={() => handleBulkStockIncrement(-5)}
+                className="px-2.5 py-1 rounded-lg bg-amber-600/20 text-amber-400 border border-amber-500/30 hover:bg-amber-600/30 font-semibold cursor-pointer"
+              >
+                -5 Units
+              </button>
+              <button
+                onClick={handleBulkDelete}
+                className="px-2.5 py-1 rounded-lg bg-rose-600/20 text-rose-400 border border-rose-500/30 hover:bg-rose-600/30 font-semibold cursor-pointer flex items-center gap-1"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Furniture Inventory Grid */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-950 border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
+            <thead className="bg-slate-950/80 text-slate-400 border-b border-slate-800 uppercase text-[10px] font-bold tracking-wider">
               <tr>
-                <th className="py-4 px-6">Item Name</th>
-                <th className="py-4 px-4">Wood Species</th>
-                <th className="py-4 px-4">Price (PKR)</th>
-                <th className="py-4 px-4">Stock Qty</th>
-                <th className="py-4 px-4">Supplier</th>
-                <th className="py-4 px-4">Status</th>
-                <th className="py-4 px-6 text-right">Actions</th>
+                <th className="p-4 w-10 text-center">
+                  <button
+                    onClick={toggleSelectAll}
+                    className="text-slate-400 hover:text-white cursor-pointer"
+                  >
+                    {selectedIds.length === filteredFurniture.length &&
+                    filteredFurniture.length > 0 ? (
+                      <CheckSquare className="w-4 h-4 text-emerald-400" />
+                    ) : (
+                      <Square className="w-4 h-4" />
+                    )}
+                  </button>
+                </th>
+                <th className="p-4">Product Name & Category</th>
+                <th className="p-4">Wood & Polish</th>
+                <th className="p-4">Price (PKR)</th>
+                <th className="p-4 text-center">Stock Inventory</th>
+                <th className="p-4">Supplier / Workshop</th>
+                <th className="p-4">Views / Inq</th>
+                <th className="p-4">Status</th>
+                <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800">
-              {filteredItems.map((f, idx) => {
-                const isLowStock = f.stockQuantity > 0 && f.stockQuantity < 5;
-                const isOutOfStock = f.stockQuantity === 0;
+            <tbody className="divide-y divide-slate-800/60">
+              {filteredFurniture.length > 0 ? (
+                filteredFurniture.map((item) => {
+                  const isSelected = selectedIds.includes(item.id);
+                  const stockInfo = getStockStatus(item.stockQuantity);
 
-                return (
-                  <tr
-                    key={f.id}
-                    className={`transition-colors ${
-                      isLowStock
-                        ? "bg-red-950/20 hover:bg-red-950/30"
-                        : idx % 2 === 0
-                        ? "bg-slate-900"
-                        : "bg-slate-900/50"
-                    }`}
-                  >
-                    <td className="py-4 px-6 font-bold text-white max-w-xs truncate">
-                      {f.name}
-                      <div className="text-[10px] text-slate-500 font-mono mt-0.5">{f.id}</div>
-                    </td>
-                    <td className="py-4 px-4">
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                        {f.woodType}
-                      </span>
-                    </td>
-                    <td className="py-4 px-4 font-black text-white">PKR {f.price.toLocaleString()}</td>
-                    <td className="py-4 px-4">
-                      <div className="flex items-center gap-2">
+                  return (
+                    <tr
+                      key={item.id}
+                      className={`hover:bg-slate-800/40 transition-colors ${
+                        item.stockQuantity < 5
+                          ? "bg-rose-950/15"
+                          : item.stockQuantity < 10
+                          ? "bg-amber-950/10"
+                          : ""
+                      } ${isSelected ? "bg-emerald-600/10" : ""}`}
+                    >
+                      <td className="p-4 text-center">
                         <button
-                          onClick={() => handleStockChange(f.id, -1)}
-                          className="text-slate-400 hover:text-white"
-                          title="Decrease Stock"
+                          onClick={() => toggleSelectRow(item.id)}
+                          className="text-slate-400 hover:text-white cursor-pointer"
                         >
-                          <MinusCircle className="w-3.5 h-3.5" />
+                          {isSelected ? (
+                            <CheckSquare className="w-4 h-4 text-emerald-400" />
+                          ) : (
+                            <Square className="w-4 h-4" />
+                          )}
                         </button>
-                        <span
-                          className={`font-black px-2 py-0.5 rounded ${
-                            isLowStock
-                              ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                              : isOutOfStock
-                              ? "text-slate-500"
-                              : "text-white"
-                          }`}
-                        >
-                          {f.stockQuantity}
-                        </span>
-                        <button
-                          onClick={() => handleStockChange(f.id, 1)}
-                          className="text-slate-400 hover:text-white"
-                          title="Increase Stock"
-                        >
-                          <PlusCircle className="w-3.5 h-3.5" />
-                        </button>
-                        {isLowStock && (
-                          <span
-                            className="inline-flex items-center gap-1 text-[10px] text-red-400 font-bold"
-                            title="Low Stock Alert (< 5)"
+                      </td>
+                      <td className="p-4">
+                        <div className="font-bold text-white text-sm hover:text-emerald-400 transition-colors">
+                          {item.name}
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5 truncate max-w-[220px]">
+                          {item.dimensions}
+                        </div>
+                      </td>
+                      <td className="p-4">
+                        <span className="font-semibold text-slate-200">{item.woodType} Wood</span>
+                        <div className="text-[11px] text-slate-500">{item.color}</div>
+                      </td>
+                      <td className="p-4 font-mono font-bold text-emerald-400 text-sm">
+                        {formatPKR(item.price)}
+                      </td>
+                      <td className="p-4 text-center">
+                        <div className="inline-flex items-center gap-2 bg-slate-950 px-2.5 py-1 rounded-xl border border-slate-800">
+                          <button
+                            onClick={() => adjustStock(item.id, -1)}
+                            className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                            title="Decrease Stock"
                           >
-                            <AlertTriangle className="w-3 h-3" />
-                            Low
+                            <MinusCircle className="w-4 h-4" />
+                          </button>
+                          <span
+                            className={`font-mono font-black text-sm px-2 ${
+                              item.stockQuantity < 5
+                                ? "text-rose-400"
+                                : item.stockQuantity < 10
+                                ? "text-amber-400"
+                                : "text-emerald-400"
+                            }`}
+                          >
+                            {item.stockQuantity}
                           </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 text-slate-400 font-medium">{f.supplier}</td>
-                    <td className="py-4 px-4">
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
-                          f.status === "In Stock"
-                            ? "bg-emerald-500/20 text-emerald-400"
-                            : "bg-red-500/20 text-red-400"
-                        }`}
-                      >
-                        {f.status}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleOpenEdit(f)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                          <button
+                            onClick={() => adjustStock(item.id, 1)}
+                            className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                            title="Increase Stock"
+                          >
+                            <PlusCircle className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                      <td className="p-4 text-slate-300 font-medium">{item.supplier}</td>
+                      <td className="p-4 font-mono text-[11px] text-slate-400">
+                        <span>{item.views} views</span> •{" "}
+                        <span className="text-emerald-400 font-bold">{item.inquiries} inq</span>
+                      </td>
+                      <td className="p-4">
+                        <span
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${stockInfo.badgeClass}`}
                         >
-                          <Edit3 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => {
-                            if (confirm("Delete this furniture item?")) {
-                              setFurniture(furniture.filter((item) => item.id !== f.id));
-                            }
-                          }}
-                          className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                          {stockInfo.label}
+                        </span>
+                      </td>
+                      <td className="p-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => handleOpenEditModal(item)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-800 transition-colors"
+                            title="Edit"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteSingle(item.id)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={9} className="p-8 text-center text-slate-500 text-xs">
+                    No furniture items match your current search and filter settings.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* Add / Edit Modal */}
+      {/* Add / Edit Furniture Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-xl w-full space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h3 className="text-lg font-bold text-white">
-                {editingId ? "Edit Furniture Specifications" : "Add Chinioti Furniture Item"}
-              </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div>
+                <h3 className="font-bold text-white text-base">
+                  {editingItem ? "Edit Furniture Product" : "Add Handcrafted Furniture"}
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Fill in artisan wood type, carving specifications, stock count, and workshop origin.
+                </p>
+              </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-white p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Item Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Price (PKR) *</label>
-                  <input
-                    type="number"
-                    required
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
+            <form onSubmit={handleSaveFurniture} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-slate-300 font-bold mb-1">Product Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Maharaja Royal Chinioti Bed Set"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                />
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Wood Species</label>
+                  <label className="block text-slate-300 font-bold mb-1">Wood Type *</label>
                   <select
                     value={formData.woodType}
-                    onChange={(e) => setFormData({ ...formData, woodType: e.target.value as "Sheesham" | "Teak" | "Rosewood" })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        woodType: e.target.value as "Sheesham" | "Teak" | "Rosewood" | "Walnut",
+                      })
+                    }
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
                   >
-                    <option value="Sheesham">Sheesham</option>
-                    <option value="Teak">Teak</option>
-                    <option value="Rosewood">Rosewood</option>
+                    {woodTypes.map((w) => (
+                      <option key={w} value={w}>
+                        {w}
+                      </option>
+                    ))}
                   </select>
                 </div>
+
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Stock Qty</label>
+                  <label className="block text-slate-300 font-bold mb-1">Category</label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        category: e.target.value as "Sofa" | "Bed" | "Dining" | "Cabinet" | "Decor",
+                      })
+                    }
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                  >
+                    {categories.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1">Selling Price (PKR) *</label>
                   <input
                     type="number"
+                    required
+                    placeholder="e.g. 345000"
+                    value={formData.price}
+                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1">Initial Stock Quantity</label>
+                  <input
+                    type="number"
+                    min="0"
                     value={formData.stockQuantity}
                     onChange={(e) => setFormData({ ...formData, stockQuantity: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
+
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Color / Polish</label>
+                  <label className="block text-slate-300 font-bold mb-1">Polish / Color</label>
                   <input
                     type="text"
+                    placeholder="Antique Gold / Dark Rosewood"
                     value={formData.color}
                     onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1">Artisan Workshop / Supplier</label>
+                  <input
+                    type="text"
+                    value={formData.supplier}
+                    onChange={(e) => setFormData({ ...formData, supplier: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold uppercase text-slate-400 mb-1.5">Dimensions</label>
+                <label className="block text-slate-300 font-bold mb-1">Dimensions & Configuration</label>
                 <input
                   type="text"
+                  placeholder="e.g. King Size 72x78 in with 2 Side Tables & Dressing Table"
                   value={formData.dimensions}
                   onChange={(e) => setFormData({ ...formData, dimensions: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block font-bold uppercase text-slate-400 mb-1.5">Supplier / Manufacturer</label>
-                <input
-                  type="text"
-                  value={formData.supplier}
-                  onChange={(e) => setFormData({ ...formData, supplier: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
+                <label className="block text-slate-300 font-bold mb-1">Description & Foam/Warranty Specs</label>
+                <textarea
+                  rows={3}
+                  placeholder="Master crown relief carvings, seasoned Sheesham wood, 10-year termite warranty..."
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
-              <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-slate-400 hover:text-white"
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold"
+                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-lg shadow-emerald-600/20 cursor-pointer"
                 >
-                  Save Item
+                  {editingItem ? "Update Product" : "Save to Inventory"}
                 </button>
               </div>
             </form>

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/firebase/client";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 /**
  * Meta WhatsApp Cloud API Webhook Handler
  * Supports:
  * 1. GET: Webhook verification challenge handshake (hub.verify_token, hub.challenge)
- * 2. POST: Inbound message forwarding to self-hosted n8n instance
+ * 2. POST: Inbound message forwarding to self-hosted n8n instance + Firestore sync
  */
 
 export async function GET(req: NextRequest) {
@@ -30,7 +32,37 @@ export async function POST(req: NextRequest) {
     const payload = await req.json();
     const n8nWebhookUrl = process.env.N8N_WHATSAPP_WEBHOOK_URL;
 
-    // Asynchronously forward to n8n workflow if configured
+    const messageObj = payload?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+    const fromPhone = messageObj?.from;
+    const userText = (messageObj?.text?.body || "").toLowerCase();
+
+    // 1. Record inbound inquiry in Firestore
+    if (fromPhone && userText && db) {
+      try {
+        const cat =
+          userText.includes("property") || userText.includes("plot") || userText.includes("house")
+            ? "property"
+            : userText.includes("furniture") || userText.includes("sofa") || userText.includes("bed")
+            ? "furniture"
+            : "food-catering";
+
+        await addDoc(collection(db, "inquiries"), {
+          customerName: `WhatsApp (+${fromPhone})`,
+          customerPhone: fromPhone,
+          customerEmail: "",
+          serviceRequired: `WhatsApp Inbound: "${userText.slice(0, 40)}"`,
+          message: userText,
+          category: cat,
+          status: "new",
+          source: "whatsapp_cloud_api",
+          createdAt: serverTimestamp(),
+        });
+      } catch (err) {
+        console.warn("Firestore WhatsApp inbound recording fallback:", err);
+      }
+    }
+
+    // 2. Asynchronously forward to n8n workflow if configured
     if (n8nWebhookUrl) {
       fetch(n8nWebhookUrl, {
         method: "POST",
@@ -41,10 +73,6 @@ export async function POST(req: NextRequest) {
       // Autonomous Fallback: If Meta WhatsApp token is provided, reply directly
       const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
       const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-
-      const messageObj = payload?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
-      const fromPhone = messageObj?.from;
-      const userText = (messageObj?.text?.body || "").toLowerCase();
 
       if (accessToken && phoneNumberId && fromPhone) {
         let replyText =

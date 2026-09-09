@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   Bell,
   CheckCircle2,
@@ -11,185 +12,185 @@ import {
   Check,
   Clock,
   Trash2,
+  Filter,
 } from "lucide-react";
-
-interface AdminNotification {
-  id: string;
-  type: "inquiry" | "order" | "partner" | "low_stock";
-  title: string;
-  message: string;
-  read: boolean;
-  time: string;
-}
+import { INITIAL_NOTIFICATIONS, NotificationItem } from "@/lib/firebase/admin-service";
 
 export default function AdminNotificationsPage() {
-  const [notifications, setNotifications] = useState<AdminNotification[]>([
-    {
-      id: "NOTIF-01",
-      type: "order",
-      title: "New Transaction Order #WAT-2026-0089",
-      message: "Tariq Mehmood confirmed deal on 1 Kanal Luxury Modern Villa. Deal Amount: PKR 85,000,000.",
-      read: false,
-      time: "10 mins ago",
-    },
-    {
-      id: "NOTIF-02",
-      type: "inquiry",
-      title: "New High-Intent Client Inquiry",
-      message: "Dr. Ayesha Siddiqui submitted inquiry on Maharaja Royal Chinioti Bed Set.",
-      read: false,
-      time: "45 mins ago",
-    },
-    {
-      id: "NOTIF-03",
-      type: "low_stock",
-      title: "Low Stock Alert: Antique 8-Seater Dining Suite",
-      message: "Inventory count reached 2 items left at Chiniot warehouse. Restock recommended.",
-      read: false,
-      time: "2 hours ago",
-    },
-    {
-      id: "NOTIF-04",
-      type: "partner",
-      title: "New Partner Registration: Farhan Qureshi",
-      message: "Royal Palm Hospitality applied for partner verification in Events & Catering sector.",
-      read: true,
-      time: "1 day ago",
-    },
-  ]);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+  const [filterType, setFilterType] = useState<string>("all");
 
-  const [pushEnabled, setPushEnabled] = useState(true);
-
-  const handleMarkAllRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, read: true })));
-  };
-
-  const handleToggleRead = (id: string) => {
+  const markAsRead = (id: string) => {
     setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, read: !n.read } : n))
+      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
     );
   };
 
-  const handleDelete = (id: string) => {
+  const markAllRead = () => {
+    setNotifications(notifications.map((n) => ({ ...n, read: true })));
+  };
+
+  const deleteNotification = (id: string) => {
     setNotifications(notifications.filter((n) => n.id !== id));
   };
 
+  const filteredNotifications = notifications.filter((n) => {
+    if (filterType === "unread") return !n.read;
+    if (filterType !== "all") return n.type === filterType;
+    return true;
+  });
+
   const unreadCount = notifications.filter((n) => !n.read).length;
 
+  const getNotifIcon = (type: string) => {
+    switch (type) {
+      case "order":
+        return <ShoppingBag className="w-4 h-4 text-emerald-400" />;
+      case "inquiry":
+        return <MessageSquare className="w-4 h-4 text-blue-400" />;
+      case "low_stock":
+        return <AlertTriangle className="w-4 h-4 text-rose-400" />;
+      case "partner":
+        return <Handshake className="w-4 h-4 text-amber-400" />;
+      default:
+        return <Bell className="w-4 h-4 text-slate-400" />;
+    }
+  };
+
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-400 font-mono">
-            System Alerts & Feed
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-0.5">
-            Notifications Center ({unreadCount} Unread)
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-500 font-mono">
+              Live System Broadcasts
+            </span>
+            {unreadCount > 0 && (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                {unreadCount} Unread Alerts
+              </span>
+            )}
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1">
+            Notifications & System Alerts
           </h1>
-          <p className="text-xs text-slate-400">
-            Real-time triggers for incoming orders, leads, inventory thresholds, and partner onboarding.
+          <p className="text-xs text-slate-400 mt-1">
+            Real-time feed of customer inquiries, transaction settlements, stock thresholds, and partner registrations.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        {unreadCount > 0 && (
           <button
-            onClick={handleMarkAllRead}
-            className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
+            onClick={markAllRead}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-blue-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
           >
-            Mark All Read
+            <Check className="w-4 h-4" />
+            <span>Mark All as Read</span>
           </button>
-        </div>
+        )}
       </div>
 
-      {/* Push Notification Setting Strip */}
-      <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 flex items-center justify-between">
-        <div>
-          <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-            Browser Push Notifications
-          </h4>
-          <p className="text-[11px] text-slate-400">
-            Receive instant desktop alerts when a new client inquiry or order arrives.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setPushEnabled(!pushEnabled)}
-          className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-            pushEnabled ? "bg-blue-600" : "bg-slate-800"
-          }`}
-        >
-          <div
-            className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${
-              pushEnabled ? "right-1" : "left-1"
+      {/* Filter Tabs */}
+      <div className="bg-slate-900 border border-slate-800 p-1.5 rounded-2xl flex flex-wrap gap-1 text-xs">
+        {[
+          { id: "all", label: "All Alerts" },
+          { id: "unread", label: `Unread (${unreadCount})` },
+          { id: "order", label: "Deal Orders" },
+          { id: "inquiry", label: "Inquiries" },
+          { id: "low_stock", label: "Stock Warnings" },
+          { id: "partner", label: "Partner Registrations" },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setFilterType(tab.id)}
+            className={`px-3 py-1.5 rounded-xl font-semibold transition-colors cursor-pointer ${
+              filterType === tab.id
+                ? "bg-blue-600 text-white font-bold"
+                : "text-slate-400 hover:text-white"
             }`}
-          />
-        </button>
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Notifications List */}
-      <div className="bg-slate-900 rounded-3xl border border-slate-800 divide-y divide-slate-800 overflow-hidden">
-        {notifications.map((n) => {
-          const isUnread = !n.read;
-
-          return (
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden divide-y divide-slate-800/60 shadow-xl">
+        {filteredNotifications.length > 0 ? (
+          filteredNotifications.map((notif) => (
             <div
-              key={n.id}
-              className={`p-6 flex items-start justify-between gap-4 transition-colors ${
-                isUnread ? "bg-blue-950/20" : "hover:bg-slate-800/30"
+              key={notif.id}
+              className={`p-4 sm:p-5 flex items-start justify-between gap-4 hover:bg-slate-800/30 transition-colors ${
+                !notif.read ? "bg-slate-950/60" : ""
               }`}
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3.5">
                 <div
-                  className={`p-2.5 rounded-2xl shrink-0 mt-0.5 ${
-                    n.type === "order"
-                      ? "bg-emerald-500/20 text-emerald-400"
-                      : n.type === "inquiry"
-                      ? "bg-blue-500/20 text-blue-400"
-                      : n.type === "low_stock"
-                      ? "bg-red-500/20 text-red-400"
-                      : "bg-orange-500/20 text-orange-400"
+                  className={`p-2.5 rounded-2xl shrink-0 border ${
+                    notif.type === "order"
+                      ? "bg-emerald-500/10 border-emerald-500/20"
+                      : notif.type === "inquiry"
+                      ? "bg-blue-500/10 border-blue-500/20"
+                      : notif.type === "low_stock"
+                      ? "bg-rose-500/10 border-rose-500/20"
+                      : "bg-amber-500/10 border-amber-500/20"
                   }`}
                 >
-                  {n.type === "order" && <ShoppingBag className="w-5 h-5" />}
-                  {n.type === "inquiry" && <MessageSquare className="w-5 h-5" />}
-                  {n.type === "low_stock" && <AlertTriangle className="w-5 h-5" />}
-                  {n.type === "partner" && <Handshake className="w-5 h-5" />}
+                  {getNotifIcon(notif.type)}
                 </div>
-
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-xs font-bold text-white">{n.title}</h4>
-                    {isUnread && (
-                      <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                    <h4 className="text-xs font-bold text-white">{notif.title}</h4>
+                    {!notif.read && (
+                      <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
                     )}
                   </div>
-                  <p className="text-xs text-slate-400 leading-relaxed max-w-xl">{n.message}</p>
-                  <span className="text-[10px] text-slate-500 font-mono inline-block pt-1">
-                    {n.time}
-                  </span>
+                  <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
+                    {notif.message}
+                  </p>
+                  <div className="flex items-center gap-3 pt-1 text-[10px] text-slate-500 font-mono">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {notif.time}
+                    </span>
+                    {notif.link && (
+                      <Link
+                        href={notif.link}
+                        className="text-blue-400 hover:underline font-bold"
+                      >
+                        View Details →
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-1.5 shrink-0">
+                {!notif.read && (
+                  <button
+                    onClick={() => markAsRead(notif.id)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-800 transition-colors cursor-pointer"
+                    title="Mark as read"
+                  >
+                    <Check className="w-4 h-4" />
+                  </button>
+                )}
                 <button
-                  onClick={() => handleToggleRead(n.id)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-                  title={isUnread ? "Mark as Read" : "Mark as Unread"}
-                >
-                  <Check className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => handleDelete(n.id)}
-                  className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10"
-                  title="Remove Notification"
+                  onClick={() => deleteNotification(notif.id)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors cursor-pointer"
+                  title="Dismiss notification"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             </div>
-          );
-        })}
+          ))
+        ) : (
+          <div className="p-10 text-center text-slate-500 text-xs">
+            No notifications found under this filter.
+          </div>
+        )}
       </div>
     </div>
   );

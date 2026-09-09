@@ -14,484 +14,732 @@ import {
   Bath,
   Maximize2,
   Eye,
+  Download,
+  Printer,
+  History,
+  CheckSquare,
+  Square,
+  SlidersHorizontal,
+  ExternalLink,
 } from "lucide-react";
-
-interface PropertyRow {
-  id: string;
-  title: string;
-  price: number;
-  city: string;
-  location: string;
-  status: "Active" | "Pending Approval" | "Sold" | "Inactive";
-  agent: string;
-  bedrooms: number;
-  bathrooms: number;
-  area: string;
-  description: string;
-  createdAt: string;
-}
+import { INITIAL_PROPERTIES, PropertyItem } from "@/lib/firebase/admin-service";
+import { formatPKR, formatDate } from "@/lib/utils/formatters";
+import { exportToCSV, printOrExportPDF } from "@/lib/utils/export";
 
 export default function AdminPropertiesPage() {
-  const [properties, setProperties] = useState<PropertyRow[]>([
-    {
-      id: "PROP-101",
-      title: "1 Kanal Luxury Modern Villa",
-      price: 85000000,
-      city: "Lahore",
-      location: "DHA Phase 6, Sector C",
-      status: "Active",
-      agent: "Al-Madina Estate & Builders",
-      bedrooms: 5,
-      bathrooms: 6,
-      area: "1 Kanal (4,500 Sq Ft)",
-      description: "Architect-designed brand new bungalow with Spanish tiles and SMEG fittings.",
-      createdAt: "2026-09-01",
-    },
-    {
-      id: "PROP-102",
-      title: "10 Marla Brand New Designer House",
-      price: 42000000,
-      city: "Lahore",
-      location: "Bahria Town Sector C",
-      status: "Active",
-      agent: "Al-Madina Estate & Builders",
-      bedrooms: 4,
-      bathrooms: 5,
-      area: "10 Marla (2,250 Sq Ft)",
-      description: "Double-unit layout, solid ash wood doors, and Grohe sanitary.",
-      createdAt: "2026-09-03",
-    },
-    {
-      id: "PROP-105",
-      title: "2 Kanal Farmhouse with Swimming Pool",
-      price: 120000000,
-      city: "Islamabad",
-      location: "Chak Shahzad Farms",
-      status: "Pending Approval",
-      agent: "New Partner Submissions",
-      bedrooms: 6,
-      bathrooms: 7,
-      area: "2 Kanal",
-      description: "Newly listed partner inventory awaiting moderator verification and approval.",
-      createdAt: "2026-09-08",
-    },
-    {
-      id: "PROP-103",
-      title: "Corner Commercial Plaza Main Boulevard",
-      price: 165000000,
-      city: "Islamabad",
-      location: "Gulberg Greens Main Blvd",
-      status: "Active",
-      agent: "Capital Heights Realtors",
-      bedrooms: 0,
-      bathrooms: 4,
-      area: "6,000 Sq Ft",
-      description: "High-yield commercial plaza with elevator shaft and basement parking.",
-      createdAt: "2026-08-25",
-    },
-    {
-      id: "PROP-104",
-      title: "5 Marla Residential Ready-to-Build Plot",
-      price: 9500000,
-      city: "Rawalpindi",
-      location: "Bahria Phase 8",
-      status: "Sold",
-      agent: "Rawal Estate Network",
-      bedrooms: 0,
-      bathrooms: 0,
-      area: "5 Marla",
-      description: "Possession plot with paid utility dues on 40ft carpeted road.",
-      createdAt: "2026-08-29",
-    },
-  ]);
+  const [properties, setProperties] = useState<PropertyItem[]>(INITIAL_PROPERTIES);
 
-  const [search, setSearch] = useState("");
-  const [filterCity, setFilterCity] = useState("All");
-  const [filterStatus, setFilterStatus] = useState("All");
+  // Filters & Search
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
+  const [selectedCity, setSelectedCity] = useState<string>("all");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(200000000);
 
-  // Add/Edit Modal
+  // Selection for Bulk Actions
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingProperty, setEditingProperty] = useState<PropertyItem | null>(null);
+  const [activityLogProperty, setActivityLogProperty] = useState<PropertyItem | null>(null);
+
+  // Form State
   const [formData, setFormData] = useState({
     title: "",
     price: "",
     city: "Lahore",
     location: "",
     bedrooms: "4",
-    bathrooms: "4",
-    area: "10 Marla",
-    agent: "Al-Madina Estate & Builders",
-    status: "Active" as "Active" | "Pending Approval" | "Sold" | "Inactive",
+    bathrooms: "5",
+    area: "",
+    partner: "Al-Madina Estate & Builders",
     description: "",
+    status: "Active" as "Active" | "Pending Approval" | "Sold" | "Inactive",
+    images: "",
   });
 
+  const partnerOptions = [
+    "Al-Madina Estate & Builders",
+    "Capital Heights Realtors",
+    "Rawal Estate Network",
+    "New Partner Submissions",
+  ];
+
+  const cityOptions = ["Lahore", "Islamabad", "Rawalpindi", "Karachi", "Faisalabad"];
+
+  // Filtered Properties
   const filteredProperties = useMemo(() => {
-    return properties.filter((p) => {
-      const matchSearch =
-        !search ||
-        p.title.toLowerCase().includes(search.toLowerCase()) ||
-        p.agent.toLowerCase().includes(search.toLowerCase()) ||
-        p.location.toLowerCase().includes(search.toLowerCase());
-      const matchCity = filterCity === "All" || p.city === filterCity;
-      const matchStatus = filterStatus === "All" || p.status === filterStatus;
-      return matchSearch && matchCity && matchStatus;
+    return properties.filter((prop) => {
+      const matchesSearch =
+        !searchQuery ||
+        prop.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        prop.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        prop.partner.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        prop.location.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesStatus =
+        selectedStatus === "all" || prop.status.toLowerCase() === selectedStatus.toLowerCase();
+
+      const matchesCity =
+        selectedCity === "all" || prop.city.toLowerCase() === selectedCity.toLowerCase();
+
+      const matchesPrice =
+        prop.price >= minPrice && (maxPrice === 0 || prop.price <= maxPrice);
+
+      return matchesSearch && matchesStatus && matchesCity && matchesPrice;
     });
-  }, [properties, search, filterCity, filterStatus]);
+  }, [properties, searchQuery, selectedStatus, selectedCity, minPrice, maxPrice]);
 
-  const handleToggleStatus = (id: string) => {
-    setProperties((prev) =>
-      prev.map((p) => {
-        if (p.id === id) {
-          const next =
-            p.status === "Pending Approval"
-              ? "Active"
-              : p.status === "Active"
-              ? "Inactive"
-              : p.status === "Inactive"
-              ? "Active"
-              : "Active";
-          return { ...p, status: next };
-        }
-        return p;
-      })
-    );
-  };
-
-  const handleDelete = (id: string) => {
-    if (confirm("Delete this property listing permanently?")) {
-      setProperties((prev) => prev.filter((p) => p.id !== id));
+  // Bulk Selection Handlers
+  const toggleSelectAll = () => {
+    if (selectedIds.length === filteredProperties.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(filteredProperties.map((p) => p.id));
     }
   };
 
-  const handleOpenEdit = (p: PropertyRow) => {
-    setEditingId(p.id);
-    setFormData({
-      title: p.title,
-      price: String(p.price),
-      city: p.city,
-      location: p.location,
-      bedrooms: String(p.bedrooms),
-      bathrooms: String(p.bathrooms),
-      area: p.area,
-      agent: p.agent,
-      status: p.status,
-      description: p.description,
-    });
-    setIsModalOpen(true);
+  const toggleSelectRow = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
-  const handleOpenAdd = () => {
-    setEditingId(null);
+  const handleBulkStatusChange = (newStatus: "Active" | "Sold" | "Inactive") => {
+    if (!selectedIds.length) return;
+    setProperties((prev) =>
+      prev.map((prop) =>
+        selectedIds.includes(prop.id)
+          ? {
+              ...prop,
+              status: newStatus,
+              activityLog: [
+                ...(prop.activityLog || []),
+                {
+                  action: `Status changed to ${newStatus}`,
+                  timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
+                  by: "superAdmin",
+                },
+              ],
+            }
+          : prop
+      )
+    );
+    setSelectedIds([]);
+  };
+
+  const handleBulkDelete = () => {
+    if (!selectedIds.length) return;
+    if (confirm(`Are you sure you want to delete ${selectedIds.length} properties?`)) {
+      setProperties((prev) => prev.filter((p) => !selectedIds.includes(p.id)));
+      setSelectedIds([]);
+    }
+  };
+
+  // Form Open / Submit
+  const handleOpenAddModal = () => {
+    setEditingProperty(null);
     setFormData({
       title: "",
       price: "",
       city: "Lahore",
       location: "",
       bedrooms: "4",
-      bathrooms: "4",
-      area: "10 Marla",
-      agent: "Al-Madina Estate & Builders",
-      status: "Active",
+      bathrooms: "5",
+      area: "",
+      partner: partnerOptions[0],
       description: "",
+      status: "Active",
+      images: "",
     });
     setIsModalOpen(true);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.title || !formData.price) return;
+  const handleOpenEditModal = (prop: PropertyItem) => {
+    setEditingProperty(prop);
+    setFormData({
+      title: prop.title,
+      price: String(prop.price),
+      city: prop.city,
+      location: prop.location,
+      bedrooms: String(prop.bedrooms),
+      bathrooms: String(prop.bathrooms),
+      area: prop.area,
+      partner: prop.partner,
+      description: prop.description,
+      status: prop.status,
+      images: (prop.images || []).join(", "),
+    });
+    setIsModalOpen(true);
+  };
 
-    if (editingId) {
+  const handleSaveProperty = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.title || !formData.price) {
+      alert("Please fill in required fields.");
+      return;
+    }
+
+    const priceNum = Number(formData.price) || 0;
+    const imagesArr = formData.images
+      ? formData.images.split(",").map((s) => s.trim()).filter(Boolean)
+      : ["/images/properties/default.jpg"];
+
+    if (editingProperty) {
+      // Edit
       setProperties((prev) =>
-        prev.map((p) =>
-          p.id === editingId
+        prev.map((item) =>
+          item.id === editingProperty.id
             ? {
-                ...p,
+                ...item,
                 title: formData.title,
-                price: Number(formData.price),
+                price: priceNum,
                 city: formData.city,
-                location: formData.location,
-                bedrooms: Number(formData.bedrooms),
-                bathrooms: Number(formData.bathrooms),
-                area: formData.area,
-                agent: formData.agent,
-                status: formData.status,
+                location: formData.location || `${formData.city}, Pakistan`,
+                bedrooms: Number(formData.bedrooms) || 0,
+                bathrooms: Number(formData.bathrooms) || 0,
+                area: formData.area || "1 Kanal",
+                partner: formData.partner,
                 description: formData.description,
+                status: formData.status,
+                images: imagesArr,
+                featuredImage: imagesArr[0] || item.featuredImage,
+                activityLog: [
+                  ...(item.activityLog || []),
+                  {
+                    action: "Property specifications updated",
+                    timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
+                    by: "superAdmin",
+                  },
+                ],
               }
-            : p
+            : item
         )
       );
     } else {
-      const newProp: PropertyRow = {
-        id: `PROP-${Math.floor(100 + Math.random() * 900)}`,
+      // Add
+      const newId = `PROP-${Math.floor(100 + Math.random() * 900)}`;
+      const newProp: PropertyItem = {
+        id: newId,
         title: formData.title,
-        price: Number(formData.price),
+        price: priceNum,
         city: formData.city,
-        location: formData.location,
-        bedrooms: Number(formData.bedrooms),
-        bathrooms: Number(formData.bathrooms),
-        area: formData.area,
-        agent: formData.agent,
+        location: formData.location || `${formData.city}, Pakistan`,
         status: formData.status,
+        partner: formData.partner,
+        bedrooms: Number(formData.bedrooms) || 0,
+        bathrooms: Number(formData.bathrooms) || 0,
+        area: formData.area || "1 Kanal",
+        views: 0,
+        inquiries: 0,
         description: formData.description,
+        images: imagesArr,
+        featuredImage: imagesArr[0] || "/images/properties/default.jpg",
         createdAt: new Date().toISOString().split("T")[0],
+        activityLog: [
+          {
+            action: "Property created and listed",
+            timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
+            by: "superAdmin",
+          },
+        ],
       };
-      setProperties([newProp, ...properties]);
+      const updated = [newProp, ...properties];
+      setProperties(updated);
+      try {
+        if (typeof window !== "undefined") {
+          const existingRaw = localStorage.getItem("watech_custom_properties_v1");
+          const existing = existingRaw ? JSON.parse(existingRaw) : [];
+          localStorage.setItem(
+            "watech_custom_properties_v1",
+            JSON.stringify([
+              {
+                id: newProp.id,
+                title: newProp.title,
+                price: newProp.price,
+                city: newProp.city,
+                area: newProp.area,
+                type: "House",
+                beds: newProp.bedrooms,
+                baths: newProp.bathrooms,
+                image: newProp.featuredImage,
+                location: newProp.location,
+                description: newProp.description,
+                featured: true,
+                partnerPhone: "923270831470",
+                status: "Available",
+                createdAt: new Date().toISOString().substring(0, 10),
+                isDemo: false,
+              },
+              ...existing.filter((p: any) => p.id !== newProp.id),
+            ])
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to persist property to localStorage", err);
+      }
     }
+
     setIsModalOpen(false);
   };
 
-  const formatPKR = (num: number): string => {
-    if (num >= 10000000) {
-      const cr = num / 10000000;
-      return `PKR ${cr % 1 === 0 ? cr : cr.toFixed(2)} Cr`;
+  const handleDeleteSingle = (id: string) => {
+    if (confirm("Are you sure you want to delete this property listing?")) {
+      setProperties((prev) => prev.filter((p) => p.id !== id));
+      setSelectedIds((prev) => prev.filter((i) => i !== id));
     }
-    if (num >= 100000) {
-      const lac = num / 100000;
-      return `PKR ${lac % 1 === 0 ? lac : lac.toFixed(2)} Lac`;
-    }
-    return `PKR ${num.toLocaleString()}`;
+  };
+
+  const handleExportCSV = () => {
+    exportToCSV(
+      "watech_properties",
+      filteredProperties.map((p) => ({
+        id: p.id,
+        title: p.title,
+        price: p.price,
+        city: p.city,
+        location: p.location,
+        status: p.status,
+        partner: p.partner,
+        bedrooms: p.bedrooms,
+        bathrooms: p.bathrooms,
+        area: p.area,
+        views: p.views,
+        inquiries: p.inquiries,
+        createdAt: p.createdAt,
+      }))
+    );
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-400 font-mono">
-            Sector Management
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-0.5">
-            Real Estate Properties
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-500 font-mono">
+              Sector Management
+            </span>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              {properties.length} Total Listings
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1">
+            Properties & Real Estate
           </h1>
-          <p className="text-xs text-slate-400">
-            Audit, verify, edit, and approve real estate listings across Pakistan.
+          <p className="text-xs text-slate-400 mt-1">
+            Control residential, commercial, plots, and luxury farmhouse listings across Pakistan.
           </p>
         </div>
 
-        <button
-          onClick={handleOpenAdd}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Add Property</span>
-        </button>
-      </div>
-
-      {/* Filters & Search */}
-      <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="relative">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search title, agent, or location..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
-          />
-        </div>
-
-        <div>
-          <select
-            value={filterCity}
-            onChange={(e) => setFilterCity(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-blue-500"
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={handleExportCSV}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+            title="Export CSV"
           >
-            <option value="All">All Cities</option>
-            <option value="Lahore">Lahore</option>
-            <option value="Islamabad">Islamabad</option>
-            <option value="Rawalpindi">Rawalpindi</option>
-            <option value="Karachi">Karachi</option>
-          </select>
-        </div>
-
-        <div>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-blue-500"
+            <Download className="w-3.5 h-3.5" />
+            <span>Export CSV</span>
+          </button>
+          <button
+            onClick={() => printOrExportPDF("Watech Properties Report")}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+            title="Print / PDF"
           >
-            <option value="All">All Statuses</option>
-            <option value="Active">Active</option>
-            <option value="Pending Approval">Pending Approval</option>
-            <option value="Sold">Sold</option>
-            <option value="Inactive">Inactive</option>
-          </select>
+            <Printer className="w-3.5 h-3.5" />
+            <span>Print Report</span>
+          </button>
+          <button
+            onClick={handleOpenAddModal}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/20 transition-all cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add Property</span>
+          </button>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
+      {/* Filter & Search Bar */}
+      <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* Keyword Search */}
+          <div className="relative">
+            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search title, city, partner, or location..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          {/* Status Dropdown */}
+          <div>
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-blue-500"
+            >
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="pending approval">Pending Approval</option>
+              <option value="sold">Sold</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          {/* City Dropdown */}
+          <div>
+            <select
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-blue-500"
+            >
+              <option value="all">All Cities</option>
+              {cityOptions.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Price Range Slider / Selector */}
+          <div className="flex items-center gap-2 text-xs text-slate-400">
+            <SlidersHorizontal className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+            <span className="truncate">Max: {formatPKR(maxPrice)}</span>
+            <input
+              type="range"
+              min="10000000"
+              max="200000000"
+              step="5000000"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              className="w-full accent-blue-500 cursor-pointer"
+            />
+          </div>
+        </div>
+
+        {/* Bulk Actions Toolbar (Visible when rows selected) */}
+        {selectedIds.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-800/80 text-xs animate-in fade-in">
+            <div className="flex items-center gap-2 text-blue-400 font-bold">
+              <CheckSquare className="w-4 h-4" />
+              <span>{selectedIds.length} properties selected</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400 text-[11px]">Set Status:</span>
+              <button
+                onClick={() => handleBulkStatusChange("Active")}
+                className="px-2.5 py-1 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600/30 font-semibold cursor-pointer"
+              >
+                Mark Active
+              </button>
+              <button
+                onClick={() => handleBulkStatusChange("Sold")}
+                className="px-2.5 py-1 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600/30 font-semibold cursor-pointer"
+              >
+                Mark Sold
+              </button>
+              <button
+                onClick={() => handleBulkStatusChange("Inactive")}
+                className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 font-semibold cursor-pointer"
+              >
+                Mark Inactive
+              </button>
+              <button
+                onClick={handleBulkDelete}
+                className="px-2.5 py-1 rounded-lg bg-rose-600/20 text-rose-400 border border-rose-500/30 hover:bg-rose-600/30 font-semibold cursor-pointer flex items-center gap-1"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Properties Table Grid */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-950 border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
+            <thead className="bg-slate-950/80 text-slate-400 border-b border-slate-800 uppercase text-[10px] font-bold tracking-wider">
               <tr>
-                <th className="py-4 px-6">Property Title</th>
-                <th className="py-4 px-4">Demand Price</th>
-                <th className="py-4 px-4">City / Area</th>
-                <th className="py-4 px-4">Partner Agent</th>
-                <th className="py-4 px-4">Status</th>
-                <th className="py-4 px-4">Created</th>
-                <th className="py-4 px-6 text-right">Actions</th>
+                <th className="p-4 w-10 text-center">
+                  <button
+                    onClick={toggleSelectAll}
+                    className="text-slate-400 hover:text-white cursor-pointer"
+                  >
+                    {selectedIds.length === filteredProperties.length &&
+                    filteredProperties.length > 0 ? (
+                      <CheckSquare className="w-4 h-4 text-blue-400" />
+                    ) : (
+                      <Square className="w-4 h-4" />
+                    )}
+                  </button>
+                </th>
+                <th className="p-4">Property Title & Specs</th>
+                <th className="p-4">Price (PKR)</th>
+                <th className="p-4">City / Location</th>
+                <th className="p-4">Partner Agency</th>
+                <th className="p-4">Traffic</th>
+                <th className="p-4">Status</th>
+                <th className="p-4">Created Date</th>
+                <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800">
-              {filteredProperties.map((p, idx) => (
-                <tr key={p.id} className={idx % 2 === 0 ? "bg-slate-900" : "bg-slate-900/50"}>
-                  <td className="py-4 px-6 font-bold text-white max-w-xs truncate">
-                    {p.title}
-                    <div className="text-[10px] text-slate-500 font-mono mt-0.5">{p.id}</div>
-                  </td>
-                  <td className="py-4 px-4 font-black text-blue-400">{formatPKR(p.price)}</td>
-                  <td className="py-4 px-4 text-slate-300">
-                    <div>{p.city}</div>
-                    <div className="text-[10px] text-slate-500">{p.area}</div>
-                  </td>
-                  <td className="py-4 px-4 text-slate-300 font-medium">{p.agent}</td>
-                  <td className="py-4 px-4">
-                    <button
-                      onClick={() => handleToggleStatus(p.id)}
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-all ${
-                        p.status === "Pending Approval"
-                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-emerald-500/20 hover:text-emerald-300"
-                          : p.status === "Active"
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                          : p.status === "Sold"
-                          ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
-                          : "bg-slate-800 text-slate-400 border border-slate-700"
+            <tbody className="divide-y divide-slate-800/60">
+              {filteredProperties.length > 0 ? (
+                filteredProperties.map((prop) => {
+                  const isSelected = selectedIds.includes(prop.id);
+                  return (
+                    <tr
+                      key={prop.id}
+                      className={`hover:bg-slate-800/40 transition-colors ${
+                        isSelected ? "bg-blue-600/10" : ""
                       }`}
-                      title={p.status === "Pending Approval" ? "Click to Approve Listing" : "Click to toggle status"}
                     >
-                      {p.status === "Pending Approval" ? "Approve Listing" : p.status}
-                    </button>
-                  </td>
-                  <td className="py-4 px-4 text-slate-500 font-mono">{p.createdAt}</td>
-                  <td className="py-4 px-6 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleOpenEdit(p)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-                        title="Edit Property"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(p.id)}
-                        className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10"
-                        title="Delete Property"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+                      <td className="p-4 text-center">
+                        <button
+                          onClick={() => toggleSelectRow(prop.id)}
+                          className="text-slate-400 hover:text-white cursor-pointer"
+                        >
+                          {isSelected ? (
+                            <CheckSquare className="w-4 h-4 text-blue-400" />
+                          ) : (
+                            <Square className="w-4 h-4" />
+                          )}
+                        </button>
+                      </td>
+                      <td className="p-4">
+                        <div className="font-bold text-white text-sm hover:text-blue-400 transition-colors">
+                          {prop.title}
+                        </div>
+                        <div className="flex items-center gap-3 text-[11px] text-slate-400 mt-1 font-mono">
+                          <span>{prop.area}</span>
+                          <span>•</span>
+                          <span>{prop.bedrooms} Beds</span>
+                          <span>•</span>
+                          <span>{prop.bathrooms} Baths</span>
+                        </div>
+                      </td>
+                      <td className="p-4 font-mono font-bold text-emerald-400 text-sm">
+                        {formatPKR(prop.price)}
+                      </td>
+                      <td className="p-4">
+                        <div className="font-semibold text-slate-200">{prop.city}</div>
+                        <div className="text-[11px] text-slate-500 truncate max-w-[180px]">
+                          {prop.location}
+                        </div>
+                      </td>
+                      <td className="p-4 text-slate-300 font-medium">{prop.partner}</td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
+                          <span title="Views" className="flex items-center gap-1">
+                            <Eye className="w-3 h-3 text-slate-500" />
+                            {prop.views}
+                          </span>
+                          <span>•</span>
+                          <span title="Inquiries" className="text-blue-400 font-bold">
+                            {prop.inquiries} inq
+                          </span>
+                        </div>
+                      </td>
+                      <td className="p-4">
+                        <span
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${
+                            prop.status === "Active"
+                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                              : prop.status === "Pending Approval"
+                              ? "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                              : prop.status === "Sold"
+                              ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
+                              : "bg-slate-800 text-slate-400 border-slate-700"
+                          }`}
+                        >
+                          {prop.status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-slate-400 font-mono text-[11px]">
+                        {formatDate(prop.createdAt)}
+                      </td>
+                      <td className="p-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => setActivityLogProperty(prop)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800 transition-colors"
+                            title="View Activity Log"
+                          >
+                            <History className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleOpenEditModal(prop)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition-colors"
+                            title="Edit Property"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteSingle(prop.id)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={9} className="p-8 text-center text-slate-500 text-xs">
+                    No properties match your current search and filter criteria.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* Add / Edit Modal */}
+      {/* Add / Edit Property Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h3 className="text-lg font-bold text-white">
-                {editingId ? "Edit Property Listing" : "Add New Property Listing"}
-              </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div>
+                <h3 className="font-bold text-white text-base">
+                  {editingProperty ? "Edit Property Listing" : "Add New Property Listing"}
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Fill in the complete property specifications, pricing, and partner attribution.
+                </p>
+              </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-white p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSaveProperty} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-slate-300 font-bold mb-1">Property Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. 1 Kanal Luxury Modern Villa"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Title *</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Demand Price (PKR) *</label>
+                  <label className="block text-slate-300 font-bold mb-1">Price in PKR *</label>
                   <input
                     type="number"
                     required
+                    placeholder="e.g. 85000000"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">City</label>
+                  <label className="block text-slate-300 font-bold mb-1">City *</label>
                   <select
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
                   >
-                    <option value="Lahore">Lahore</option>
-                    <option value="Islamabad">Islamabad</option>
-                    <option value="Rawalpindi">Rawalpindi</option>
-                    <option value="Karachi">Karachi</option>
+                    {cityOptions.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
                   </select>
-                </div>
-                <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Location</label>
-                  <input
-                    type="text"
-                    value={formData.location}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Covered Area</label>
-                  <input
-                    type="text"
-                    value={formData.area}
-                    onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
-                  />
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Bedrooms</label>
+                  <label className="block text-slate-300 font-bold mb-1">Bedrooms</label>
                   <input
                     type="number"
                     value={formData.bedrooms}
                     onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Bathrooms</label>
+                  <label className="block text-slate-300 font-bold mb-1">Bathrooms</label>
                   <input
                     type="number"
                     value={formData.bathrooms}
                     onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold uppercase text-slate-400 mb-1.5">Status</label>
+                  <label className="block text-slate-300 font-bold mb-1">Area / Size</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 1 Kanal or 4,500 Sq Ft"
+                    value={formData.area}
+                    onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-bold mb-1">Address / Location Details</label>
+                <input
+                  type="text"
+                  placeholder="e.g. DHA Phase 6, Sector C, Lahore"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1">Partner Agency</label>
+                  <select
+                    value={formData.partner}
+                    onChange={(e) => setFormData({ ...formData, partner: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                  >
+                    {partnerOptions.map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1">Listing Status</label>
                   <select
                     value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value as "Active" | "Sold" | "Inactive" })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        status: e.target.value as "Active" | "Pending Approval" | "Sold" | "Inactive",
+                      })
+                    }
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
                   >
                     <option value="Active">Active</option>
+                    <option value="Pending Approval">Pending Approval</option>
                     <option value="Sold">Sold</option>
                     <option value="Inactive">Inactive</option>
                   </select>
@@ -499,44 +747,96 @@ export default function AdminPropertiesPage() {
               </div>
 
               <div>
-                <label className="block font-bold uppercase text-slate-400 mb-1.5">Partner Agent</label>
-                <select
-                  value={formData.agent}
-                  onChange={(e) => setFormData({ ...formData, agent: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
-                >
-                  <option value="Al-Madina Estate & Builders">Al-Madina Estate & Builders</option>
-                  <option value="Capital Heights Realtors">Capital Heights Realtors</option>
-                  <option value="Rawal Estate Network">Rawal Estate Network</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block font-bold uppercase text-slate-400 mb-1.5">Description</label>
-                <textarea
-                  rows={3}
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                <label className="block text-slate-300 font-bold mb-1">
+                  Image URLs (comma separated)
+                </label>
+                <input
+                  type="text"
+                  placeholder="/images/properties/prop1.jpg, /images/properties/prop2.jpg"
+                  value={formData.images}
+                  onChange={(e) => setFormData({ ...formData, images: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
-              <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+              <div>
+                <label className="block text-slate-300 font-bold mb-1">Description</label>
+                <textarea
+                  rows={3}
+                  placeholder="Architectural specs, Spanish tiles, fittings, solar installation details..."
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-slate-400 hover:text-white"
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-lg shadow-blue-600/20 cursor-pointer"
                 >
-                  {editingId ? "Save Changes" : "Create Property"}
+                  {editingProperty ? "Save Changes" : "Publish Listing"}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Activity Log Drawer / Modal */}
+      {activityLogProperty && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div>
+                <h3 className="font-bold text-white text-sm">Activity & Audit Trail</h3>
+                <p className="text-[11px] text-slate-400 truncate max-w-[280px]">
+                  {activityLogProperty.title}
+                </p>
+              </div>
+              <button
+                onClick={() => setActivityLogProperty(null)}
+                className="text-slate-400 hover:text-white p-1 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 max-h-60 overflow-y-auto">
+              {(activityLogProperty.activityLog || [
+                {
+                  action: "Listing created",
+                  timestamp: activityLogProperty.createdAt,
+                  by: "superAdmin",
+                },
+              ]).map((log, index) => (
+                <div key={index} className="flex items-start gap-2.5 text-xs">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5 shrink-0" />
+                  <div className="flex-1">
+                    <div className="font-medium text-slate-200">{log.action}</div>
+                    <div className="text-[10px] text-slate-500 font-mono">
+                      {log.timestamp} • By {log.by}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-2 border-t border-slate-800 text-right">
+              <button
+                onClick={() => setActivityLogProperty(null)}
+                className="px-4 py-1.5 rounded-xl bg-slate-800 text-xs text-slate-300 font-semibold hover:bg-slate-700"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

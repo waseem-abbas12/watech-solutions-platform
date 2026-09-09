@@ -51,10 +51,30 @@ function MarketplaceContent() {
       ? "furniture"
       : "properties";
 
-  // Active Tab state: 'properties' | 'furniture' | 'food-catering'
+  // Active Tab state: 'properties' | 'furniture' | 'food-catering' | 'events'
   const [activeTab, setActiveTab] = useState<"properties" | "furniture" | "food-catering" | "events">(
     initialTab
   );
+
+  // Dynamic Properties List (syncs newly added properties from Admin Panel)
+  const [propertiesList, setPropertiesList] = useState<PropertyItem[]>(INITIAL_PROPERTIES);
+
+  React.useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const raw = localStorage.getItem("watech_custom_properties_v1");
+        if (raw) {
+          const customProps = JSON.parse(raw);
+          if (Array.isArray(customProps) && customProps.length > 0) {
+            setPropertiesList((prev) => {
+              const ids = new Set(customProps.map((c: any) => c.id));
+              return [...customProps, ...prev.filter((p) => !ids.has(p.id))];
+            });
+          }
+        }
+      }
+    } catch (e) {}
+  }, []);
 
   React.useEffect(() => {
     const currentTab = searchParams.get("tab");
@@ -102,7 +122,7 @@ function MarketplaceContent() {
   // Filtered Lists & Grouped Search Counts
   // ----------------------------------------------------
   const filteredProperties = useMemo(() => {
-    const list = INITIAL_PROPERTIES.filter((p) => {
+    const list = propertiesList.filter((p) => {
       const matchSearch =
         !searchQuery ||
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

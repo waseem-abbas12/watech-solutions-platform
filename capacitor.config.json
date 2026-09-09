@@ -1,0 +1,23 @@
+﻿{
+  "appId": "com.watechsolutions.app",
+  "appName": "Watech Solutions",
+  "webDir": "public",
+  "server": {
+    "url": "https://watech-solutions-platform-eight.vercel.app",
+    "cleartext": true,
+    "androidScheme": "https",
+    "allowNavigation": [
+      "watech-solutions-platform-eight.vercel.app",
+      "*.vercel.app",
+      "*.firebaseapp.com",
+      "*.googleapis.com",
+      "wa.me",
+      "api.whatsapp.com"
+    ]
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  }
+}
