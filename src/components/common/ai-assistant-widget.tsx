@@ -29,7 +29,7 @@ interface Message {
 const INITIAL_SUGGESTIONS = [
   "🏡 1 Kanal DHA Lahore Villa",
   "🪑 Chinioti Sheesham Sofa Set",
-  "🎉 Royal Palm Banquet Menu Price",
+  "🍲 Shahi Pakwan & Catering Menu",
   "📞 Talk to Sales Advisor (Waseem)",
 ];
 
@@ -41,7 +41,7 @@ export const AiAssistantWidget: React.FC = () => {
     {
       id: "msg-welcome",
       sender: "assistant",
-      text: "Assalam-o-Alaikum! Main Watech AI Advisor hoon. Main Real Estate plots, Chinioti luxury furniture aur Event marquee packages ke baray mein aapki madad ke liye hazir hoon. Aap kis cheez ke rate ya inventory dekhna chahte hain?",
+      text: "Assalam-o-Alaikum! Main Watech AI Advisor hoon. Main Real Estate plots, Chinioti luxury furniture aur Food & Catering packages ke baray mein aapki madad ke liye hazir hoon. Aap kis cheez ke rate ya inventory dekhna chahte hain?",
       time: "Just now",
     },
   ]);
@@ -175,7 +175,7 @@ export const AiAssistantWidget: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-300">
-                    Real Estate · Woodcraft · Events
+                    Real Estate · Woodcraft · Food & Catering
                   </p>
                 </div>
               </div>

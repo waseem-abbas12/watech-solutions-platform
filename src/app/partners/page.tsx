@@ -26,7 +26,7 @@ export default function PartnersPage() {
   const [formData, setFormData] = useState({
     businessName: "",
     ownerName: "",
-    category: "Real Estate" as "Real Estate" | "Chinioti Wood & Furniture" | "Events & Catering",
+    category: "Real Estate" as "Real Estate" | "Chinioti Wood & Furniture" | "Food & Catering",
     subcategory: "",
     city: "Lahore",
     area: "",
@@ -52,7 +52,7 @@ export default function PartnersPage() {
     {
       icon: TrendingUp,
       title: "Get Discovered",
-      description: "We promote your listings across Pakistan to high-intent buyers seeking verified real estate, luxury furniture, and banquet venues.",
+      description: "We promote your listings across Pakistan to high-intent buyers seeking verified real estate, luxury furniture, and food & catering services.",
       badge: "National Reach",
     },
     {
@@ -179,7 +179,7 @@ export default function PartnersPage() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mt-6 leading-relaxed"
           >
-            Empowering real estate agents, authentic Chinioti woodcraft artisans, and banquet organizers with verified digital distribution, direct WhatsApp leads, and a pure &quot;Pay on Success&quot; partnership.
+            Empowering real estate agents, authentic Chinioti woodcraft artisans, and food & catering providers with verified digital distribution, direct WhatsApp leads, and a pure &quot;Pay on Success&quot; partnership.
           </motion.p>
 
           <motion.div
@@ -381,14 +381,14 @@ export default function PartnersPage() {
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          category: e.target.value as "Real Estate" | "Chinioti Wood & Furniture" | "Events & Catering",
+                          category: e.target.value as "Real Estate" | "Chinioti Wood & Furniture" | "Food & Catering",
                         })
                       }
                       className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#EA580C] text-sm bg-white"
                     >
                       <option value="Real Estate">Real Estate (Plots, Villas, Commercial)</option>
                       <option value="Chinioti Wood & Furniture">Chinioti Wood & Furniture (Artisans/Dealers)</option>
-                      <option value="Events & Catering">Events & Catering (Halls, Marquees, Food)</option>
+                      <option value="Food & Catering">Food & Catering (Restaurants, Pakwan, Live BBQ, Bakers, Suppliers)</option>
                     </select>
                   </div>
 
@@ -398,7 +398,7 @@ export default function PartnersPage() {
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. DHA Phase Specialist, Solid Sheesham Beds, Marquee Setup"
+                      placeholder="e.g. DHA Phase Specialist, Solid Sheesham Beds, Shahi Pakwan & Catering"
                       value={formData.subcategory}
                       onChange={(e) => setFormData({ ...formData, subcategory: e.target.value })}
                       className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#EA580C] text-sm"

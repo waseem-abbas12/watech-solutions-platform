@@ -271,11 +271,11 @@ export default function AdminSettingsPage() {
           {/* Event & Catering Commission */}
           <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-orange-400">Events & Catering</span>
+              <span className="font-bold text-orange-400">Food & Catering</span>
               <span className="font-black text-white text-xs">10% or PKR 25k Fixed</span>
             </div>
             <p className="text-[10px] text-slate-400 leading-relaxed">
-              Banquet halls & catering vendor flat referral fee or per-guest rate commission.
+              Pakwan, restaurant & catering vendor flat referral fee or per-guest rate commission.
             </p>
             <div className="flex items-center gap-2 pt-2 border-t border-slate-900">
               <span className="text-[10px] font-bold text-slate-500">Type:</span>

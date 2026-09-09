@@ -23,12 +23,13 @@ export const metadata: Metadata = {
     template: "%s | WATECH Solutions",
   },
   description:
-    "WATECH is Pakistan's integrated multi-sector growth platform connecting Real Estate properties, authentic Chinioti wood furniture, and signature banquet events with modern digital services and automation.",
+    "WATECH is Pakistan's integrated multi-sector growth platform connecting Real Estate properties, authentic Chinioti wood furniture, and Food & Catering with modern digital services and automation.",
   keywords: [
     "Watech Solutions",
     "Real Estate Pakistan",
     "Chinioti Furniture",
-    "Banquet Halls Lahore",
+    "Food and Catering Pakistan",
+    "Pakwan Center Lahore",
     "Digital Marketing Agency Pakistan",
     "WhatsApp Automation Pakistan",
     "Property Portal Pakistan",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "WATECH | Digital Marketing, Technology & Business Marketplace in Pakistan",
     description:
-      "Integrated ecosystem platform combining Real Estate properties, Chinioti luxury wood furniture, signature events, and digital agency services.",
+      "Integrated ecosystem platform combining Real Estate properties, Chinioti luxury wood furniture, Food & Catering, and digital agency services.",
     url: siteUrl,
     siteName: "WATECH Solutions Platform",
     locale: "en_PK",
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "WATECH | Multi-Sector Platform & Digital Agency in Pakistan",
     description:
-      "Powering Pakistan's Real Estate, Chinioti Woodcraft, and Banquet Events through modern technology.",
+      "Powering Pakistan's Real Estate, Chinioti Woodcraft, and Food & Catering through modern technology.",
   },
   manifest: "/manifest.json",
   appleWebApp: {

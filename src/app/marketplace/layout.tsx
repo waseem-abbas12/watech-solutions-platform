@@ -1,16 +1,16 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Marketplace | Real Estate, Furniture & Events in Pakistan",
+  title: "Marketplace | Real Estate, Furniture & Food & Catering in Pakistan",
   description:
-    "Explore verified Real Estate plots and houses, authentic handcrafted Chinioti Sheesham wood furniture, and signature banquet halls across Lahore, Islamabad, and Faisalabad.",
+    "Explore verified Real Estate plots and houses, authentic handcrafted Chinioti Sheesham wood furniture, and top-rated Food & Catering providers across Lahore, Islamabad, Karachi, and Faisalabad.",
   alternates: {
     canonical: "https://watech-solutions-platform-eight.vercel.app/marketplace",
   },
   openGraph: {
-    title: "WATECH Marketplace | Real Estate, Furniture & Events in Pakistan",
+    title: "WATECH Marketplace | Real Estate, Furniture & Food & Catering in Pakistan",
     description:
-      "Direct verified marketplace connecting buyers with authentic properties, Chinioti furniture, and wedding banquets.",
+      "Direct verified marketplace connecting buyers with authentic properties, Chinioti furniture, and premium Food & Catering services.",
     url: "https://watech-solutions-platform-eight.vercel.app/marketplace",
     type: "website",
   },

@@ -1,0 +1,200 @@
+{
+  "name": "Watech Workflow 4 - 24h Inactive Leads WhatsApp Follow-Up Reminders",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "wf4-node-cron",
+      "name": "Cron: Daily 11:00 AM PKT",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID || 'watech-solutions'}}/databases/(default)/documents:runQuery",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"structuredQuery\": {\n    \"from\": [{\"collectionId\": \"leads\"}],\n    \"where\": {\n      \"fieldFilter\": {\n        \"field\": {\"fieldPath\": \"status\"},\n        \"op\": \"EQUAL\",\n        \"value\": {\"stringValue\": \"new\"}\n      }\n    },\n    \"limit\": 25\n  }\n}"
+      },
+      "id": "wf4-node-query-leads",
+      "name": "Firestore: Query New Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [320, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst cutoffTime = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();\nconst qualifyingLeads = [];\n\nfor (const item of items) {\n  const doc = item.json?.document;\n  if (!doc) continue;\n  \n  const fields = doc.fields;\n  const docPath = doc.name; // full resource path\n  const createdAt = fields.createdAt?.timestampValue || fields.createdAt?.stringValue || \"\";\n  const alreadyFollowedUp = fields.followUpSent?.booleanValue === true;\n  const phone = fields.phone?.stringValue;\n  const name = fields.customerName?.stringValue || \"Valued Client\";\n  const sector = fields.category?.stringValue || \"our platform services\";\n  const itemTitle = fields.listingTitle?.stringValue || \"\";\n\n  // Check if lead is older than 24 hours and not yet followed up\n  if (phone && !alreadyFollowedUp && createdAt && createdAt < cutoffTime) {\n    qualifyingLeads.push({\n      json: {\n        docPath,\n        phone,\n        name,\n        sector,\n        itemTitle,\n        createdAt\n      }\n    });\n  }\n}\n\n// If testing with empty DB, provide mock item to verify pipeline\nif (qualifyingLeads.length === 0 && items.length === 0) {\n  return [];\n}\n\nreturn qualifyingLeads;"
+      },
+      "id": "wf4-node-filter-24h",
+      "name": "Filter 24h+ Inactive Leads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.OPENAI_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.6,\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a polite, courteous customer relationship advisor at Watech Solutions Pakistan. Send a warm, zero-pressure 24-hour follow-up message on WhatsApp in respectful Roman Urdu. Ask if they need any additional details, price comparisons, or an in-person viewing/consultation regarding their inquiry in {{$json.sector}}. Keep it under 65 words.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Client Name: {{$json.name}}\\nSector: {{$json.sector}}\\nItem: {{$json.itemTitle}}\"\n    }\n  ]\n}"
+      },
+      "id": "wf4-node-openai-followup",
+      "name": "OpenAI: Generate Follow-up Text",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$('Filter 24h+ Inactive Leads').item.json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"{{$json.choices[0].message.content.replace(/\\\"/g, '\\\\\"')}}\"\n  }\n}"
+      },
+      "id": "wf4-node-send-followup-wa",
+      "name": "WhatsApp: Send Follow-Up Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [980, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://firestore.googleapis.com/v1/{{$('Filter 24h+ Inactive Leads').item.json.docPath}}?updateMask.fieldPaths=followUpSent&updateMask.fieldPaths=lastFollowUpAt",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"followUpSent\": {\"booleanValue\": true},\n    \"lastFollowUpAt\": {\"timestampValue\": \"{{new Date().toISOString()}}\"}\n  }\n}"
+      },
+      "id": "wf4-node-update-firestore",
+      "name": "Firestore: Mark Follow-Up Sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Cron: Daily 11:00 AM PKT": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Query New Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Query New Leads": {
+      "main": [
+        [
+          {
+            "node": "Filter 24h+ Inactive Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter 24h+ Inactive Leads": {
+      "main": [
+        [
+          {
+            "node": "OpenAI: Generate Follow-up Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Generate Follow-up Text": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Send Follow-Up Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp: Send Follow-Up Message": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Mark Follow-Up Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

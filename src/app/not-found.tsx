@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { ArrowLeft, Home, Search, BookOpen, Layers, MessageCircle, ArrowRight } from "lucide-react";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   const quickLinks = [
-    { name: "Marketplace", href: "/marketplace", icon: Layers, desc: "Explore verified real estate, Chinioti furniture, and banquets" },
+    { name: "Marketplace", href: "/marketplace", icon: Layers, desc: "Explore verified real estate, Chinioti furniture, and Food & Catering" },
     { name: "Digital Services", href: "/services", icon: Search, desc: "Marketing funnels, Next.js web platforms, and WhatsApp bots" },
     { name: "Blog & Insights", href: "/blog", icon: BookOpen, desc: "Expert guides on property, woodwork, and business growth" },
     { name: "About WATECH", href: "/about", icon: Home, desc: "Learn about Pakistan's multi-sector growth ecosystem" },

@@ -204,7 +204,7 @@ export default function HomePage() {
           </motion.div>
 
           {/* ------------------------------------------------
-              STRIP 3: EVENTS & CATERING (ORANGE #EA580C)
+              STRIP 3: FOOD & CATERING (ORANGE #EA580C)
               ------------------------------------------------ */}
           <motion.div
             variants={itemVariants}
@@ -217,23 +217,23 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#EA580C]">
-                    Sector 03 · Celebrations
+                    Sector 03 · Food & Hospitality
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    Events & Catering
+                    Food & Catering
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Memorable gatherings with top-tier hospitality and venue management. Banquet halls, custom menus, and full coordination.
+                    Verified restaurants, traditional pakwan centers, live BBQ catering, bakeries, sweets, and FMCG food suppliers across Pakistan.
                   </p>
                 </div>
               </div>
 
               <div className="shrink-0">
                 <Link
-                  href="/marketplace?tab=events"
+                  href="/marketplace?tab=food-catering"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#EA580C] text-white font-semibold text-sm shadow-md hover:shadow-orange-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
-                  Plan an Event
+                  Explore Food & Catering
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

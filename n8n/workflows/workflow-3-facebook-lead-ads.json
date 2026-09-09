@@ -1,0 +1,248 @@
+{
+  "name": "Watech Workflow 3 - Facebook Lead Ads to Instant WhatsApp & CRM",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "facebook-lead-ads",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wf3-node-webhook",
+      "name": "Webhook: Facebook Lead Ads Inbound",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract leadgen_id from Meta webhook payload\nconst body = $input.item.json.body || $input.item.json;\nconst change = body.entry?.[0]?.changes?.[0];\nconst leadgenId = change?.value?.leadgen_id || body.leadgen_id || \"\";\nconst formId = change?.value?.form_id || body.form_id || \"\";\nconst pageId = change?.value?.page_id || body.page_id || \"\";\n\nif (!leadgenId) {\n  // If testing payload with raw data\n  return [{\n    json: {\n      leadgenId: \"DEMO_LEAD\",\n      fullName: body.fullName || \"Lead Client\",\n      phone: body.phone || \"923270831470\",\n      city: body.city || \"Lahore\",\n      sector: body.sector || \"Real Estate\",\n      budget: body.budget || \"PKR 1 Crore\"\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    leadgenId,\n    formId,\n    pageId,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "wf3-node-extract-id",
+      "name": "Extract Leadgen ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://graph.facebook.com/v21.0/{{$json.leadgenId}}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{$env.WHATSAPP_ACCESS_TOKEN}}"
+            }
+          ]
+        }
+      },
+      "id": "wf3-node-fetch-lead-details",
+      "name": "Graph API: Fetch Lead Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [540, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.item.json;\nconst fields = response.field_data || [];\n\nlet fullName = \"Valued Client\";\nlet rawPhone = \"\";\nlet email = \"\";\nlet city = \"Pakistan\";\nlet sector = \"Real Estate / Furniture / Events\";\nlet budget = \"Flexible\";\n\nfor (const f of fields) {\n  const name = f.name.toLowerCase();\n  const val = f.values?.[0] || \"\";\n  if (name.includes(\"full_name\") || name.includes(\"name\")) fullName = val;\n  if (name.includes(\"phone\") || name.includes(\"number\")) rawPhone = val;\n  if (name.includes(\"email\")) email = val;\n  if (name.includes(\"city\")) city = val;\n  if (name.includes(\"sector\") || name.includes(\"service\") || name.includes(\"category\")) sector = val;\n  if (name.includes(\"budget\") || name.includes(\"price\")) budget = val;\n}\n\n// Normalize phone\nlet phone = String(rawPhone).replace(/[^0-9]/g, \"\");\nif (phone.startsWith(\"03\")) phone = \"92\" + phone.substring(1);\nelse if (phone.startsWith(\"3\") && phone.length === 10) phone = \"92\" + phone;\n\nif (!phone && $('Extract Leadgen ID').item.json.phone) {\n  phone = $('Extract Leadgen ID').item.json.phone;\n  fullName = $('Extract Leadgen ID').item.json.fullName || fullName;\n  sector = $('Extract Leadgen ID').item.json.sector || sector;\n}\n\nconst leadId = `FB-LEAD-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;\n\nreturn [{\n  json: {\n    leadId,\n    fullName,\n    phone,\n    email,\n    city,\n    sector,\n    budget,\n    source: \"facebook_lead_ads\",\n    createdAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "wf3-node-format-lead",
+      "name": "Format Lead Attributes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.OPENAI_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.7,\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are the senior relationship manager at Watech Solutions Pakistan. A prospective client just submitted an inquiry on our Facebook / Instagram Ad campaign. Craft an immediate, highly engaging, welcoming WhatsApp message in respectful Roman Urdu mixed with clear English. Acknowledge their specific interest in {{$json.sector}} in {{$json.city}}, state that our catalog/brochure is ready, and ask what specific time today suits them for a quick 2-minute overview call or if they prefer WhatsApp chat. Keep it under 80 words.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Lead Name: {{$json.fullName}}\\nSector: {{$json.sector}}\\nBudget: {{$json.budget}}\\nCity: {{$json.city}}\"\n    }\n  ]\n}"
+      },
+      "id": "wf3-node-openai-lead",
+      "name": "OpenAI: Personalize Instant Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [980, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$('Format Lead Attributes').item.json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"{{$json.choices[0].message.content.replace(/\\\"/g, '\\\\\"')}}\"\n  }\n}"
+      },
+      "id": "wf3-node-send-lead-whatsapp",
+      "name": "WhatsApp: Instant Dispatch to Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID || 'watech-solutions'}}/databases/(default)/documents/leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"id\": {\"stringValue\": \"{{$('Format Lead Attributes').item.json.leadId}}\"},\n    \"customerName\": {\"stringValue\": \"{{$('Format Lead Attributes').item.json.fullName}}\"},\n    \"phone\": {\"stringValue\": \"{{$('Format Lead Attributes').item.json.phone}}\"},\n    \"email\": {\"stringValue\": \"{{$('Format Lead Attributes').item.json.email}}\"},\n    \"category\": {\"stringValue\": \"{{$('Format Lead Attributes').item.json.sector}}\"},\n    \"budget\": {\"stringValue\": \"{{$('Format Lead Attributes').item.json.budget}}\"},\n    \"city\": {\"stringValue\": \"{{$('Format Lead Attributes').item.json.city}}\"},\n    \"status\": {\"stringValue\": \"new\"},\n    \"source\": {\"stringValue\": \"facebook_lead_ads\"},\n    \"createdAt\": {\"timestampValue\": \"{{$('Format Lead Attributes').item.json.createdAt}}\"}\n  }\n}"
+      },
+      "id": "wf3-node-save-lead-firestore",
+      "name": "Firestore: Save FB Lead Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1420, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$env.PARTNER_ALERT_PHONE_NUMBER || '923270831470'}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🚀 *NEW FACEBOOK AD LEAD CONVERTED!*\\n\\n• *Name:* {{$('Format Lead Attributes').item.json.fullName}}\\n• *Phone:* +{{$('Format Lead Attributes').item.json.phone}}\\n• *Sector:* {{$('Format Lead Attributes').item.json.sector}}\\n• *Budget:* {{$('Format Lead Attributes').item.json.budget}}\\n• *City:* {{$('Format Lead Attributes').item.json.city}}\\n\\n👉 *Instant WhatsApp Chat:* https://wa.me/{{$('Format Lead Attributes').item.json.phone}}\"\n  }\n}"
+      },
+      "id": "wf3-node-notify-admin-fb",
+      "name": "WhatsApp: Sales Team Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1640, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook: Facebook Lead Ads Inbound": {
+      "main": [
+        [
+          {
+            "node": "Extract Leadgen ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Leadgen ID": {
+      "main": [
+        [
+          {
+            "node": "Graph API: Fetch Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Graph API: Fetch Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Format Lead Attributes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Lead Attributes": {
+      "main": [
+        [
+          {
+            "node": "OpenAI: Personalize Instant Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Personalize Instant Message": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Instant Dispatch to Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp: Instant Dispatch to Lead": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Save FB Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Save FB Lead Record": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Sales Team Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

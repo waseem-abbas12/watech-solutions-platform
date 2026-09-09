@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 
 type Props = {
   params: Promise<{ category: string }>;
@@ -21,9 +21,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: "Authentic Chinioti Handcrafted Furniture | Sheesham Wood Luxury",
       desc: "Order authentic handcrafted Chinioti solid Sheesham wood bedroom sets, luxury sofas, and dining tables directly from master artisans.",
     },
+    "food-catering": {
+      title: "Food & Catering Services in Pakistan | Restaurants, Pakwan & Bakers",
+      desc: "Explore verified pakwan centers, traditional wedding catering, restaurants, fast food, and wholesale food suppliers across Pakistan on WATECH.",
+    },
     events: {
-      title: "Signature Banquet Halls & Wedding Catering in Pakistan",
-      desc: "Discover verified wedding marquees, luxury banquet halls, and royal catering services in Lahore, Islamabad, and Faisalabad.",
+      title: "Food & Catering Services in Pakistan | Restaurants, Pakwan & Bakers",
+      desc: "Explore verified pakwan centers, traditional wedding catering, restaurants, fast food, and wholesale food suppliers across Pakistan on WATECH.",
     },
   };
 

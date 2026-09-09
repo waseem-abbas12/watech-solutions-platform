@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -25,7 +25,7 @@ import {
 export const metadata: Metadata = {
   title: "About Watech | Pakistan's Integrated Business & Growth Ecosystem",
   description:
-    "WATECH is a technology-driven business ecosystem connecting customers, businesses, and service providers across Real Estate, Chinioti Furniture, and Events with modern digital services and automation.",
+    "WATECH is a technology-driven business ecosystem connecting customers, businesses, and service providers across Real Estate, Chinioti Furniture, and Food & Catering with modern digital services and automation.",
   alternates: {
     canonical: "https://watech-solutions-platform-eight.vercel.app/about",
   },
@@ -55,7 +55,7 @@ export default function AboutPage() {
       accent: "text-[#16A34A]",
       badge: "Products Journey",
       bgBadge: "bg-emerald-50 border-emerald-200 text-[#16A34A]",
-      desc: "A transparent digital marketplace connecting genuine buyers directly with verified sellers in Real Estate (plots & homes), authentic Chinioti Sheesham wood furniture, and signature banquet venues.",
+      desc: "A transparent digital marketplace connecting genuine buyers directly with verified sellers in Real Estate (plots & homes), authentic Chinioti Sheesham wood furniture, and Food & Catering businesses.",
       points: ["100% phone-verified listings", "Direct transparent pricing", "Frictionless WhatsApp seller contact"],
       link: "/marketplace",
     },
@@ -64,7 +64,7 @@ export default function AboutPage() {
       accent: "text-[#EA580C]",
       badge: "Partners Journey",
       bgBadge: "bg-orange-50 border-orange-200 text-[#EA580C]",
-      desc: "A collaborative commercial platform where local real estate agents, Chiniot artisan workshops, and event vendors join free to receive buyer demand, verified inquiries, and shared technology tools.",
+      desc: "A collaborative commercial platform where local real estate agents, Chiniot artisan workshops, and food & catering vendors join free to receive buyer demand, verified inquiries, and shared technology tools.",
       points: ["Free listing & business onboarding", "Automated commission accounting", "Direct verified customer leads"],
       link: "/partners",
     },
@@ -79,12 +79,12 @@ export default function AboutPage() {
     {
       icon: Globe2,
       title: "Marketplace Infrastructure",
-      desc: "Centralized catalog for verified properties, handcrafted furniture, and banquet spaces.",
+      desc: "Centralized catalog for verified properties, handcrafted furniture, and food & catering businesses.",
     },
     {
       icon: Users,
       title: "Partner Network",
-      desc: "Connecting manufacturers, brokers, and event planners with nationwide customer demand.",
+      desc: "Connecting manufacturers, brokers, and food & catering vendors with nationwide customer demand.",
     },
     {
       icon: Cpu,
@@ -186,7 +186,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            WATECH is a technology-driven business ecosystem connecting customers, businesses, and verified service providers across Real Estate, Chinioti Handcrafted Furniture, and Signature Events.
+            WATECH is a technology-driven business ecosystem connecting customers, businesses, and verified service providers across Real Estate, Chinioti Handcrafted Furniture, and Food & Catering.
           </p>
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
@@ -220,7 +220,7 @@ export default function AboutPage() {
               A Hybrid Technology Platform & Business Growth Engine
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              Headquartered in Pakistan, WATECH Solutions was founded to solve a fundamental disconnect in the country’s high-value commerce: traditional, heritage-rich industries like Real Estate, Chinioti woodcraft, and banquet hospitality lacked modern digital infrastructure, transparency, and automated sales operations.
+              Headquartered in Pakistan, WATECH Solutions was founded to solve a fundamental disconnect in the country’s high-value commerce: traditional, heritage-rich industries like Real Estate, Chinioti woodcraft, and food & catering hospitality lacked modern digital infrastructure, transparency, and automated sales operations.
             </p>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
               We bridge this gap by uniting modern full-stack web engineering, official Meta WhatsApp automation, data-driven performance marketing, and verified multi-vendor marketplace listings under one cohesive ecosystem.

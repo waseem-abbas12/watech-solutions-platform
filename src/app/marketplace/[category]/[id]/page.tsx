@@ -708,11 +708,11 @@ export default function ItemDetailPage() {
         {/* Top bar */}
         <div className="max-w-7xl mx-auto px-6 pt-6 pb-4 flex items-center justify-between">
           <Link
-            href="/marketplace?tab=events"
+            href="/marketplace?tab=food-catering"
             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-slate-900 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Events
+            Back to Food & Catering
           </Link>
           <button
             onClick={handleFavoriteClick}
@@ -733,7 +733,7 @@ export default function ItemDetailPage() {
                 className="w-full h-full object-cover transition-all duration-300"
               />
               <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
-                {ev.menuType} Cuisine
+                {ev.category}
               </span>
             </div>
 
@@ -760,7 +760,7 @@ export default function ItemDetailPage() {
           <div className="lg:col-span-5 space-y-6">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-[#EA580C]">
-                {ev.city} · Signature Venue & Hospitality
+                {ev.city} · Verified Food & Hospitality
               </span>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
                 {ev.title}
@@ -775,15 +775,15 @@ export default function ItemDetailPage() {
             <div className="p-6 rounded-2xl bg-orange-50/70 border border-orange-100 flex items-baseline justify-between">
               <div>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Menu Package Rate
+                  Price / Package Rate
                 </span>
                 <div className="text-3xl font-black text-[#EA580C] tracking-tight mt-0.5">
                   PKR {ev.packagePrice.toLocaleString()}{" "}
-                  <span className="text-xs text-slate-500 font-normal">/ head</span>
+                  <span className="text-xs text-slate-500 font-normal">/ unit or head</span>
                 </div>
               </div>
               <span className="text-xs font-bold text-slate-600 bg-white px-3 py-1.5 rounded-full shadow-sm">
-                All-Inclusive
+                Verified
               </span>
             </div>
 
@@ -792,14 +792,14 @@ export default function ItemDetailPage() {
               <div className="flex flex-col items-center justify-center p-2">
                 <Users className="w-5 h-5 text-slate-600 mb-1" />
                 <span className="text-xs font-bold text-slate-900">
-                  Up to {ev.capacity.toLocaleString()} Guests
+                  Up to {ev.capacity.toLocaleString()}
                 </span>
-                <span className="text-[10px] text-slate-500">Hall + Lawn Capacity</span>
+                <span className="text-[10px] text-slate-500">Capacity / Degs / Servings</span>
               </div>
               <div className="flex flex-col items-center justify-center p-2">
-                <Calendar className="w-5 h-5 text-slate-600 mb-1" />
-                <span className="text-xs font-bold text-slate-900">{ev.eventDate}</span>
-                <span className="text-[10px] text-slate-500">Upcoming Open Slot</span>
+                <Utensils className="w-5 h-5 text-slate-600 mb-1" />
+                <span className="text-xs font-bold text-slate-900">{ev.menuType}</span>
+                <span className="text-[10px] text-slate-500">Cuisine / Speciality</span>
               </div>
             </div>
 
@@ -807,7 +807,7 @@ export default function ItemDetailPage() {
             {ev.amenities && ev.amenities.length > 0 && (
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
-                  Venue Amenities & Setup
+                  Service Standards & Setup
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {ev.amenities.map((amen, i) => (
@@ -826,7 +826,7 @@ export default function ItemDetailPage() {
             {/* Description */}
             <div>
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Banquet & Hospitality Overview
+                Overview & Details
               </h4>
               <p className="text-sm text-slate-600 leading-relaxed">{ev.description}</p>
             </div>
@@ -838,18 +838,18 @@ export default function ItemDetailPage() {
                 className="w-full py-4 px-6 rounded-full bg-[#EA580C] text-white font-bold text-sm tracking-wide shadow-md hover:bg-orange-700 hover:shadow-orange-500/25 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Calendar className="w-5 h-5" />
-                <span>Book Event & Check Dates</span>
+                <span>Inquire / Book Order</span>
               </button>
 
               <button
                 onClick={() =>
                   openDirectWhatsApp(
                     ev.title,
-                    `PKR ${ev.packagePrice.toLocaleString()} / head`,
+                    `PKR ${ev.packagePrice.toLocaleString()} / unit`,
                     ev.partnerPhone
                   )
                 }
-                className="w-full py-3.5 px-6 rounded-full border border-slate-200 bg-white text-slate-800 font-semibold text-xs tracking-wider uppercase hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-6 rounded-full border border-slate-200 bg-white text-slate-800 font-semibold text-xs tracking-wider uppercase hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4 text-[#EA580C]" />
                 <span>Quick WhatsApp Inquiry</span>
@@ -864,14 +864,14 @@ export default function ItemDetailPage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-[#EA580C]">
-                  Signature Venues
+                  Food & Hospitality
                 </span>
                 <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight mt-1">
-                  Related Events & Halls
+                  Related Food & Catering
                 </h2>
               </div>
               <Link
-                href="/marketplace?tab=events"
+                href="/marketplace?tab=food-catering"
                 className="text-xs font-bold uppercase tracking-wider text-[#EA580C] hover:underline"
               >
                 View All →
@@ -882,7 +882,7 @@ export default function ItemDetailPage() {
               {(related as EventItem[]).map((rel) => (
                 <Link
                   key={rel.id}
-                  href={`/marketplace/events/${rel.id}`}
+                  href={`/marketplace/food-catering/${rel.id}`}
                   className="bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 overflow-hidden group"
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
@@ -892,12 +892,12 @@ export default function ItemDetailPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm">
-                      {rel.menuType}
+                      {rel.category}
                     </span>
                   </div>
                   <div className="p-6">
                     <div className="text-lg font-black text-[#EA580C] mb-1">
-                      PKR {rel.packagePrice.toLocaleString()} / head
+                      PKR {rel.packagePrice.toLocaleString()} / unit
                     </div>
                     <h4 className="text-sm font-bold text-slate-900 line-clamp-1 mb-1">
                       {rel.title}

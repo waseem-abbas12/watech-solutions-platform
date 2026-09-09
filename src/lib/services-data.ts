@@ -1,4 +1,4 @@
-﻿export interface ServiceDeliverable {
+export interface ServiceDeliverable {
   title: string;
   description: string;
 }
@@ -46,7 +46,7 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
     badge: "Brand & Organic Reach",
     tagline: "Engage, Build Trust, and Turn Followers Into Real Paying Customers",
     heroDescription:
-      "Modern organic social media management tailored for Pakistan's Real Estate agencies, Chinioti furniture showrooms, and event venues. We craft visual stories, video reels, and educational content that command authority.",
+      "Modern organic social media management tailored for Pakistan's Real Estate agencies, Chinioti furniture showrooms, and food & catering businesses. We craft visual stories, video reels, and educational content that command authority.",
     stats: [
       { label: "Average Reach Lift", value: "3.8x" },
       { label: "Content Production", value: "Weekly 4K" },
@@ -58,7 +58,7 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         "Businesses spend money posting random graphics without narrative, strategy, or community management. The result? Zero engagement, fake follower counts, and zero actual phone inquiries.",
       points: [
         "Generic stock photos that Pakistani customers immediately ignore.",
-        "Zero video reels showcasing actual site visits, wood craftsmanship, or banquet decor.",
+        "Zero video reels showcasing actual site visits, wood craftsmanship, or food & catering setups.",
         "DMs and comments left un-answered for hours, losing high-intent buyers.",
         "No clear bridge between post engagement and direct WhatsApp conversions.",
       ],
@@ -138,8 +138,8 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         desc: "Demonstrate solid Sheesham wood carving, polish durability, and bedroom set staging.",
       },
       {
-        title: "Banquet Halls & Event Planners",
-        desc: "Flaunt wedding stage decor, ambient lighting setups, and live catering counters.",
+        title: "Food, Restaurants & Catering Companies",
+        desc: "Showcase mouth-watering culinary videos, wedding catering setups, and behind-the-scenes kitchen hygiene to fill bookings year-round.",
       },
     ],
     faqs: [
@@ -231,8 +231,8 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
     process: [
       {
         step: "01",
-        title: "Offer & Angle Architecture",
-        desc: "We define your core irresistible offer (e.g. 2-Year Installment Plan, Free Bridal Set Delivery, Off-Peak Banquet Discount).",
+        title: "Irresistible Offer Crafting",
+        desc: "We define your core irresistible offer (e.g. 2-Year Installment Plan, Free Bridal Set Delivery, Food & Catering Package Discount).",
       },
       {
         step: "02",
@@ -382,8 +382,8 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         desc: "Attain high-ticket orders for master bedroom sets, office furniture, and dining tables.",
       },
       {
-        title: "Banquet Halls & Catering Companies",
-        desc: "Be the first option brides and families discover when planning weddings in Lahore, Islamabad, and Karachi.",
+        title: "Restaurants, Pakwan Centers & Caterers",
+        desc: "Dominate Google searches for wedding catering packages, corporate lunch orders, and local dining.",
       },
     ],
     faqs: [
@@ -504,8 +504,8 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         desc: "E-commerce and catalog showcases featuring bedroom sets, luxury polish options, and price tiers.",
       },
       {
-        title: "Corporate & Event Management Companies",
-        desc: "Sophisticated portals featuring banquet hall capacities, menus, and client testimonials.",
+        title: "Food, Catering & Hospitality Companies",
+        desc: "Sophisticated portals featuring catering menus, live BBQ packages, and client testimonials.",
       },
     ],
     faqs: [
@@ -557,7 +557,7 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         "We implement official WhatsApp Cloud API automation that works 24/7/365. It greets leads warmly in Roman Urdu, understands intent, shares PDF brochures, collects required details, and alerts your senior closer.",
       points: [
         "Official Green Tick verification assistance & Meta Cloud API compliance.",
-        "Interactive button menus (e.g. 'View 5 Marla Plots', 'Bridal Furniture Catalog', 'Book Banquet Tour').",
+        "Interactive button menus (e.g. 'View 5 Marla Plots', 'Bridal Furniture Catalog', 'Order Catering / Inquire').",
         "Automated 24h & 48h re-engagement sequences that revive cold leads.",
         "Multi-agent team inbox where 10+ sales agents share one single verified business number.",
       ],
@@ -626,8 +626,8 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         desc: "Instantly share high-res bedroom set photos, polish color swatches, and size dimensions.",
       },
       {
-        title: "Event Venues & Wedding Planners",
-        desc: "Deliver per-head menu cards, decor packages, and check banquet hall calendar availability.",
+        title: "Food & Catering Businesses",
+        desc: "Deliver per-head menu cards, catering packages, and check booking calendar availability.",
       },
     ],
     faqs: [
@@ -748,8 +748,8 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         desc: "Manage custom production timelines, advance deposits, polish approvals, and deliveries.",
       },
       {
-        title: "Event Venues & Hospitality Groups",
-        desc: "Maintain banquet booking dates, menu selections, stage vendor coordination, and balance dues.",
+        title: "Food & Hospitality Groups",
+        desc: "Maintain catering booking dates, menu selections, kitchen coordination, and balance dues.",
       },
     ],
     faqs: [
@@ -802,7 +802,7 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
       points: [
         "Instant webhook triggers syncing Meta & Google leads directly to WhatsApp in <5 seconds.",
         "Automated PDF contract and invoice generation with digital customer delivery.",
-        "Smart inventory alerts when a furniture piece is reserved or a banquet date is locked.",
+        "Smart inventory alerts when a furniture piece is reserved or a catering order is locked.",
         "AI-powered inquiry summarization delivering executive briefs directly to business owners.",
       ],
     },
@@ -870,8 +870,8 @@ export const DIGITAL_SERVICES: DigitalServiceDetail[] = [
         desc: "Automate workshop order status alerts sent to clients via WhatsApp as pieces are carved and polished.",
       },
       {
-        title: "Event Caterers & Banquet Groups",
-        desc: "Generate automated date lock receipts, menu checklists, and reminder alerts for bride & groom families.",
+        title: "Food Caterers & Restaurants",
+        desc: "Generate automated order lock receipts, menu checklists, and reminder alerts for catering clients.",
       },
     ],
     faqs: [

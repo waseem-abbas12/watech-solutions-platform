@@ -205,13 +205,13 @@ export default function AdminEventsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-[#EA580C] font-mono">
-            Hospitality & Banquet Schedule
+            Food & Catering Management
           </span>
           <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-0.5">
-            Events & Catering Bookings
+            Food & Catering Bookings
           </h1>
           <p className="text-xs text-slate-400">
-            Prevent double-bookings, monitor upcoming functions, and manage banquet menu packages.
+            Prevent double-bookings, monitor upcoming catering orders, and manage menu packages.
           </p>
         </div>
 

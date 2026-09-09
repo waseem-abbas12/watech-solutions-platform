@@ -1,0 +1,216 @@
+{
+  "name": "Watech Workflow 2 - WhatsApp AI Chatbot with Memory & 3-Sector Context",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-inbound",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wf2-node-webhook",
+      "name": "Webhook: Inbound WhatsApp Message",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract incoming message from Meta WhatsApp Cloud API payload\nconst payload = $input.item.json.body || $input.item.json;\nconst entry = payload.entry?.[0];\nconst change = entry?.changes?.[0];\nconst value = change?.value;\nconst message = value?.messages?.[0];\nconst contact = value?.contacts?.[0];\n\nif (!message || !message.text) {\n  return []; // Ignore non-text or delivery receipts\n}\n\nconst senderPhone = message.from; // e.g. 923001234567\nconst senderName = contact?.profile?.name || \"Client\";\nconst userText = message.text.body.trim();\nconst messageId = message.id;\n\nreturn [{\n  json: {\n    senderPhone,\n    senderName,\n    userText,\n    messageId,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "wf2-node-parse",
+      "name": "Parse & Clean Inbound Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID || 'watech-solutions'}}/databases/(default)/documents:runQuery",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"structuredQuery\": {\n    \"from\": [{\"collectionId\": \"messages\"}],\n    \"where\": {\n      \"fieldFilter\": {\n        \"field\": {\"fieldPath\": \"sender\"},\n        \"op\": \"EQUAL\",\n        \"value\": {\"stringValue\": \"{{$json.senderPhone}}\"}\n      }\n    },\n    \"orderBy\": [\n      {\n        \"field\": {\"fieldPath\": \"timestamp\"},\n        \"direction\": \"DESCENDING\"\n      }\n    ],\n    \"limit\": 5\n  }\n}"
+      },
+      "id": "wf2-node-get-history",
+      "name": "Firestore: Fetch Recent Memory",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [540, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentInput = $('Parse & Clean Inbound Message').item.json;\nconst historyItems = $input.all();\n\nlet conversationHistory = [];\nif (Array.isArray(historyItems)) {\n  for (const item of historyItems.reverse()) {\n    const doc = item.json?.document?.fields;\n    if (doc) {\n      if (doc.incomingText?.stringValue) {\n        conversationHistory.push({ role: \"user\", content: doc.incomingText.stringValue });\n      }\n      if (doc.replyText?.stringValue) {\n        conversationHistory.push({ role: \"assistant\", content: doc.replyText.stringValue });\n      }\n    }\n  }\n}\n\nconst systemPrompt = `You are \"Watech AI\", the smart bilingual executive assistant for Watech Solutions in Pakistan. You represent an ecosystem of 3 premier sectors:\\n\\n1. REAL ESTATE:\\n- Verified Residential & Commercial Plots, Houses, and Luxury Villas in DHA Lahore (Phase 5, 6, 7, 8, 9 Prism), Bahria Town, and Gulberg.\\n- Price Ranges: 5 Marla Plots (PKR 90 Lac - 1.8 Cr), 10 Marla Luxury Villas (PKR 3.8 Cr - 5.5 Cr), 1 Kanal Mansions (PKR 7.5 Cr - 14 Cr).\\n- Services: Transparent transfer verification, site visits scheduling, registry guidance.\\n\\n2. AUTHENTIC CHINIOTI WOOD FURNITURE:\\n- 100% Seasoned Solid Sheesham (Rosewood) and Teak woodwork from master artisans of Chiniot, Punjab.\\n- Offerings: Maharaja Carved Royal Bed Sets (PKR 280,000 - 450,000), 7-Seater Floral Living Sofas (PKR 220,000 - 350,000), 8-Seater Luxury Dining Suites (PKR 320,000 - 550,000).\\n- Features: 10-Year Anti-Termite & Polish Guarantee, Nationwide Doorstep Delivery.\\n\\n3. SIGNATURE BANQUETS & EVENTS:\\n- Verified Marquees & Grand Ballrooms in Lahore (Royal Palm, Defence Raya), Islamabad (Margalla View Club), and Karachi (Creek Heritage).\\n- Catering Menus: Royal Desi Buffet (PKR 3,800/head), Signature Live BBQ (PKR 3,200/head), Continental Elite (PKR 4,500/head).\\n- Capacities: 200 to 1,500 guests. Full event planning with stage decor and lighting.\\n\\nRULES:\\n- Always greet respectfully (Assalam-o-Alaikum) when appropriate.\\n- Answer in courteous Urdu/English (Roman Urdu is preferred for conversational warmth in Pakistan).\\n- Keep replies under 120 words for WhatsApp readability.\\n- If client asks for site visit or pricing, encourage locking a date or speaking with our direct line 0327-0831470.`;\n\nconst messages = [\n  { role: \"system\", content: systemPrompt },\n  ...conversationHistory,\n  { role: \"user\", content: currentInput.userText }\n];\n\nreturn [{\n  json: {\n    senderPhone: currentInput.senderPhone,\n    senderName: currentInput.senderName,\n    userText: currentInput.userText,\n    messagesPayload: messages\n  }\n}];"
+      },
+      "id": "wf2-node-assemble-context",
+      "name": "Assemble Multi-Sector Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.OPENAI_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.6,\n  \"messages\": {{$json.messagesPayload}}\n}"
+      },
+      "id": "wf2-node-openai-chat",
+      "name": "OpenAI: GPT-4o-mini Chat",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [980, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$('Assemble Multi-Sector Context').item.json.senderPhone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"{{$json.choices[0].message.content.replace(/\\\"/g, '\\\\\"')}}\"\n  }\n}"
+      },
+      "id": "wf2-node-send-reply",
+      "name": "WhatsApp: Dispatch AI Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID || 'watech-solutions'}}/databases/(default)/documents/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"sender\": {\"stringValue\": \"{{$('Assemble Multi-Sector Context').item.json.senderPhone}}\"},\n    \"senderName\": {\"stringValue\": \"{{$('Assemble Multi-Sector Context').item.json.senderName}}\"},\n    \"incomingText\": {\"stringValue\": \"{{$('Assemble Multi-Sector Context').item.json.userText}}\"},\n    \"replyText\": {\"stringValue\": \"{{$('OpenAI: GPT-4o-mini Chat').item.json.choices[0].message.content}}\"},\n    \"direction\": {\"stringValue\": \"incoming\"},\n    \"timestamp\": {\"timestampValue\": \"{{new Date().toISOString()}}\"}\n  }\n}"
+      },
+      "id": "wf2-node-log-firestore",
+      "name": "Firestore: Log Message & History",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1420, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook: Inbound WhatsApp Message": {
+      "main": [
+        [
+          {
+            "node": "Parse & Clean Inbound Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Clean Inbound Message": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Fetch Recent Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Fetch Recent Memory": {
+      "main": [
+        [
+          {
+            "node": "Assemble Multi-Sector Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assemble Multi-Sector Context": {
+      "main": [
+        [
+          {
+            "node": "OpenAI: GPT-4o-mini Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: GPT-4o-mini Chat": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Dispatch AI Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp: Dispatch AI Reply": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Log Message & History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

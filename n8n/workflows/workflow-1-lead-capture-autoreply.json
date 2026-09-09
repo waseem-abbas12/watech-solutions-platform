@@ -1,0 +1,218 @@
+{
+  "name": "Watech Workflow 1 - Lead Capture & 8s WhatsApp Auto-Reply",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-inquiry",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wf1-node-webhook",
+      "name": "Webhook: Website Inquiry Form",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract and normalize incoming inquiry payload\nconst data = $input.item.json.body || $input.item.json;\n\nconst fullName = data.fullName || data.customerName || data.name || \"Valued Client\";\nlet rawPhone = String(data.phone || data.whatsapp || \"\").replace(/[^0-9]/g, \"\");\n\n// Format phone for Pakistan international standard (923XXXXXXXXX)\nif (rawPhone.startsWith(\"03\")) {\n  rawPhone = \"92\" + rawPhone.substring(1);\n} else if (rawPhone.startsWith(\"3\") && rawPhone.length === 10) {\n  rawPhone = \"92\" + rawPhone;\n}\n\nconst email = data.email || \"\";\nconst category = (data.category || \"general\").toLowerCase(); // property, furniture, event, digital_services\nconst itemTitle = data.itemTitle || data.listingTitle || \"General Catalog\";\nconst itemId = data.itemId || data.listingId || \"\";\nconst userMessage = data.message || \"Looking for more details\";\nconst budget = data.budget || \"Not specified\";\nconst city = data.city || \"Pakistan\";\nconst leadId = `LEAD-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;\n\nreturn [{\n  json: {\n    leadId,\n    fullName,\n    phone: rawPhone,\n    email,\n    category,\n    itemTitle,\n    itemId,\n    userMessage,\n    budget,\n    city,\n    createdAt: new Date().toISOString(),\n    status: \"new\"\n  }\n}];"
+      },
+      "id": "wf1-node-normalize",
+      "name": "Normalize Lead Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID || 'watech-solutions'}}/databases/(default)/documents/leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"id\": {\"stringValue\": \"{{$json.leadId}}\"},\n    \"customerName\": {\"stringValue\": \"{{$json.fullName}}\"},\n    \"phone\": {\"stringValue\": \"{{$json.phone}}\"},\n    \"email\": {\"stringValue\": \"{{$json.email}}\"},\n    \"category\": {\"stringValue\": \"{{$json.category}}\"},\n    \"listingTitle\": {\"stringValue\": \"{{$json.itemTitle}}\"},\n    \"listingId\": {\"stringValue\": \"{{$json.itemId}}\"},\n    \"notes\": {\"stringValue\": \"{{$json.userMessage}}\"},\n    \"budget\": {\"stringValue\": \"{{$json.budget}}\"},\n    \"city\": {\"stringValue\": \"{{$json.city}}\"},\n    \"status\": {\"stringValue\": \"new\"},\n    \"source\": {\"stringValue\": \"website_inquiry\"},\n    \"createdAt\": {\"timestampValue\": \"{{$json.createdAt}}\"}\n  }\n}"
+      },
+      "id": "wf1-node-firestore",
+      "name": "Firestore: Save Lead Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [540, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.OPENAI_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.7,\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are the warm, highly professional AI Front Desk Assistant for Watech Solutions in Pakistan. We specialize in 3 premier sectors:\\n1. Real Estate (Plots, Luxury Villas in DHA & Bahria Town)\\n2. Authentic Chinioti Furniture (Pure Sheesham Wood handcrafted)\\n3. Signature Banquets & Catering (Lahore, Islamabad, Karachi)\\n\\nGenerate a polite, concise WhatsApp confirmation message for the client in courteous English mixed with respectful Roman Urdu. Acknowledge their specific sector inquiry, mention that their dedicated senior advisor is reviewing their inquiry, and provide a direct hotline for urgent inquiries (0327-0831470). Maximum 80 words.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Client Name: {{$json.fullName}}\\nSector: {{$json.category}}\\nInquired Item: {{$json.itemTitle}}\\nMessage: {{$json.userMessage}}\\nCity: {{$json.city}}\"\n    }\n  ]\n}"
+      },
+      "id": "wf1-node-openai",
+      "name": "OpenAI: Generate AI Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "amount": 8,
+        "unit": "seconds"
+      },
+      "id": "wf1-node-wait",
+      "name": "Wait: 8 Seconds",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [980, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$('Normalize Lead Data').item.json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"{{$json.choices[0].message.content.replace(/\\\"/g, '\\\\\"')}}\"\n  }\n}"
+      },
+      "id": "wf1-node-whatsapp-reply",
+      "name": "WhatsApp: Send Customer Auto-Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$env.PARTNER_ALERT_PHONE_NUMBER || '923270831470'}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🚨 *NEW LEAD RECEIVED (Website)*\\n\\n• *ID:* {{$('Normalize Lead Data').item.json.leadId}}\\n• *Name:* {{$('Normalize Lead Data').item.json.fullName}}\\n• *Phone:* +{{$('Normalize Lead Data').item.json.phone}}\\n• *Sector:* {{$('Normalize Lead Data').item.json.category.toUpperCase()}}\\n• *Item/Interest:* {{$('Normalize Lead Data').item.json.itemTitle}}\\n• *Budget:* {{$('Normalize Lead Data').item.json.budget}}\\n• *City:* {{$('Normalize Lead Data').item.json.city}}\\n\\n👉 *Reply to Client:* https://wa.me/{{$('Normalize Lead Data').item.json.phone}}\"\n  }\n}"
+      },
+      "id": "wf1-node-partner-alert",
+      "name": "WhatsApp: Notify Partner/Admin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1420, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook: Website Inquiry Form": {
+      "main": [
+        [
+          {
+            "node": "Normalize Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Save Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Save Lead Record": {
+      "main": [
+        [
+          {
+            "node": "OpenAI: Generate AI Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Generate AI Reply": {
+      "main": [
+        [
+          {
+            "node": "Wait: 8 Seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait: 8 Seconds": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Send Customer Auto-Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp: Send Customer Auto-Reply": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Notify Partner/Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

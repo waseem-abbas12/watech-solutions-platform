@@ -244,7 +244,7 @@ export default function PartnerDashboard() {
     {
       id: "TXN-503",
       date: "2026-09-07",
-      itemTitle: "Royal Palm Banquet Hall Booking",
+      itemTitle: "Shahi Daawat Pakwan & Catering Booking",
       amountPKR: 1800000,
       commissionPKR: 180000, // 10%
       status: "Pending",

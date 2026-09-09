@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import { getItemByCategoryAndId } from "@/lib/mock-data";
 
 type Props = {
@@ -7,20 +7,21 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, id } = await params;
-  const item = getItemByCategoryAndId(category, id);
+  const result = getItemByCategoryAndId(category, id);
 
-  if (!item) {
+  if (!result || !result.item) {
     return {
       title: "Listing Not Found | WATECH Marketplace",
       description: "The requested listing could not be found.",
     };
   }
 
+  const item = result.item;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://watech-solutions-platform-eight.vercel.app";
   const canonicalUrl = `${siteUrl}/marketplace/${category}/${id}`;
 
   const title = (item as any).title || (item as any).name || "Marketplace Listing";
-  const desc = item.description.slice(0, 160);
+  const desc = (item.description || "").slice(0, 160);
 
   return {
     title: `${title} | WATECH Marketplace`,

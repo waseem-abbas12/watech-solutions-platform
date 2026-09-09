@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import {
   Cpu,
   Sparkles,
   ChevronRight,
+  Utensils,
 } from "lucide-react";
 import { INITIAL_BLOG_POSTS } from "@/lib/mock-data";
 import { BlogCategory } from "@/types/database";
@@ -25,11 +26,9 @@ import { BlogCategory } from "@/types/database";
 const CATEGORIES: { name: string; category: BlogCategory | "All"; icon: any }[] = [
   { name: "All Articles", category: "All", icon: BookOpen },
   { name: "Real Estate", category: "Real Estate", icon: Building2 },
-  { name: "Furniture & Craft", category: "Furniture & Chinioti Craft", icon: Armchair },
-  { name: "Events & Catering", category: "Events & Catering", icon: PartyPopper },
-  { name: "Digital Marketing", category: "Digital Marketing", icon: Megaphone },
-  { name: "AI & Automation", category: "AI & Automation", icon: Cpu },
-  { name: "Business Growth", category: "Business Growth", icon: TrendingUp },
+  { name: "Chinioti Furniture", category: "Chinioti Furniture", icon: Armchair },
+  { name: "Food & Catering", category: "Food & Catering", icon: Utensils },
+  { name: "Digital Marketing / Business Growth", category: "Digital Marketing / Business Growth", icon: TrendingUp },
 ];
 
 export default function BlogListingPage() {
@@ -42,8 +41,28 @@ export default function BlogListingPage() {
 
   const filteredPosts = useMemo(() => {
     return INITIAL_BLOG_POSTS.filter((post) => {
-      const matchesCategory =
-        selectedCategory === "All" || post.category === selectedCategory;
+      let matchesCategory = false;
+      if (selectedCategory === "All") {
+        matchesCategory = true;
+      } else if (selectedCategory === "Real Estate") {
+        matchesCategory = post.category === "Real Estate";
+      } else if (selectedCategory === "Chinioti Furniture") {
+        matchesCategory =
+          post.category === "Chinioti Furniture" ||
+          post.category === "Furniture & Chinioti Craft";
+      } else if (selectedCategory === "Food & Catering") {
+        matchesCategory =
+          post.category === "Food & Catering" ||
+          post.category === "Events & Catering";
+      } else if (selectedCategory === "Digital Marketing / Business Growth") {
+        matchesCategory =
+          post.category === "Digital Marketing" ||
+          post.category === "Business Growth" ||
+          post.category === "AI & Automation" ||
+          post.category === "Digital Marketing / Business Growth";
+      } else {
+        matchesCategory = post.category === selectedCategory;
+      }
       const matchesSearch =
         searchQuery.trim() === "" ||
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

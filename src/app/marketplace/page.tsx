@@ -43,17 +43,30 @@ function formatPKR(num: number): string {
 
 function MarketplaceContent() {
   const searchParams = useSearchParams();
-  const initialTab = searchParams.get("tab") || "properties";
+  const rawTab = searchParams.get("tab") || "properties";
+  const initialTab =
+    rawTab === "food-catering" || rawTab === "events" || rawTab === "food" || rawTab === "catering"
+      ? "food-catering"
+      : rawTab === "furniture"
+      ? "furniture"
+      : "properties";
 
-  // Active Tab state: 'properties' | 'furniture' | 'events'
-  const [activeTab, setActiveTab] = useState<"properties" | "furniture" | "events">(
-    initialTab === "furniture" ? "furniture" : initialTab === "events" ? "events" : "properties"
+  // Active Tab state: 'properties' | 'furniture' | 'food-catering'
+  const [activeTab, setActiveTab] = useState<"properties" | "furniture" | "food-catering" | "events">(
+    initialTab
   );
 
   React.useEffect(() => {
     const currentTab = searchParams.get("tab");
-    if (currentTab === "furniture" || currentTab === "events" || currentTab === "properties") {
+    if (currentTab === "furniture" || currentTab === "properties") {
       setActiveTab(currentTab);
+    } else if (
+      currentTab === "food-catering" ||
+      currentTab === "events" ||
+      currentTab === "food" ||
+      currentTab === "catering"
+    ) {
+      setActiveTab("food-catering");
     }
   }, [searchParams]);
 
@@ -169,7 +182,7 @@ function MarketplaceContent() {
                 Browse, Compare & Inquire
               </h1>
               <p className="text-slate-600 mt-2 text-sm md:text-base max-w-xl">
-                Verified real estate, authentic Chinioti woodcraft, and banquet packages straight from direct sellers.
+                Verified real estate, authentic Chinioti woodcraft, and food & catering services straight from direct sellers.
               </p>
             </div>
 
@@ -183,7 +196,7 @@ function MarketplaceContent() {
                   Furniture: <strong className="text-[#16A34A]">{filteredFurniture.length}</strong>
                 </span>
                 <span className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 font-medium">
-                  Events: <strong className="text-[#16A34A]">{filteredEvents.length}</strong>
+                  Food & Catering: <strong className="text-[#16A34A]">{filteredEvents.length}</strong>
                 </span>
               </div>
             )}
@@ -261,16 +274,16 @@ function MarketplaceContent() {
 
             <button
               onClick={() => {
-                setActiveTab("events");
+                setActiveTab("food-catering");
                 setVisibleCount(6);
               }}
               className={`pb-3.5 px-4 font-bold text-sm tracking-wide transition-all border-b-2 whitespace-nowrap cursor-pointer ${
-                activeTab === "events"
+                activeTab === "food-catering" || activeTab === "events"
                   ? "border-[#16A34A] text-[#16A34A]"
                   : "border-transparent text-slate-500 hover:text-slate-900"
               }`}
             >
-              🎉 Events ({filteredEvents.length})
+              🍲 Food & Catering ({filteredEvents.length})
             </button>
           </div>
         </div>
@@ -563,15 +576,15 @@ function MarketplaceContent() {
         )}
 
         {/* =========================================
-            TAB 3: EVENTS TAB
+            TAB 3: FOOD & CATERING TAB
             ========================================= */}
-        {activeTab === "events" && (
+        {(activeTab === "food-catering" || activeTab === "events") && (
           <div className="space-y-8">
             {/* Filter Bar */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-4 gap-6 items-center">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  Service Category
+                  Food Category
                 </label>
                 <select
                   value={eventCategory}
@@ -579,16 +592,18 @@ function MarketplaceContent() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
                 >
                   <option value="All">All Categories</option>
-                  <option value="Banquet Hall">Banquet Halls & Marquees</option>
+                  <option value="Pakwan Center">Pakwan Centers & Daigs</option>
                   <option value="Catering">Catering & Live BBQ</option>
-                  <option value="Wedding Service">Wedding Services & Decor</option>
-                  <option value="Corporate Event">Corporate Events & Expos</option>
+                  <option value="Restaurant">Restaurants & Dining</option>
+                  <option value="Bakeries & Sweets">Bakeries & Sweets</option>
+                  <option value="Fast Food">Fast Food & BBQ</option>
+                  <option value="Food Suppliers">Food Suppliers & Spices</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  Venue City
+                  City
                 </label>
                 <select
                   value={eventCity}
@@ -597,16 +612,17 @@ function MarketplaceContent() {
                 >
                   <option value="All">All Cities</option>
                   <option value="Lahore">Lahore</option>
-                  <option value="Islamabad">Islamabad</option>
                   <option value="Karachi">Karachi</option>
-                  <option value="Faisalabad">Faisalabad</option>
+                  <option value="Islamabad">Islamabad</option>
                   <option value="Rawalpindi">Rawalpindi</option>
+                  <option value="Faisalabad">Faisalabad</option>
+                  <option value="Multan">Multan</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  Menu Cuisine
+                  Cuisine / Type
                 </label>
                 <select
                   value={eventMenuType}
@@ -615,16 +631,15 @@ function MarketplaceContent() {
                 >
                   <option value="All">All Cuisines</option>
                   <option value="Desi">Desi Traditional</option>
-                  <option value="Chinese">Chinese / Pan-Asian</option>
                   <option value="BBQ">Live BBQ</option>
-                  <option value="Continental">Continental</option>
+                  <option value="Continental">Continental & Pan-Asian</option>
                 </select>
               </div>
 
               <div>
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  <span>Min Capacity</span>
-                  <span className="text-[#16A34A]">{eventMinCapacity} Guests</span>
+                  <span>Min Capacity / Order</span>
+                  <span className="text-[#16A34A]">{eventMinCapacity}</span>
                 </div>
                 <input
                   type="range"
@@ -638,7 +653,7 @@ function MarketplaceContent() {
               </div>
             </div>
 
-            {/* Events Grid */}
+            {/* Food & Catering Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredEvents.slice(0, visibleCount).map((event) => (
                 <div
@@ -647,7 +662,7 @@ function MarketplaceContent() {
                 >
                   <div>
                     {/* 16:9 Image container */}
-                    <Link href={`/marketplace/events/${event.id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100">
+                    <Link href={`/marketplace/food-catering/${event.id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100">
                       <img
                         src={event.image}
                         alt={event.title}
@@ -655,16 +670,16 @@ function MarketplaceContent() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
-                        {event.menuType} Menu
+                        {event.category}
                       </span>
                     </Link>
 
                     <div className="p-6">
                       <div className="text-xl font-black text-slate-900 tracking-tight mb-1 text-[#16A34A]">
                         PKR {event.packagePrice.toLocaleString()}{" "}
-                        <span className="text-xs text-slate-500 font-normal">/ head</span>
+                        <span className="text-xs text-slate-500 font-normal">/ unit or head</span>
                       </div>
-                      <Link href={`/marketplace/events/${event.id}`} className="block group-hover:text-[#16A34A] transition-colors">
+                      <Link href={`/marketplace/food-catering/${event.id}`} className="block group-hover:text-[#16A34A] transition-colors">
                         <h3 className="text-base font-bold text-slate-900 leading-snug line-clamp-1 mb-2">
                           {event.title}
                         </h3>
@@ -677,7 +692,7 @@ function MarketplaceContent() {
                       <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
                         <div className="flex items-center gap-1.5">
                           <Users className="w-4 h-4 text-slate-400" />
-                          <span>Up to {event.capacity.toLocaleString()} Guests</span>
+                          <span>Cap: {event.capacity.toLocaleString()}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <Utensils className="w-4 h-4 text-slate-400" />
@@ -694,13 +709,13 @@ function MarketplaceContent() {
                           id: event.id,
                           title: event.title,
                           category: "event",
-                          priceFormatted: `PKR ${event.packagePrice.toLocaleString()} / head`,
+                          priceFormatted: `PKR ${event.packagePrice.toLocaleString()} / unit`,
                           partnerPhone: event.partnerPhone,
                         })
                       }
                       className="w-full py-3 px-4 rounded-xl bg-[#16A34A] text-white font-semibold text-xs tracking-wider uppercase hover:bg-emerald-700 shadow-md hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>Book Event</span>
+                      <span>Inquire / Order</span>
                       <MessageCircle className="w-4 h-4" />
                     </button>
                   </div>
@@ -715,7 +730,7 @@ function MarketplaceContent() {
                   onClick={() => setVisibleCount((prev) => prev + 6)}
                   className="px-8 py-3 rounded-full border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-100 transition-colors"
                 >
-                  Load More Events
+                  Load More Food & Catering
                 </button>
               </div>
             )}

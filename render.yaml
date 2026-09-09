@@ -1,30 +1,60 @@
 services:
-  # Self-Hosted n8n on Render.com (Free Tier: 750 hours/month)
+  # Self-Hosted n8n on Render.com (Free Tier)
   - type: web
     name: watech-n8n-automation
     env: docker
     image:
       url: docker.n8n.io/n8nio/n8n:latest
     plan: free
-    region: frankfurt # or singapore for lower latency to Pakistan
+    region: frankfurt # Low latency region
     envVars:
       - key: N8N_PORT
         value: 5678
       - key: N8N_PROTOCOL
         value: https
+      - key: N8N_HOST
+        value: watech-n8n-automation.onrender.com
       - key: WEBHOOK_URL
-        value: https://watech-n8n-automation.onrender.com
-      - key: N8N_BASIC_AUTH_ACTIVE
+        value: https://watech-n8n-automation.onrender.com/
+      - key: N8N_COMMUNITY_PACKAGES_ENABLED
         value: "true"
-      - key: N8N_BASIC_AUTH_USER
-        value: admin
-      - key: N8N_BASIC_AUTH_PASSWORD
-        generateValue: true
-      - key: N8N_ENCRYPTION_KEY
-        generateValue: true
       - key: NODE_ENV
         value: production
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
       - key: EXECUTIONS_DATA_PRUNE
         value: "true"
       - key: EXECUTIONS_DATA_MAX_AGE
         value: "168" # Prune after 7 days to preserve free storage
+      - key: EXECUTIONS_DATA_PRUNE_MAX_COUNT
+        value: "50000"
+      - key: DB_TYPE
+        value: postgresdb
+      - key: DB_POSTGRESDB_DATABASE
+        fromDatabase:
+          name: watech-n8n-db
+          property: database
+      - key: DB_POSTGRESDB_HOST
+        fromDatabase:
+          name: watech-n8n-db
+          property: host
+      - key: DB_POSTGRESDB_PORT
+        fromDatabase:
+          name: watech-n8n-db
+          property: port
+      - key: DB_POSTGRESDB_USER
+        fromDatabase:
+          name: watech-n8n-db
+          property: user
+      - key: DB_POSTGRESDB_PASSWORD
+        fromDatabase:
+          name: watech-n8n-db
+          property: password
+
+databases:
+  # Free PostgreSQL Database on Render (90-day renewable free tier)
+  - name: watech-n8n-db
+    plan: free
+    region: frankfurt
+    databaseName: n8n
+    user: n8n_user

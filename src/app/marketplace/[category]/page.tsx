@@ -42,7 +42,7 @@ export default function CategoryBrowsePage() {
   const rawCategory = (params.category as string) || "";
   const normCategory = rawCategory.toLowerCase();
 
-  // Map category aliases: "real-estate" -> "properties", etc.
+  // Map category aliases: "real-estate" -> "properties", "food-catering" -> "food-catering", etc.
   const resolvedCategory = useMemo(() => {
     if (
       normCategory === "property" ||
@@ -55,8 +55,15 @@ export default function CategoryBrowsePage() {
     if (normCategory === "furniture") {
       return "furniture";
     }
-    if (normCategory === "event" || normCategory === "events") {
-      return "events";
+    if (
+      normCategory === "food-catering" ||
+      normCategory === "food" ||
+      normCategory === "catering" ||
+      normCategory === "food-and-catering" ||
+      normCategory === "event" ||
+      normCategory === "events"
+    ) {
+      return "food-catering";
     }
     return "unknown";
   }, [normCategory]);
@@ -137,7 +144,7 @@ export default function CategoryBrowsePage() {
       <div className="min-h-[75vh] flex flex-col items-center justify-center p-8 text-center bg-white">
         <h2 className="text-2xl font-black text-slate-900 mb-2">Category Not Found</h2>
         <p className="text-sm text-slate-500 max-w-md mb-6">
-          The requested sector &quot;{rawCategory}&quot; does not exist. Please browse verified properties, Chinioti furniture, or events.
+          The requested sector &quot;{rawCategory}&quot; does not exist. Please browse verified properties, Chinioti furniture, or food & catering.
         </p>
         <Link
           href="/marketplace"
@@ -167,11 +174,19 @@ export default function CategoryBrowsePage() {
       icon: Sofa,
       count: filteredFurniture.length,
     },
-    events: {
-      title: "Banquet Halls & Event Services",
-      subtitle: "Signature wedding marquees, catering packages, and corporate banquet venues.",
+    "food-catering": {
+      title: "Food & Catering",
+      subtitle: "Verified restaurants, traditional pakwan centers, live BBQ catering, and food suppliers across Pakistan.",
       accent: "#EA580C",
-      badge: "Celebrations Sector",
+      badge: "Food & Catering Sector",
+      icon: Utensils,
+      count: filteredEvents.length,
+    },
+    events: {
+      title: "Food & Catering",
+      subtitle: "Verified restaurants, traditional pakwan centers, live BBQ catering, and food suppliers across Pakistan.",
+      accent: "#EA580C",
+      badge: "Food & Catering Sector",
       icon: Utensils,
       count: filteredEvents.length,
     },
@@ -238,14 +253,14 @@ export default function CategoryBrowsePage() {
                 Furniture
               </Link>
               <Link
-                href="/marketplace/events"
+                href="/marketplace/food-catering"
                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                  resolvedCategory === "events"
+                  resolvedCategory === "food-catering" || resolvedCategory === "events"
                     ? "bg-[#EA580C] text-white shadow-md shadow-orange-500/20"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
               >
-                Events
+                Food & Catering
               </Link>
             </div>
           </div>
@@ -563,8 +578,8 @@ export default function CategoryBrowsePage() {
           </div>
         )}
 
-        {/* EVENTS SECTOR CONTENT */}
-        {resolvedCategory === "events" && (
+        {/* FOOD & CATERING SECTOR CONTENT */}
+        {(resolvedCategory === "food-catering" || resolvedCategory === "events") && (
           <div className="space-y-8">
             {/* Filter Bar */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
@@ -579,37 +594,39 @@ export default function CategoryBrowsePage() {
                 >
                   <option value="All">All Cities</option>
                   <option value="Lahore">Lahore</option>
+                  <option value="Karachi">Karachi</option>
                   <option value="Islamabad">Islamabad</option>
                   <option value="Rawalpindi">Rawalpindi</option>
+                  <option value="Faisalabad">Faisalabad</option>
+                  <option value="Multan">Multan</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  Menu Style
+                  Cuisine / Type
                 </label>
                 <select
                   value={eventMenuType}
                   onChange={(e) => setEventMenuType(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#EA580C] bg-white"
                 >
-                  <option value="All">All Menus</option>
-                  <option value="Desi">Traditional Desi</option>
+                  <option value="All">All Cuisines</option>
+                  <option value="Desi">Traditional Desi & Pakwan</option>
                   <option value="BBQ">Live Charcoal BBQ</option>
-                  <option value="Continental">Continental</option>
-                  <option value="Chinese">Chinese & Pan-Asian</option>
+                  <option value="Continental">Continental & Pan-Asian</option>
                 </select>
               </div>
 
               <div>
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                  <span>Min Capacity</span>
-                  <span className="text-[#EA580C]">{eventMinCapacity} Guests</span>
+                  <span>Min Capacity / Order</span>
+                  <span className="text-[#EA580C]">{eventMinCapacity}</span>
                 </div>
                 <input
                   type="range"
                   min={100}
-                  max={1200}
+                  max={1500}
                   step={50}
                   value={eventMinCapacity}
                   onChange={(e) => setEventMinCapacity(Number(e.target.value))}
@@ -626,7 +643,7 @@ export default function CategoryBrowsePage() {
                   className="group bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
-                    <Link href={`/marketplace/events/${event.id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100">
+                    <Link href={`/marketplace/food-catering/${event.id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100">
                       <img
                         src={event.image}
                         alt={event.title}
@@ -636,7 +653,7 @@ export default function CategoryBrowsePage() {
                         {event.city}
                       </span>
                       <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-[#EA580C] text-white shadow-sm">
-                        {event.menuType}
+                        {event.category}
                       </span>
                     </Link>
 
@@ -644,11 +661,11 @@ export default function CategoryBrowsePage() {
                       <div className="flex items-baseline justify-between mb-2">
                         <span className="text-2xl font-black text-[#EA580C] tracking-tight">
                           PKR {event.packagePrice.toLocaleString()}
-                          <span className="text-xs font-normal text-slate-500"> / head</span>
+                          <span className="text-xs font-normal text-slate-500"> / unit</span>
                         </span>
                       </div>
 
-                      <Link href={`/marketplace/events/${event.id}`} className="block group-hover:text-[#EA580C] transition-colors">
+                      <Link href={`/marketplace/food-catering/${event.id}`} className="block group-hover:text-[#EA580C] transition-colors">
                         <h3 className="text-lg font-bold text-slate-900 leading-snug line-clamp-1">
                           {event.title}
                         </h3>
@@ -662,7 +679,7 @@ export default function CategoryBrowsePage() {
                       <div className="flex items-center gap-4 py-4 mt-4 border-t border-slate-100 text-xs text-slate-600">
                         <div className="flex items-center gap-1.5">
                           <Users className="w-4 h-4 text-slate-400" />
-                          <span>Up to {event.capacity.toLocaleString()} Guests</span>
+                          <span>Capacity: {event.capacity.toLocaleString()}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <Utensils className="w-4 h-4 text-slate-400" />
@@ -679,13 +696,13 @@ export default function CategoryBrowsePage() {
                           id: event.id,
                           title: event.title,
                           category: "event",
-                          priceFormatted: `PKR ${event.packagePrice.toLocaleString()} / head`,
+                          priceFormatted: `PKR ${event.packagePrice.toLocaleString()} / unit`,
                           partnerPhone: event.partnerPhone,
                         })
                       }
                       className="w-full py-3 px-4 rounded-xl bg-[#EA580C] text-white font-semibold text-xs tracking-wider uppercase hover:bg-orange-700 shadow-md hover:shadow-orange-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>Book Event</span>
+                      <span>Inquire / Order</span>
                       <MessageCircle className="w-4 h-4" />
                     </button>
                   </div>
@@ -700,7 +717,7 @@ export default function CategoryBrowsePage() {
                   onClick={() => setVisibleCount((prev) => prev + 6)}
                   className="px-8 py-3 rounded-full border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-100 transition-colors"
                 >
-                  Load More Events
+                  Load More Food & Catering
                 </button>
               </div>
             )}

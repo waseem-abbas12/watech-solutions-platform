@@ -1,9 +1,9 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Blog & Knowledge Hub | WATECH Solutions",
   description:
-    "Actionable market insights, investment analysis, and expert guides covering Real Estate properties, Chinioti handcrafted furniture, and wedding banquets in Pakistan.",
+    "Actionable market insights, investment analysis, and expert guides covering Real Estate properties, Chinioti handcrafted furniture, and Food & Catering in Pakistan.",
   alternates: {
     canonical: "https://watech-solutions-platform-eight.vercel.app/blog",
   },

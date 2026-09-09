@@ -8,7 +8,7 @@ import {
 export interface ChatRecommendation {
   id: string;
   title: string;
-  category: "properties" | "furniture" | "events";
+  category: "properties" | "furniture" | "events" | "food-catering";
   price: string;
   detail: string;
   image: string;
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     if (!query) {
       return NextResponse.json({
-        reply: "Assalam-o-Alaikum! Main Watech AI Assistant hoon. Main Real Estate plots, Chinioti furniture aur Banquet events mein aapki rehnumai kar sakta hoon. Aap kis cheez ke mutalliq daryaft karna chahte hain?",
+        reply: "Assalam-o-Alaikum! Main Watech AI Assistant hoon. Main Real Estate plots, Chinioti furniture aur Food & Catering mein aapki rehnumai kar sakta hoon. Aap kis cheez ke mutalliq daryaft karna chahte hain?",
         recommendations: [],
       });
     }
@@ -84,15 +84,25 @@ export async function POST(req: NextRequest) {
       query.includes("teak") ||
       query.includes("lakri");
 
-    // 4. Events Intent
-    const isEvent =
+    // 4. Food & Catering Intent
+    const isFood =
       query.includes("event") ||
+      query.includes("food") ||
+      query.includes("catering") ||
+      query.includes("pakwan") ||
+      query.includes("bbq") ||
+      query.includes("restaurant") ||
+      query.includes("biryani") ||
+      query.includes("nihari") ||
+      query.includes("bakery") ||
+      query.includes("sweets") ||
+      query.includes("daawat") ||
+      query.includes("deg") ||
       query.includes("hall") ||
       query.includes("marquee") ||
       query.includes("banquet") ||
       query.includes("shadi") ||
       query.includes("wedding") ||
-      query.includes("catering") ||
       query.includes("menu") ||
       query.includes("venue");
 
@@ -148,8 +158,8 @@ export async function POST(req: NextRequest) {
       });
 
       reply = `Chinioti woodwork mein yeh hamare top-rated luxury pieces hain. Har item pure Sheesham ya Burma Teak wood aur master hand-carving ke sath banaya gaya hai:`;
-    } else if (isEvent) {
-      // Find matching events
+    } else if (isFood) {
+      // Find matching food & catering
       const matched = INITIAL_EVENTS.filter((e) => {
         if (query.includes("lahore") && e.city.toLowerCase() !== "lahore") return false;
         if (query.includes("islamabad") && e.city.toLowerCase() !== "islamabad") return false;
@@ -162,15 +172,15 @@ export async function POST(req: NextRequest) {
         recommendations.push({
           id: e.id,
           title: e.title,
-          category: "events",
+          category: "food-catering",
           price: `PKR ${e.packagePrice.toLocaleString()} / head`,
           detail: `${e.city} · Up to ${e.capacity} Guests · ${e.menuType} Menu`,
           image: e.image,
-          link: `/marketplace/events/${e.id}`,
+          link: `/marketplace/food-catering/${e.id}`,
         });
       });
 
-      reply = `Shadi, Valima aur Corporate functions ke liye hamare verified Banquet Halls aur Marquees ke packages yeh hain:`;
+      reply = `Dawat, Shadi, Catering aur Restaurant services ke liye hamare verified Food & Catering options yeh hain:`;
     } else {
       // Generic helpful response with cross-sector highlight
       const topProp = INITIAL_PROPERTIES[0];
@@ -199,15 +209,15 @@ export async function POST(req: NextRequest) {
         {
           id: topEvent.id,
           title: topEvent.title,
-          category: "events",
+          category: "food-catering",
           price: `PKR ${topEvent.packagePrice.toLocaleString()} / head`,
           detail: `${topEvent.city} · ${topEvent.menuType}`,
           image: topEvent.image,
-          link: `/marketplace/events/${topEvent.id}`,
+          link: `/marketplace/food-catering/${topEvent.id}`,
         }
       );
 
-      reply = `Assalam-o-Alaikum! Watech multi-sector ecosystem mein aapka khush-amdeed. Main aapko Real Estate plots/villas, Chinioti handcrafted furniture, aur Event marquees ke hawalay se exact rate aur inventory bata sakta hoon. Aap kis cheez ki talash mein hain?`;
+      reply = `Assalam-o-Alaikum! Watech multi-sector ecosystem mein aapka khush-amdeed. Main aapko Real Estate plots/villas, Chinioti handcrafted furniture, aur Food & Catering ke hawalay se exact rate aur inventory bata sakta hoon. Aap kis cheez ki talash mein hain?`;
     }
 
     return NextResponse.json({

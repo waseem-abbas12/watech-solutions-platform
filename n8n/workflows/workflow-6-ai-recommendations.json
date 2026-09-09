@@ -1,0 +1,177 @@
+{
+  "name": "Watech Workflow 6 - AI Multi-Sector Recommendations Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai-recommendations",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wf6-node-webhook",
+      "name": "Webhook: Preference Inquiry",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json.body || $input.item.json;\n\nconst userText = body.text || body.message || body.userPreference || \"Looking for 10 marla house in Lahore\";\nlet phone = String(body.phone || body.senderPhone || \"923270831470\").replace(/[^0-9]/g, \"\");\nif (phone.startsWith(\"03\")) phone = \"92\" + phone.substring(1);\nconst customerName = body.customerName || body.name || \"Valued Client\";\n\nreturn [{\n  json: {\n    userText,\n    phone,\n    customerName,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "wf6-node-extract",
+      "name": "Extract User Inquiry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.OPENAI_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.2,\n  \"response_format\": { \"type\": \"json_object\" },\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an intent and parameter extraction engine for Watech Multi-Sector Platform in Pakistan. Given a user query, output a valid JSON with: {\\\"sector\\\": \\\"property\\\" | \\\"furniture\\\" | \\\"event\\\", \\\"city\\\": string, \\\"budgetPKR\\\": number, \\\"keywords\\\": string[], \\\"userGoal\\\": string}. Defaults: sector='property', city='Lahore', budgetPKR=0 if unspecified.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{$json.userText}}\"\n    }\n  ]\n}"
+      },
+      "id": "wf6-node-openai-extract",
+      "name": "OpenAI: Extract Parameters",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawContent = $input.item.json.choices?.[0]?.message?.content || \"{}\";\nlet params = {};\ntry {\n  params = JSON.parse(rawContent);\n} catch (e) {\n  params = { sector: \"property\", city: \"Lahore\", budgetPKR: 0, keywords: [] };\n}\n\nconst clientInfo = $('Extract User Inquiry').item.json;\nconst sector = (params.sector || \"property\").toLowerCase();\nlet recommendations = [];\n\nif (sector.includes(\"furniture\")) {\n  recommendations = [\n    {\n      title: \"Maharaja Royal Carved Bed Set\",\n      price: \"PKR 345,000\",\n      wood: \"Pure Solid Sheesham\",\n      specs: \"King Size, 2 Side Tables, Dressing Table, 10-Yr Warranty\",\n      link: \"https://watechsolutions.com/marketplace/furniture/royal-bed-01\"\n    },\n    {\n      title: \"Hand-Carved Floral 7-Seater Sofa Suite\",\n      price: \"PKR 285,000\",\n      wood: \"Solid Sheesham with Imported Velvet\",\n      specs: \"3+2+2 Setup, Crown Carving, MoltyFoam High Density\",\n      link: \"https://watechsolutions.com/marketplace/furniture/floral-sofa-07\"\n    },\n    {\n      title: \"Antique Solid Teak 8-Seater Dining Suite\",\n      price: \"PKR 395,000\",\n      wood: \"Export Seasoned Teak Wood\",\n      specs: \"8 Cushioned Carved Chairs + Glass Top Dining Table\",\n      link: \"https://watechsolutions.com/marketplace/furniture/teak-dining-08\"\n    }\n  ];\n} else if (sector.includes(\"event\") || sector.includes(\"catering\")) {\n  recommendations = [\n    {\n      title: \"Grand Crystal Ballroom (Royal Palm Lahore)\",\n      price: \"PKR 3,800 per head\",\n      specs: \"Capacity: 300 - 800 guests, AC Hall, Stage Decor & Lighting Included\",\n      link: \"https://watechsolutions.com/marketplace/events/royal-palm-crystal\"\n    },\n    {\n      title: \"Margalla View Luxury Marquee (Islamabad)\",\n      price: \"PKR 4,500 per head\",\n      specs: \"Capacity: 500 - 1200 guests, VIP Lounge, Continental + Desi Menu\",\n      link: \"https://watechsolutions.com/marketplace/events/margalla-view-isb\"\n    },\n    {\n      title: \"Creek Heritage Live BBQ Lawn (Karachi)\",\n      price: \"PKR 3,200 per head\",\n      specs: \"Capacity: 250 - 600 guests, Open Air Seaside Ambience, Live BBQ Counters\",\n      link: \"https://watechsolutions.com/marketplace/events/creek-heritage-khi\"\n    }\n  ];\n} else {\n  // Default Real Estate Recommendations\n  recommendations = [\n    {\n      title: \"10 Marla Brand New Modern Luxury Villa\",\n      price: \"PKR 4.2 Crore\",\n      specs: \"5 Bed with Attached Bath, Double Height Lobby, Bahria Town\",\n      link: \"https://watechsolutions.com/marketplace/properties/10-marla-villa-bahria\"\n    },\n    {\n      title: \"1 Kanal Ultra-Luxury Designer Mansion\",\n      price: \"PKR 8.5 Crore\",\n      specs: \"6 Master Beds, Swimming Pool, Basement, DHA Phase 6 Lahore\",\n      link: \"https://watechsolutions.com/marketplace/properties/1-kanal-dha-phase-6\"\n    },\n    {\n      title: \"5 Marla Prime Location Ready-to-Build Plot\",\n      price: \"PKR 95 Lac\",\n      specs: \"Direct Possession, Near Commercial Hub & Park, Bahria Phase 8\",\n      link: \"https://watechsolutions.com/marketplace/properties/5-marla-bahria-ph8\"\n    }\n  ];\n}\n\nlet messageBody = `Assalam-o-Alaikum *${clientInfo.customerName}*! 🌟\\n\\nAap ki inquiry ke mutabiq Watech AI ne hamare verified database se top 3 matched recommendations select ki hain:\\n\\n`;\n\nrecommendations.forEach((item, index) => {\n  messageBody += `*${index + 1}. ${item.title}*\\n`;\n  messageBody += `💰 *Price:* ${item.price}\\n`;\n  messageBody += `📋 *Specs:* ${item.specs}\\n`;\n  if (item.wood) messageBody += `🪵 *Wood:* ${item.wood}\\n`;\n  messageBody += `🔗 *View Details:* ${item.link}\\n\\n`;\n});\n\nmessageBody += `Agar aap in mein se kisi ka site visit schedule karna chahte hain ya custom quotation chahte hain to is message ka reply karein ya call karein: 0327-0831470.`;\n\nreturn [{\n  json: {\n    phone: clientInfo.phone,\n    customerName: clientInfo.customerName,\n    sector,\n    formattedMessage: messageBody,\n    recommendationsCount: recommendations.length\n  }\n}];"
+      },
+      "id": "wf6-node-match-format",
+      "name": "Match & Format Recommendations",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"{{$json.formattedMessage.replace(/\\\"/g, '\\\\\"')}}\"\n  }\n}"
+      },
+      "id": "wf6-node-send-recommendations",
+      "name": "WhatsApp: Send Recommendations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [980, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID || 'watech-solutions'}}/databases/(default)/documents/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"sender\": {\"stringValue\": \"system_ai_recommender\"},\n    \"receiver\": {\"stringValue\": \"{{$json.phone}}\"},\n    \"content\": {\"stringValue\": \"Sent {{$json.recommendationsCount}} recommendations for {{$json.sector}}\"},\n    \"category\": {\"stringValue\": \"{{$json.sector}}\"},\n    \"timestamp\": {\"timestampValue\": \"{{new Date().toISOString()}}\"},\n    \"direction\": {\"stringValue\": \"outgoing\"}\n  }\n}"
+      },
+      "id": "wf6-node-log-interaction",
+      "name": "Firestore: Log Recommendation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook: Preference Inquiry": {
+      "main": [
+        [
+          {
+            "node": "Extract User Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract User Inquiry": {
+      "main": [
+        [
+          {
+            "node": "OpenAI: Extract Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Extract Parameters": {
+      "main": [
+        [
+          {
+            "node": "Match & Format Recommendations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match & Format Recommendations": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Send Recommendations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp: Send Recommendations": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Log Recommendation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 
       if (accessToken && phoneNumberId && fromPhone) {
         let replyText =
-          "Assalam-o-Alaikum! Watech Multi-Sector Platform mein khush-amdeed.\n\n• Real Estate Plots & Villas ke liye 'Property' likhein.\n• Chinioti Sheesham Wood Furniture ke liye 'Furniture' likhein.\n• Signature Marquee & Banquets ke liye 'Event' likhein.\n\nDirect contact: 0327-0831470";
+          "Assalam-o-Alaikum! Watech Multi-Sector Platform mein khush-amdeed.\n\n• Real Estate Plots & Villas ke liye 'Property' likhein.\n• Chinioti Sheesham Wood Furniture ke liye 'Furniture' likhein.\n• Food & Catering Services ke liye 'Food' likhein.\n\nDirect contact: 0327-0831470";
 
         if (userText.includes("property") || userText.includes("plot") || userText.includes("villa") || userText.includes("house")) {
           replyText =
@@ -56,9 +56,9 @@ export async function POST(req: NextRequest) {
         } else if (userText.includes("furniture") || userText.includes("sofa") || userText.includes("bed") || userText.includes("wood")) {
           replyText =
             "🪑 Watech Chinioti Handcrafted Furniture:\n• Maharaja Royal Bed Set (Pure Sheesham) - PKR 345,000\n• Hand-Carved 7-Seater Sofa - PKR 285,000\n• 8-Seater Solid Teak Dining Suite - PKR 395,000\n\n10-Year Warranty. Browse: https://watech-solutions.vercel.app/marketplace/furniture";
-        } else if (userText.includes("event") || userText.includes("hall") || userText.includes("banquet") || userText.includes("marquee")) {
+        } else if (userText.includes("food") || userText.includes("catering") || userText.includes("pakwan") || userText.includes("event") || userText.includes("hall") || userText.includes("banquet") || userText.includes("bbq")) {
           replyText =
-            "🎉 Watech Signature Banquet & Marquees:\n• Grand Crystal Ballroom (Royal Palm LHE) - PKR 3,800/head\n• Margalla View Marquee (ISB) - PKR 4,500/head\n• Creek Heritage Live BBQ Lawn (KHI) - PKR 3,200/head\n\nBook online: https://watech-solutions.vercel.app/marketplace/events";
+            "🍲 Watech Food & Catering Services:\n• Shahi Daawat Pakwan & Catering (Lahore) - PKR 1,850/head\n• Dera Shinwari Live BBQ & Karahi (Islamabad) - PKR 2,200/head\n• Clifton Royal Caterers & Biryani (Karachi) - PKR 1,650/head\n\nBook online: https://watech-solutions.vercel.app/marketplace/food-catering";
         }
 
         fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {

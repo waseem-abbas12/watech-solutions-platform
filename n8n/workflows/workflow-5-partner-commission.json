@@ -1,0 +1,158 @@
+{
+  "name": "Watech Workflow 5 - Partner Commission Auto-Calculation & Payout Tracking",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "order-completed",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wf5-node-webhook",
+      "name": "Webhook: Order Completed Event",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json.body || $input.item.json;\n\nconst orderId = body.orderId || body.orderNumber || `ORD-${Date.now()}`;\nconst partnerId = body.partnerId || \"PARTNER-DEFAULT\";\nconst partnerName = body.partnerName || \"Valued Partner\";\nlet partnerPhone = String(body.partnerPhone || \"923270831470\").replace(/[^0-9]/g, \"\");\nif (partnerPhone.startsWith(\"03\")) partnerPhone = \"92\" + partnerPhone.substring(1);\n\nconst category = (body.category || \"furniture\").toLowerCase();\nconst orderAmount = Number(body.amount || body.orderAmount || 100000);\nlet commissionRate = Number(body.commissionRate || 0);\n\n// Dynamic Default Commission Rates per Sector Guidelines\nif (!commissionRate) {\n  if (category.includes(\"property\") || category.includes(\"real_estate\")) {\n    commissionRate = 0.015; // 1.5% for high-value real estate\n  } else if (category.includes(\"furniture\")) {\n    commissionRate = 0.10; // 10% for handcrafted furniture\n  } else if (category.includes(\"event\") || category.includes(\"catering\")) {\n    commissionRate = 0.05; // 5% for banquet & catering bookings\n  } else {\n    commissionRate = 0.05;\n  }\n}\n\nconst commissionAmount = Math.round(orderAmount * commissionRate);\nconst transactionId = `TXN-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;\nconst formattedDate = new Date().toISOString();\n\nreturn [{\n  json: {\n    orderId,\n    partnerId,\n    partnerName,\n    partnerPhone,\n    category,\n    orderAmount,\n    commissionRate: (commissionRate * 100).toFixed(1) + \"%\",\n    commissionAmount,\n    transactionId,\n    formattedDate\n  }\n}];"
+      },
+      "id": "wf5-node-calc-commission",
+      "name": "Calculate Dynamic Commission",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://firestore.googleapis.com/v1/projects/{{$env.FIREBASE_PROJECT_ID || 'watech-solutions'}}/databases/(default)/documents/transactions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.FIREBASE_AUTH_TOKEN || ''}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fields\": {\n    \"id\": {\"stringValue\": \"{{$json.transactionId}}\"},\n    \"orderId\": {\"stringValue\": \"{{$json.orderId}}\"},\n    \"partnerId\": {\"stringValue\": \"{{$json.partnerId}}\"},\n    \"amount\": {\"integerValue\": \"{{$json.commissionAmount}}\"},\n    \"type\": {\"stringValue\": \"commission\"},\n    \"status\": {\"stringValue\": \"completed\"},\n    \"description\": {\"stringValue\": \"Commission earned for order {{$json.orderId}} ({{$json.category}})\"},\n    \"date\": {\"timestampValue\": \"{{$json.formattedDate}}\"},\n    \"createdAt\": {\"timestampValue\": \"{{$json.formattedDate}}\"}\n  }\n}"
+      },
+      "id": "wf5-node-save-transaction",
+      "name": "Firestore: Record Transaction",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [540, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$('Calculate Dynamic Commission').item.json.partnerPhone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🎉 *MUBARAK HO! COMMISSION CREDITED*\\n\\nDear {{$('Calculate Dynamic Commission').item.json.partnerName}},\\nAap ka commission account mein successfully credit ho chuka hai!\\n\\n📋 *Order ID:* {{$('Calculate Dynamic Commission').item.json.orderId}}\\n🏷️ *Sector:* {{$('Calculate Dynamic Commission').item.json.category.toUpperCase()}}\\n💰 *Order Value:* PKR {{$('Calculate Dynamic Commission').item.json.orderAmount.toLocaleString()}}\\n📊 *Commission Rate:* {{$('Calculate Dynamic Commission').item.json.commissionRate}}\\n💵 *Your Earning:* PKR {{$('Calculate Dynamic Commission').item.json.commissionAmount.toLocaleString()}}\\n🔖 *Transaction Ref:* {{$('Calculate Dynamic Commission').item.json.transactionId}}\\n\\nWeekly Friday payout cycle ke tehat direct bank transfer process ho jaye ga.\\n\\n— Watech Partner Operations Hub\"\n  }\n}"
+      },
+      "id": "wf5-node-send-partner-wa",
+      "name": "WhatsApp: Send Commission Voucher",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [760, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.WHATSAPP_ACCESS_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$env.PARTNER_ALERT_PHONE_NUMBER || '923270831470'}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"💼 *ADMIN NOTIFICATION: PARTNER COMMISSION LOGGED*\\n\\n• Partner: {{$('Calculate Dynamic Commission').item.json.partnerName}} ({{$('Calculate Dynamic Commission').item.json.partnerId}})\\n• Sector: {{$('Calculate Dynamic Commission').item.json.category}}\\n• Order Total: PKR {{$('Calculate Dynamic Commission').item.json.orderAmount.toLocaleString()}}\\n• Commission Due: PKR {{$('Calculate Dynamic Commission').item.json.commissionAmount.toLocaleString()}}\\n• Txn ID: {{$('Calculate Dynamic Commission').item.json.transactionId}}\"\n  }\n}"
+      },
+      "id": "wf5-node-notify-admin-commission",
+      "name": "WhatsApp: Notify Operations Admin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [980, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook: Order Completed Event": {
+      "main": [
+        [
+          {
+            "node": "Calculate Dynamic Commission",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Dynamic Commission": {
+      "main": [
+        [
+          {
+            "node": "Firestore: Record Transaction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firestore: Record Transaction": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Send Commission Voucher",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp: Send Commission Voucher": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp: Notify Operations Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

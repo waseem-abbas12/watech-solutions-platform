@@ -8,9 +8,8 @@ import type { Timestamp } from "firebase/firestore";
 
 export type FirestoreDate = Timestamp | string;
 
-// Common Enums & Roles
 export type UserRole = "buyer" | "partner" | "admin" | "superAdmin" | "manager" | "support";
-export type SectorCategory = "property" | "furniture" | "event" | "service";
+export type SectorCategory = "property" | "furniture" | "event" | "food-catering" | "service";
 
 export type PropertyStatus = "active" | "sold" | "inactive" | "pending";
 export type FurnitureWoodType = "Sheesham" | "Teak" | "Rosewood" | "Walnut";
@@ -326,11 +325,14 @@ export interface CommissionConfig {
 // 14. Blog System (Phase 2)
 export type BlogCategory =
   | "Real Estate"
+  | "Chinioti Furniture"
   | "Furniture & Chinioti Craft"
+  | "Food & Catering"
   | "Events & Catering"
   | "Digital Marketing"
   | "AI & Automation"
-  | "Business Growth";
+  | "Business Growth"
+  | "Digital Marketing / Business Growth";
 
 export interface BlogPost {
   id: string;

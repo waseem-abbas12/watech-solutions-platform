@@ -10,7 +10,7 @@ export const Footer = () => {
             WATECH<span className="text-[#2563EB]">.</span>
           </span>
           <p className="text-sm text-slate-400 leading-relaxed">
-            Pakistan's integrated ecosystem connecting Real Estate, Chinioti Handcrafted Furniture, and Signature Events with modern technology.
+            Pakistan's integrated ecosystem connecting Real Estate, Chinioti Handcrafted Furniture, and Food & Catering with modern technology.
           </p>
           <div className="flex items-center gap-3 pt-2">
             <a
@@ -105,8 +105,8 @@ export const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="/marketplace?tab=events" className="hover:text-white transition-colors">
-                Banquet Halls & Catering
+              <Link href="/marketplace?tab=food-catering" className="hover:text-white transition-colors">
+                Food & Catering
               </Link>
             </li>
           </ul>

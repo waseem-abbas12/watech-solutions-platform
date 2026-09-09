@@ -368,134 +368,140 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
 ];
 
 export const INITIAL_EVENTS: EventItem[] = [
-  // BANQUET HALLS
+  // 1. PAKWAN CENTERS & DAIGS
   {
     id: "event-1",
-    title: "Grand Crystal Ballroom & Lawn",
+    title: "Al-Madina Shahi Pakwan Center & Deg Delivery",
     city: "Lahore",
-    venue: "Royal Palm Golf & Country Club, Lahore",
-    category: "Banquet Hall",
+    venue: "Main Boulevard Gulberg III, Lahore",
+    category: "Pakwan Center",
     capacity: 1200,
     menuType: "Desi",
-    packagePrice: 3800,
+    packagePrice: 2800,
     eventDate: "2026-11-20",
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
     gallery: [
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Premier wedding and corporate banquet destination in Lahore. Features 24ft high pillarless hall, crystal chandeliers, dedicated bride & groom VIP dressing suites, golf course lawn access, and state-of-the-art climate control.",
-    amenities: ["Pillarless Hall", "Dedicated VIP Bridal Suite", "Valet Parking for 500+ Cars", "Standby 500kVA Generator", "Catering & Live Cooking Stations"],
+    description: "Renowned traditional Lahore pakwan center specializing in authentic Shahi Mutton Degs, Chicken Biryani, Zarda, Haleem, and live tandoor setups for grand weddings and family gatherings.",
+    amenities: ["Live Tandoor & Roti Station", "Premium Pure Desi Ghee", "Doorstep Daig Delivery & Warmers", "Certified Food Safety & Hygiene", "Full Crockery & Uniformed Waitstaff"],
     partnerPhone: "923270831470",
     status: "Available",
     createdAt: "2026-08-20",
     isDemo: true,
   },
+  // 2. RESTAURANTS & DINING
   {
     id: "event-2",
-    title: "Margalla View Luxury Marquee & Open Terrace",
+    title: "Margalla Continental & Pan-Asian Dining Restaurant",
     city: "Islamabad",
-    venue: "Club Road, Islamabad",
-    category: "Banquet Hall",
-    capacity: 800,
+    venue: "F-7 Markaz, Islamabad",
+    category: "Restaurant",
+    capacity: 350,
     menuType: "Continental",
-    packagePrice: 4500,
+    packagePrice: 4200,
     eventDate: "2026-10-15",
-    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
     gallery: [
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Nestled at the foothills of Margalla, offering scenic open-terrace views for Barat, Walima, and high-profile diplomatic summits. World-class continental and fusion menu curated by five-star executive chefs.",
-    amenities: ["Scenic Mountain View", "Outdoor Cocktail Terrace", "Executive Chef Custom Menus", "Central Air Conditioning", "Sound & Lighting Rigging"],
+    description: "Premier fine dining venue in Islamabad offering curated Continental, Mediterranean, and Pan-Asian menus, private banquet suites for corporate lunches, family celebrations, and hi-tea events.",
+    amenities: ["Scenic Margalla Ambience", "Private VIP Executive Dining Rooms", "Specialty Hi-Tea & Continental Buffet", "Dedicated Valet Parking", "Custom Birthday & Anniversary Decor"],
     partnerPhone: "923270831470",
     status: "Available",
     createdAt: "2026-08-24",
     isDemo: true,
   },
-  // CATERING
+  // 3. LIVE BBQ & CATERING
   {
     id: "event-3",
-    title: "Creek Heritage Live BBQ & Royal Catering",
+    title: "Royal Heritage Live BBQ & Shadi Catering Services",
     city: "Karachi",
-    venue: "DHA Golf Club, Karachi",
+    venue: "DHA Phase 6, Karachi",
     category: "Catering",
-    capacity: 650,
+    capacity: 800,
     menuType: "BBQ",
     packagePrice: 3200,
     eventDate: "2026-12-05",
-    image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80",
     gallery: [
-      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Creek-side breeze and open lawn setting famous for live BBQ stations, traditional Karahi, and festive Mehndi nights with certified hygienic food handling.",
-    amenities: ["Live BBQ Counters", "Seaside Waterfront Breeze", "Custom Floral Decor Packages", "Spacious Lawn"],
+    description: "Karachi's trusted outdoor catering specialist offering live charcoal BBQ, authentic Dum Biryani, fresh seafood griddles, and festive wedding catering with full setup.",
+    amenities: ["Live Charcoal BBQ Counter", "Traditional Matka Kheer & Desserts", "Complete Buffet Warmers & Cutlery", "Hygienic Temperature Controlled Transport", "Uniformed Professional Catering Staff"],
     partnerPhone: "923270831470",
     status: "Available",
     createdAt: "2026-09-01",
     isDemo: true,
   },
-  {
-    id: "event-5",
-    title: "Imperial Pan-Asian & Desi Gourmet Catering",
-    city: "Lahore",
-    venue: "Gulberg III, Lahore",
-    category: "Catering",
-    capacity: 450,
-    menuType: "Chinese",
-    packagePrice: 4200,
-    eventDate: "2026-10-30",
-    image: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1200&q=80",
-    gallery: [
-      "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1200&q=80",
-    ],
-    description: "Intimate catering service tailored for corporate dinners, engagements, and Qawwali nights with gourmet Chinese and Pan-Asian spreads.",
-    amenities: ["Intimate Luxury Ambience", "Acoustic Treated Sound", "Premium Pan-Asian Menu", "Central Gulberg Location"],
-    partnerPhone: "923270831470",
-    status: "Available",
-    createdAt: "2026-09-03",
-    isDemo: true,
-  },
-  // WEDDING SERVICES
+  // 4. BAKERIES & SWEETS
   {
     id: "event-4",
-    title: "The Grand Royal Wedding Complex & Floral Setup",
+    title: "Chaman Sweets & Bakers - Pure Desi Ghee Confectionery",
     city: "Faisalabad",
-    venue: "Jaranwala Road, Faisalabad",
-    category: "Wedding Service",
+    venue: "D-Ground, Faisalabad",
+    category: "Bakeries & Sweets",
     capacity: 1500,
     menuType: "Desi",
-    packagePrice: 2800,
+    packagePrice: 1800,
     eventDate: "2026-11-28",
-    image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
     gallery: [
-      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Largest luxury air-conditioned complex in Faisalabad, capable of hosting grand wedding gatherings up to 1,500 guests with complete protocol, fireworks, and photography teams.",
-    amenities: ["Grand Capacity up to 1,500", "Full Air-Conditioned Halls", "Huge Parking Lot", "Security Guards & CCTV"],
+    description: "Iconic artisanal bakery and sweet maker since 1985. Premium wedding Shadi boxes, pure Desi Ghee Barfi, Gulab Jamun, custom multi-tier wedding cakes, and corporate gift hampers.",
+    amenities: ["100% Pure Desi Ghee Guaranteed", "Custom Wedding Shadi Gift Boxes", "Fresh Daily Artisan Bakes", "Bulk Corporate & Shadi Orders", "Island-wide Insulated Delivery"],
     partnerPhone: "923270831470",
     status: "Available",
     createdAt: "2026-09-04",
     isDemo: true,
   },
-  // CORPORATE EVENTS
+  // 5. FAST FOOD & BBQ
+  {
+    id: "event-5",
+    title: "Khyber Shinwari BBQ & Dera Restaurant",
+    city: "Rawalpindi",
+    venue: "Peshawar Road, Rawalpindi",
+    category: "Fast Food",
+    capacity: 450,
+    menuType: "BBQ",
+    packagePrice: 2400,
+    eventDate: "2026-10-30",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Authentic Shinwari mutton karahi, charcoal sajji, dumpukht, and Peshawari chappal kabab cooked fresh over wood-fired charcoal with traditional family seating and outdoor Dera.",
+    amenities: ["Fresh Organic Meat Selection", "Traditional Charpai & Takht Dera", "Family AC Dining Hall", "Fast Takeaway & Delivery", "Outdoor Firepit Seating"],
+    partnerPhone: "923270831470",
+    status: "Available",
+    createdAt: "2026-09-03",
+    isDemo: true,
+  },
+  // 6. FOOD PRODUCTS & SUPPLIERS
   {
     id: "event-6",
-    title: "Executive Summit & Corporate Expo Hall",
-    city: "Rawalpindi",
-    venue: "Chaklala Scheme III, Rawalpindi",
-    category: "Corporate Event",
-    capacity: 900,
-    menuType: "Continental",
-    packagePrice: 3100,
+    title: "Shan-e-Punjab Organic Spices & FMCG Food Wholesale",
+    city: "Multan",
+    venue: "Grain Market & Industrial Estate, Multan",
+    category: "Food Suppliers",
+    capacity: 1000,
+    menuType: "Desi",
+    packagePrice: 1500,
     eventDate: "2026-12-12",
-    image: "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=80",
     gallery: [
-      "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Full multimedia conference facility equipped with dual 4K LED backdrops, breakout meeting rooms, high-speed fiber internet, and executive tea/coffee buffets.",
-    amenities: ["4K LED Backdrops", "High-Speed Fiber Wi-Fi", "Breakout Rooms", "Ample Executive Parking"],
+    description: "Direct farm-to-kitchen certified bulk supplier of pure whole spices, Basmati sella rice, premium pulses, edible oils, and food products for commercial restaurants, pakwan centers, and hotels across Pakistan.",
+    amenities: ["Certified Laboratory Tested Purity", "Wholesale Bulk Packing (5kg to 50kg)", "Direct Farmer Sourcing", "Nationwide Logistics Dispatch", "Flexible Credit Terms for Verified Partners"],
     partnerPhone: "923270831470",
     status: "Available",
     createdAt: "2026-09-06",
@@ -521,7 +527,13 @@ export function getItemByCategoryAndId(category: string, id: string) {
     const related = INITIAL_FURNITURE.filter((f) => f.id !== id).slice(0, 3);
     return { type: "furniture" as const, item, related };
   }
-  if (normCategory === "event" || normCategory === "events") {
+  if (
+    normCategory === "event" ||
+    normCategory === "events" ||
+    normCategory === "food-catering" ||
+    normCategory === "food" ||
+    normCategory === "catering"
+  ) {
     const item = INITIAL_EVENTS.find((e) => e.id === id);
     const related = INITIAL_EVENTS.filter((e) => e.id !== id).slice(0, 3);
     return { type: "event" as const, item, related };
@@ -706,83 +718,81 @@ Watech Marketplace par direct Chiniot artisans ke sath rabta karein aur factory 
     `,
   },
 
-  // 3. EVENTS & CATERING
+  // 3. FOOD & CATERING
   {
     id: "blog-3",
-    slug: "wedding-event-ke-liye-banquet-hall-select-karne-ka-complete-guide",
-    title: "Wedding Event Ke Liye Banquet Hall Select Karne Ka Complete Guide",
-    excerpt: "Guest capacity, air conditioning, menu selection, valet parking aur hidden charges se bachne ke practical wedding tips.",
-    category: "Events & Catering",
+    slug: "shadi-aur-family-events-ke-liye-food-catering-guide",
+    title: "Shadi Aur Family Events Ke Liye Best Food Catering & Pakwan Selection Guide",
+    excerpt: "Menu selection, live BBQ stations, traditional shahi degs, per-head budgeting aur food hygiene standards ka complete practical Pakistani guide.",
+    category: "Food & Catering",
     author: {
       name: "Farhan Qureshi",
-      role: "Lead Event & Hospitality Director",
+      role: "Head of Food & Hospitality Partnerships",
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
     },
-    featuredImage: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
+    featuredImage: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
     publishedAt: "August 20, 2026",
     readingTime: "5 min read",
-    tags: ["Wedding Planning", "Banquet Halls", "Catering Pakistan", "Lahore Events", "Marquee Booking"],
+    tags: ["Food & Catering", "Pakwan Center", "Wedding Catering", "Shahi Deg", "Live BBQ", "Lahore Food"],
     isFeatured: false,
     isDemo: true,
     cta: {
       type: "marketplace",
-      title: "Book Verified Banquet Halls & Signature Catering Packages",
-      description: "Compare capacities, menus, per-head rates, and check seasonal dates across top marquees.",
-      buttonText: "Browse Event Venues",
-      buttonLink: "/marketplace?tab=events",
-      whatsappMessage: "Assalam-o-Alaikum, I am planning a wedding and want to check available banquet halls and menu rates.",
+      title: "Explore Verified Food & Catering Packages",
+      description: "Compare pakwan centers, restaurants, live BBQ catering, sweets, and per-head rates across Pakistan.",
+      buttonText: "Browse Food & Catering",
+      buttonLink: "/marketplace?tab=food-catering",
+      whatsappMessage: "Assalam-o-Alaikum, I am looking for verified food & catering services on WATECH.",
     },
     content: `
-### Shadi Ki Taqreeb: Venue Selection Sab Se Pehla Step Hai
+### Shadi Aur Taqreeb Ki Jaan: Khana Aur Catering Service
 
-Pakistan mein Barat, Walima ya Mehndi plan karte waqt sab se bara faisla venue aur menu package ka hota hai. Shadi ka season (October se March) aate hi achay banquet halls aur marquees 6 se 8 mahine pehle book ho jate hain.
+Pakistan mein kisi bhi Barat, Walima, Mehndi ya Family Dawat ki kamyabi ka 90% daromadar khaney ke taste, khushboo aur garma-garam service par hota hai. Mehmaan decor bhool sakte hain lekin zaiqadaar Biryani, naram Mutton Qorma aur live Seekh Kabab hamesha yaad rakhtay hain.
 
-Ghalat venue choose karne se traffic jams, garmi mein AC issue, ya kanooni waqt ki pabandiyan poore event ka maza kharab kar sakti hain. Yeh guide aapko right faisla lene mein madad karegi.
-
----
-
-### 1. Actual Guest Count vs Hall Capacity
-
-Kabhi bhi hall ko uski maximum capacity par pack na karein:
-- Agar aapke guests **800** hain to kam az kam **1,000 to 1,200 capacity** ka hall choose karein.
-- Khana lagte waqt live buffet counters ke samne rush banta hai. Khula space hone se buzurgo aur aurton ko aramdehi milti hai.
+Achay Pakwan Center aur Catering service ka intekhab waqt par na karne se zaiqa kharab, khana kam par jana, ya thanda khana serve hone jaise masail paish aa sakte hain. Yeh complete practical guide aapko behtareen catering choose karne mein madad degi.
 
 ---
 
-### 2. Pillarless Hall vs Pillared Layout
+### 1. Per-Head Menu vs Shahi Deg System
 
-Pillars (sutoon) stage view ko block karte hain:
-- Hamesha **Pillarless Hall** ko tarjeeh dein taake har table se dulha-dulhan ka stage aur screen saaf nazar aaye.
-- Ceiling height kam az kam 18 se 24 feet honi chahiye taake professional truss lighting aur stage photography grand lage.
-
----
-
-### 3. Backup Power & Climate Control (HVAC)
-
-Pakistan mein load shedding aur voltage fluctuation aam hai:
-- Hall management se confirmed standby generator ki capacity (kam az kam 350kVA - 500kVA) ka pouchhein.
-- Ensure karein ke generator changeover ke waqt hall ke sound aur main stage lights mein delay na aaye.
-- Summer season mein chilling unit (tonnage capacity) check karein.
+Pakistan mein catering do tareeqon se arrange hoti hai:
+- **Per-Head Buffet Rate (PKR 1,500 se PKR 3,500 tak):** Isme complete crockery, cutlery, uniformed waiters, chafing dish buffet warmers, aur mineral water shamil hota hai. Yeh marquee ya banquet events ke liye best hai.
+- **Traditional Deg System (Ghar Ya Dera Dawat):** Jahan aap direct 12kg ya 15kg ki degs book karte hain (e.g. Shahi Mutton Deg, Chicken Dum Biryani, Zarda/Kheer). Isme per-deg rate hota hai aur cost-effective option banta hai.
 
 ---
 
-### 4. Food Tasting Aur Catering Quality
+### 2. Meat Quality Aur Gosht Ka Ratio
 
-Sirf menu card par dishes ke naam na dekhein:
-- **Tasting Session:** Booking se pehle live wedding dinner mein unke Mutton Qorma, Biryani, live Seekh Kabab aur Kheer/Halwa taste karein.
-- Khana serve hone ka temperature garam hona chahiye aur crockery hotel-grade bone china honi chahiye.
+Pakwan center se baat karte waqt clear specification tay karein:
+- **Gosht Ka Weight:** 12kg chawal ki biryani deg mein kam az kam 12kg se 14kg fresh gosht hona chahiye.
+- **Fresh vs Frozen:** Hamesha confirmed fresh halal meat (Mutton / Beef / Desi Chicken) ki shart rakhein.
+- **Oil vs Pure Desi Ghee:** Shahi Qorma aur Halwa/Zarda ke liye certified Desi Ghee ya high-grade cooking oil specify karein.
 
 ---
 
-### 5. Hidden Charges Ki Wazaahat
+### 3. Live Counters Ka Trend (BBQ & Tawa)
 
-Aksar final bill mein unexpected charges shamil kar diye jate hain. Pehle se written confirm karein:
-- Stage decor aur floral setup fees.
-- DJ sound system aur generator diesel surcharge.
-- Valet parking staff tips aur service charges.
-- One-dish policy compliance aur local administration closing time guidelines.
+Aaj kal mehmanon ko cold buffet se zyada live counters pasand aate hain:
+- **Live Charcoal BBQ Counter:** Mutton Seekh Kabab, Chicken Malai Boti aur Reshmi Kabab seedhe angethi se plate mein serve hon.
+- **Live Tawa & Fried Items:** Garam Tawa Fish, Puri Paratha ya Kat-a-Kat live counter par guests ka shandar response milta hai.
+- **Fresh Tandoor:** Tandoori Roti aur Roghni Naan spot par banna laazmi hai taake khana garam rahe.
 
-Watech Marketplace par tamam listed banquet halls aur marquee packages verified rates aur transparent guest capacity ke sath mojood hain.
+---
+
+### 4. Food Tasting Session Aur Trial Order
+
+Bari taqreeb se pehle blind booking se bachein:
+- Pakwan center se unki ongoing wedding catering ya Sunday special daawat ke din food tasting sample zaroor lein.
+- Chawal ki lambai (Extra Long Grain Basmati), masalon ka balance (na zyada tez na pheeka), aur gosht ka galawat check karein.
+
+---
+
+### 5. Hygiene, Service Staff Aur Backup Planning
+
+- **Uniformed Catering Crew:** Waiters ki neat uniform, hairnets aur clean gloves catering standard ka aaina hotay hain.
+- **Emergency Reserve:** Hamesha 10% extra capacity ka reserve buffer plan karein taake achanak guests barhne par khana kam na paray.
+
+Watech Marketplace par tamam verified Pakwan Centers, Live BBQ caterers aur Restaurants ke menu rates aur customer reviews direct WhatsApp inquiry ke sath dastiyab hain.
     `,
   },
 

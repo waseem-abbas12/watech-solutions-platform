@@ -47,7 +47,7 @@ export default function ServicesPage() {
       icon: Megaphone,
       badge: "Organic Reach",
       title: "Social Media Marketing",
-      description: "Organic content creation, video reels, and brand authority campaigns for Real Estate, Chinioti furniture, and banquets.",
+      description: "Organic content creation, video reels, and brand authority campaigns for Real Estate, Chinioti furniture, and food & catering businesses.",
       points: ["High-converting video reels", "Creative visual storytelling", "Audience retargeting & growth"],
     },
     {
@@ -436,7 +436,7 @@ export default function ServicesPage() {
                   >
                     <option value="Real Estate">Real Estate / Housing</option>
                     <option value="Furniture">Chinioti Wood / Furniture Maker</option>
-                    <option value="Events & Catering">Banquet Hall / Event Organizer</option>
+                    <option value="Food & Catering">Food & Catering (Restaurants, Pakwan, Live BBQ, Bakers)</option>
                     <option value="Retail & E-Commerce">Retail & E-Commerce Store</option>
                     <option value="Professional Services">Professional Services</option>
                     <option value="Other">Other Industry</option>
