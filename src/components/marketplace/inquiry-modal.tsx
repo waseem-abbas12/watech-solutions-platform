@@ -90,28 +90,31 @@ export const InquiryModal = ({ isOpen, onClose, item }: InquiryModalProps) => {
         category: item.category,
       });
 
-      // 3. Trigger n8n webhook (if configured) or fallback
+      // 3. Trigger lead capture & workflow automation engine
       try {
-        const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
-        if (webhookUrl) {
-          await fetch(webhookUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              leadId,
-              leadName: name,
-              leadPhone: phone,
-              category: item.category,
-              itemId: item.id,
-              itemTitle: item.title,
-              message,
-              partnerPhone: item.partnerPhone,
-              timestamp: new Date().toISOString(),
-            }),
-          });
-        }
+        const webhookUrl =
+          process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL &&
+          !process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL.includes("onrender.com")
+            ? process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL
+            : "/api/leads/capture";
+
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            leadId,
+            leadName: name,
+            leadPhone: phone,
+            category: item.category,
+            itemId: item.id,
+            itemTitle: item.title,
+            message,
+            partnerPhone: item.partnerPhone,
+            timestamp: new Date().toISOString(),
+          }),
+        });
       } catch (webhookErr) {
-        console.warn("n8n webhook notification silent fail/not set", webhookErr);
+        console.warn("Lead capture engine fallback:", webhookErr);
       }
 
       setIsSuccess(true);

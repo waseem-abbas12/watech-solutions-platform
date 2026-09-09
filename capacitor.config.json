@@ -1,4 +1,4 @@
-﻿{
+{
   "appId": "com.watechsolutions.app",
   "appName": "Watech Solutions",
   "webDir": "public",
@@ -10,9 +10,7 @@
       "watech-solutions-platform-eight.vercel.app",
       "*.vercel.app",
       "*.firebaseapp.com",
-      "*.googleapis.com",
-      "wa.me",
-      "api.whatsapp.com"
+      "*.googleapis.com"
     ]
   },
   "android": {

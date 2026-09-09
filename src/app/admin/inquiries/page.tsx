@@ -31,8 +31,18 @@ import { collection, getDocs } from "firebase/firestore";
 export default function AdminInquiriesPage() {
   const [inquiries, setInquiries] = useState<InquiryItem[]>(INITIAL_INQUIRIES);
 
-  // Sync inquiries from website submissions (local cache + Firestore)
+  // Sync inquiries from website submissions (Server API + local cache + Firestore)
   useEffect(() => {
+    // 0. Fetch live inquiries from server API endpoint
+    fetch("/api/inquiries")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.inquiries) && data.inquiries.length > 0) {
+          setInquiries(data.inquiries);
+        }
+      })
+      .catch(() => {});
+
     // 1. Sync local cached leads submitted from website
     const cached = getLocalCachedLeads();
     if (cached.length > 0) {
