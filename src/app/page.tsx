@@ -513,6 +513,98 @@ export default function HomePage() {
       </section>
 
       {/* =========================================
+          PROMINENT FOUNDER & CEO LEADERSHIP SHOWCASE
+          ========================================= */}
+      <section className="w-full py-24 px-6 bg-slate-950 text-white relative overflow-hidden border-b border-slate-800">
+        {/* Ambient Glow */}
+        <div className="absolute top-1/3 left-10 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left: Founder Portrait Card */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative group max-w-sm w-full">
+                <div className="absolute -inset-2 bg-gradient-to-tr from-[#0066FF] via-cyan-400 to-[#16A34A] rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition duration-500" />
+                <div className="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 shadow-2xl">
+                  <Image
+                    src="/images/founder-waseem-abbas.jpg"
+                    alt="Waseem Abbas - Founder & CEO of WATECH Solutions"
+                    width={400}
+                    height={500}
+                    className="w-full h-auto object-cover object-top transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent p-5 text-center">
+                    <h4 className="text-xl font-black text-white tracking-tight">Waseem Abbas</h4>
+                    <p className="text-xs text-blue-400 font-mono tracking-wider uppercase mt-0.5">
+                      Founder & Chief Executive Officer
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Message & Authority Credentials */}
+            <div className="lg:col-span-7 space-y-6 text-left">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-400 text-xs font-bold uppercase tracking-wider">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Executive Leadership · Founder's Note</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                  "Personal Accountability on Every Deal & Partnership."
+                </h2>
+              </div>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                Welcome to <strong>WATECH Solutions</strong>. In an era where online business is often faceless and transactional, we built WATECH to bring personal trust and tangible results back to Pakistan's biggest sectors.
+              </p>
+
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                Whether you are investing in a verified residential plot in DHA Lahore, commissioning hand-carved pure Sheesham furniture from our master artisans in Chiniot, or hiring our digital marketing agency to generate scalable business leads — you deal with an organization built on authenticity, precision, and verified results.
+              </p>
+
+              {/* 3 Executive Pillars */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-2">
+                <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                  <div className="text-2xl font-black text-white">100%</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">Verified Deals & Contracts</div>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                  <div className="text-2xl font-black text-[#0066FF]">17+ Yrs</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">On-Ground Heritage</div>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 col-span-2 sm:col-span-1">
+                  <div className="text-2xl font-black text-emerald-400">&lt; 30s</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">Direct WhatsApp Response</div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4 pt-3">
+                <a
+                  href="https://wa.me/923270831470"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-[#0066FF] text-white text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-all shadow-xl shadow-blue-600/30 hover:scale-105"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Direct WhatsApp with Founder</span>
+                </a>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-slate-900 text-slate-200 hover:text-white hover:bg-slate-800 text-xs font-bold uppercase tracking-wider transition-all border border-slate-700 hover:scale-105"
+                >
+                  <span>Read Full Vision & Story</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
           SOCIAL MEDIA BANNER
           ========================================= */}
       <section className="w-full py-12 px-6 bg-slate-50">

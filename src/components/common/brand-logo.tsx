@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import Image from "next/image";
 
 interface BrandLogoProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -9,76 +10,35 @@ interface BrandLogoProps {
 }
 
 const SIZE_MAP = {
-  xs: { box: "w-7 h-7", text: "text-lg", sub: "text-[9px]" },
-  sm: { box: "w-9 h-9", text: "text-xl", sub: "text-[10px]" },
-  md: { box: "w-11 h-11", text: "text-2xl", sub: "text-xs" },
+  xs: { box: "w-7 h-7", text: "text-base", sub: "text-[8px]" },
+  sm: { box: "w-9 h-9", text: "text-lg", sub: "text-[9px]" },
+  md: { box: "w-11 h-11", text: "text-2xl", sub: "text-[10px]" },
   lg: { box: "w-14 h-14", text: "text-3xl", sub: "text-xs" },
   xl: { box: "w-20 h-20", text: "text-4xl", sub: "text-sm" },
 };
 
-export const BrandMark = ({ className = "w-10 h-10" }: { className?: string }) => {
+export const BrandMark = ({
+  className = "w-10 h-10",
+  isDark = false,
+}: {
+  className?: string;
+  isDark?: boolean;
+}) => {
   return (
-    <svg
-      viewBox="0 0 512 512"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${className} shrink-0 transition-transform duration-300 group-hover:scale-105`}
+    <div
+      className={`relative ${className} shrink-0 rounded-2xl overflow-hidden flex items-center justify-center ${
+        isDark ? "bg-white p-1" : "bg-transparent"
+      } transition-transform duration-300 group-hover:scale-105`}
     >
-      <defs>
-        <linearGradient id="wmBg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#090D16" />
-          <stop offset="50%" stopColor="#0F172A" />
-          <stop offset="100%" stopColor="#070B14" />
-        </linearGradient>
-        <linearGradient id="wmBorder" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8" />
-          <stop offset="50%" stopColor="#10B981" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#F97316" stopOpacity="0.7" />
-        </linearGradient>
-        <linearGradient id="wmBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#60A5FA" />
-          <stop offset="100%" stopColor="#2563EB" />
-        </linearGradient>
-        <linearGradient id="wmGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#34D399" />
-          <stop offset="100%" stopColor="#059669" />
-        </linearGradient>
-        <linearGradient id="wmOrange" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FB923C" />
-          <stop offset="100%" stopColor="#EA580C" />
-        </linearGradient>
-        <filter id="wmGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="16" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-
-      {/* Badge Shell */}
-      <rect
-        x="24"
-        y="24"
-        width="464"
-        height="464"
-        rx="120"
-        ry="120"
-        fill="url(#wmBg)"
-        stroke="url(#wmBorder)"
-        strokeWidth="12"
+      <Image
+        src="/images/watech-mark-transparent.png"
+        alt="WATECH Official Logo"
+        width={80}
+        height={80}
+        className="w-full h-full object-contain"
+        priority
       />
-
-      {/* Geometric W Monogram */}
-      <path d="M 120 160 L 175 160 L 215 320 L 170 320 Z" fill="url(#wmBlue)" />
-      <path d="M 170 320 L 215 320 L 256 200 L 222 200 Z" fill="#38BDF8" opacity={0.95} />
-      <path d="M 256 200 L 290 200 L 332 320 L 288 320 Z" fill="url(#wmGreen)" />
-      <path d="M 288 320 L 332 320 L 392 160 L 338 160 Z" fill="url(#wmOrange)" />
-
-      {/* Innovation Star Dot */}
-      <path
-        d="M 388 120 Q 388 140 408 140 Q 388 140 388 160 Q 388 140 368 140 Q 388 140 388 120 Z"
-        fill="#38BDF8"
-        filter="url(#wmGlow)"
-      />
-    </svg>
+    </div>
   );
 };
 
@@ -93,17 +53,21 @@ export const BrandLogo = ({
 
   return (
     <div className={`flex items-center gap-2.5 group select-none ${className}`}>
-      <BrandMark className={conf.box} />
+      <BrandMark className={conf.box} isDark={isDark} />
 
       {showText && (
         <div className="flex items-center gap-2">
-          <span
-            className={`font-black tracking-tight ${conf.text} ${
-              isDark ? "text-white" : "text-slate-900"
-            } transition-colors`}
-          >
-            WATECH<span className="text-[#2563EB]">.</span>
-          </span>
+          <div className="flex flex-col text-left">
+            <span
+              className={`font-black tracking-tight leading-none ${conf.text} transition-colors`}
+            >
+              <span className="text-[#0066FF]">WA</span>
+              <span className={isDark ? "text-white" : "text-slate-900"}>TECH</span>
+            </span>
+            <span className="text-[8px] font-bold tracking-wider uppercase text-slate-400 mt-0.5">
+              AI & Marketing
+            </span>
+          </div>
           {showBadge && (
             <span
               className={`hidden sm:inline-flex items-center px-2 py-0.5 rounded-md font-semibold uppercase tracking-widest ${conf.sub} ${
