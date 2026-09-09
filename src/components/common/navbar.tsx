@@ -11,12 +11,23 @@ export const Navbar = () => {
   const pathname = usePathname();
 
   const navLinks = [
-    { name: "About", href: "/about", accent: "hover:text-[#2563EB]" },
-    { name: "Services", href: "/services", accent: "hover:text-[#2563EB]" },
+    { name: "Home", href: "/", accent: "hover:text-slate-900" },
     { name: "Marketplace", href: "/marketplace", accent: "hover:text-[#16A34A]" },
-    { name: "Partners", href: "/partners", accent: "hover:text-[#EA580C]" },
+    { name: "Digital Services", href: "/services", accent: "hover:text-[#2563EB]" },
     { name: "Blog", href: "/blog", accent: "hover:text-[#2563EB]" },
+    { name: "Partners", href: "/partners", accent: "hover:text-[#EA580C]" },
+    { name: "About", href: "/about", accent: "hover:text-[#2563EB]" },
+    { name: "Contact", href: "/services#contact", accent: "hover:text-[#2563EB]" },
   ];
+
+  const checkIsActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    if (href.includes("#")) {
+      const base = href.split("#")[0];
+      return pathname === base;
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all">
@@ -32,27 +43,30 @@ export const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
           {navLinks.map((link) => {
-            const isActive = pathname.startsWith(link.href);
+            const isActive = checkIsActive(link.href);
             return (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
+                className={`text-sm font-medium transition-colors relative py-1 ${
                   isActive
-                    ? "text-slate-900 font-semibold"
+                    ? "text-slate-900 font-bold"
                     : "text-slate-600 " + link.accent
                 }`}
               >
                 {link.name}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2563EB] rounded-full" />
+                )}
               </Link>
             );
           })}
         </nav>
 
         {/* CTA Button */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4">
           <Link
             href="/services#contact"
             className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-semibold tracking-wide uppercase rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all hover:shadow-md"
@@ -65,7 +79,7 @@ export const Navbar = () => {
         {/* Mobile Hamburger Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-slate-700 hover:text-slate-900 focus:outline-none"
+          className="lg:hidden p-2 text-slate-700 hover:text-slate-900 focus:outline-none"
           aria-label="Toggle navigation menu"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -79,24 +93,34 @@ export const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-slate-100 bg-white px-6 py-6 shadow-lg overflow-hidden"
+            className="lg:hidden border-b border-slate-100 bg-white px-6 py-6 shadow-lg overflow-hidden"
           >
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-lg font-medium text-slate-800 hover:text-[#2563EB] transition-colors py-1"
-                >
-                  {link.name}
-                </Link>
-              ))}
+            <div className="flex flex-col gap-3">
+              {navLinks.map((link) => {
+                const isActive = checkIsActive(link.href);
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`text-base font-medium transition-colors py-2 flex items-center justify-between ${
+                      isActive
+                        ? "text-[#2563EB] font-bold"
+                        : "text-slate-800 hover:text-[#2563EB]"
+                    }`}
+                  >
+                    <span>{link.name}</span>
+                    {isActive && (
+                      <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
+                    )}
+                  </Link>
+                );
+              })}
               <div className="pt-4 border-t border-slate-100">
                 <Link
                   href="/services#contact"
                   onClick={() => setIsOpen(false)}
-                  className="block w-full text-center py-3 px-6 rounded-full bg-[#2563EB] text-white font-medium text-sm hover:bg-blue-700 transition-colors"
+                  className="block w-full text-center py-3 px-6 rounded-full bg-[#2563EB] text-white font-semibold text-xs uppercase tracking-wider hover:bg-blue-700 transition-colors shadow-md"
                 >
                   Get in Touch
                 </Link>
