@@ -191,6 +191,161 @@ export default function HomePage() {
       </section>
 
       {/* =========================================
+          DOMINANT 3-GATEWAY SPECIALIZED PORTALS NAVIGATOR (ZERO COMPLEXITY)
+          ========================================= */}
+      <section className="w-full py-16 px-4 sm:px-6 lg:px-8 bg-slate-900 border-b border-slate-800 relative z-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-wider mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+              <span>Zero-Confusion Navigation · 3 Dedicated Portals</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              Aap Aaj Kis Sector Mein Dakhil Hona Chahte Hain?
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 mt-2">
+              Complexity khatam! Har niche ke liye mukammal dedicated website banayi gayi hai taake aap asani se explore kar sakein:
+            </p>
+          </div>
+
+          {/* 3 Gateway Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* 1. Real Estate Portal */}
+            <div className="bg-slate-950 rounded-3xl p-6 sm:p-7 border border-emerald-500/30 hover:border-emerald-500 transition-all hover:shadow-2xl hover:shadow-emerald-950/50 flex flex-col justify-between group">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                    <Building2 className="w-6 h-6" />
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
+                    Dedicated Portal
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+                  WATECH Real Estate
+                </h3>
+                <p className="text-xs text-slate-400 mb-5 leading-relaxed">
+                  Punjab & Chiniot ke 100% verified luxury bungalows, investment plots, commercial plazas aur installment schemes.
+                </p>
+
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Registry & Intiqal 100% Checked</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Area & Construction Cost Calculator</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Direct Owner / Agent WhatsApp Verification</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href="/real-estate"
+                className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2 group/btn"
+              >
+                <span>Explore Real Estate Website</span>
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            {/* 2. Furniture Portal */}
+            <div className="bg-slate-950 rounded-3xl p-6 sm:p-7 border border-amber-500/30 hover:border-amber-500 transition-all hover:shadow-2xl hover:shadow-amber-950/50 flex flex-col justify-between group">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+                    <Sofa className="w-6 h-6" />
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-bold uppercase tracking-wider">
+                    Dedicated Showroom
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
+                  Chiniot Royal Furniture
+                </h3>
+                <p className="text-xs text-slate-400 mb-5 leading-relaxed">
+                  Asal Chinioti Sheesham lakri ke bridal bedroom sets, hand-carved sofas, dining tables aur custom wooden orders.
+                </p>
+
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>100% Seasoned Pure Sheesham Wood</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Custom Furniture Order Builder Tool</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Direct Factory Pricing (Zero Middleman)</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href="/furniture"
+                className="w-full py-3.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2 group/btn"
+              >
+                <span>Explore Furniture Showroom</span>
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            {/* 3. Agency Portal */}
+            <div className="bg-slate-950 rounded-3xl p-6 sm:p-7 border border-blue-500/30 hover:border-blue-500 transition-all hover:shadow-2xl hover:shadow-blue-950/50 flex flex-col justify-between group">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                    <Rocket className="w-6 h-6" />
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-wider">
+                    Dedicated Agency
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                  WATECH AI & Digital Agency
+                </h3>
+                <p className="text-xs text-slate-400 mb-5 leading-relaxed">
+                  Pakistani businesses ke liye high-converting Meta Ads, Google Ads, Next.js web platforms aur WhatsApp AI automation.
+                </p>
+
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
+                    <span>3.8x+ Average Verified ROAS</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
+                    <span>Live Ad Spend & ROI Calculator</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
+                    <span>Free 20-Min Growth Strategy Audit</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href="/agency"
+                className="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 group/btn"
+              >
+                <span>Explore Agency Website</span>
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
           SMART INTERACTIVE SALES FUNNEL CONCIERGE (5 VISIBLE TILES)
           ========================================= */}
       <SmartSalesFunnel />
