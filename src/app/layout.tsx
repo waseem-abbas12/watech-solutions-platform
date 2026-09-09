@@ -61,6 +61,9 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "Watech",
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "google-site-verification-watech",
+  },
 };
 
 export const viewport: Viewport = {
@@ -78,7 +81,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        {/* Global Organization & WebSite JSON-LD Structured Data */}
+        {/* Global Organization, LocalBusiness (GMB Rank Booster) & WebSite JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -86,28 +89,65 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@graph": [
                 {
-                  "@type": "Organization",
+                  "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
                   "@id": `${siteUrl}/#organization`,
-                  name: "WATECH Solutions",
+                  name: "WATECH Solutions - Growth Ecosystem",
+                  alternateName: "Watech Solutions Platform",
                   url: siteUrl,
                   logo: {
                     "@type": "ImageObject",
                     url: `${siteUrl}/favicon.ico`,
                   },
+                  image: `${siteUrl}/favicon.ico`,
                   description:
-                    "Pakistan's multi-sector growth ecosystem connecting Real Estate, Chinioti furniture, and signature events with technology.",
+                    "Pakistan's premier multi-sector growth ecosystem combining Real Estate properties, authentic handcrafted Chinioti Sheesham furniture, Food & Catering, and high-performance digital services & AI automation.",
                   email: "waseem000094@gmail.com",
                   telephone: "+923270831470",
+                  priceRange: "PKR",
+                  currenciesAccepted: "PKR",
+                  paymentAccepted: "Cash, Bank Transfer, JazzCash, EasyPaisa",
+                  address: {
+                    "@type": "PostalAddress",
+                    streetAddress: "Katchery Road / Main Market",
+                    addressLocality: "Chiniot",
+                    addressRegion: "Punjab",
+                    postalCode: "35400",
+                    addressCountry: "PK",
+                  },
+                  geo: {
+                    "@type": "GeoCoordinates",
+                    latitude: 31.7200,
+                    longitude: 72.9789,
+                  },
+                  openingHoursSpecification: [
+                    {
+                      "@type": "OpeningHoursSpecification",
+                      dayOfWeek: [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                      ],
+                      opens: "09:00",
+                      closes: "21:00",
+                    },
+                  ],
+                  areaServed: [
+                    { "@type": "City", name: "Chiniot" },
+                    { "@type": "City", name: "Lahore" },
+                    { "@type": "City", name: "Faisalabad" },
+                    { "@type": "City", name: "Islamabad" },
+                    { "@type": "City", name: "Rawalpindi" },
+                    { "@type": "City", name: "Karachi" },
+                    { "@type": "Country", name: "Pakistan" },
+                  ],
                   sameAs: [
                     "https://wa.me/923270831470",
                     "https://waseemabbas.online",
+                    "https://www.waseemabbas.online",
                   ],
-                  address: {
-                    "@type": "PostalAddress",
-                    addressLocality: "Lahore",
-                    addressRegion: "Punjab",
-                    addressCountry: "PK",
-                  },
                 },
                 {
                   "@type": "WebSite",
