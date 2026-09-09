@@ -21,6 +21,7 @@ import {
   Square,
   SlidersHorizontal,
   ExternalLink,
+  Upload,
 } from "lucide-react";
 import { INITIAL_PROPERTIES, PropertyItem } from "@/lib/firebase/admin-service";
 import { formatPKR, formatDate } from "@/lib/utils/formatters";
@@ -172,6 +173,28 @@ export default function AdminPropertiesPage() {
       images: (prop.images || []).join(", "),
     });
     setIsModalOpen(true);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        const result = uploadEvent.target?.result as string;
+        if (result) {
+          setFormData((prev) => {
+            const current = prev.images ? prev.images.split(",").map((s) => s.trim()).filter(Boolean) : [];
+            return {
+              ...prev,
+              images: [...current, result].join(", "),
+            };
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleSaveProperty = (e: React.FormEvent) => {
@@ -747,16 +770,42 @@ export default function AdminPropertiesPage() {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">
-                  Image URLs (comma separated)
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-slate-300 font-bold">
+                    Property Photos & Media
+                  </label>
+                  <label className="cursor-pointer text-[11px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1 bg-blue-500/10 px-2 py-1 rounded-lg border border-blue-500/20">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload from Device</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
                 <input
                   type="text"
                   placeholder="/images/properties/prop1.jpg, /images/properties/prop2.jpg"
                   value={formData.images}
                   onChange={(e) => setFormData({ ...formData, images: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 text-xs font-mono"
                 />
+                {formData.images && (
+                  <div className="flex gap-2 mt-2 overflow-x-auto pb-1">
+                    {formData.images
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                      .map((imgUrl, idx) => (
+                        <div key={idx} className="relative w-12 h-12 rounded-lg border border-slate-700 overflow-hidden shrink-0 bg-slate-950">
+                          <img src={imgUrl} alt="preview" className="w-full h-full object-cover" />
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
 
               <div>

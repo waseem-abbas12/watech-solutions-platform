@@ -115,6 +115,82 @@ export default function ItemDetailPage() {
   };
 
   // ----------------------------------------------------
+  // GENERATE SCHEMA.ORG JSON-LD STRUCTURED DATA
+  // ----------------------------------------------------
+  const jsonLd = React.useMemo(() => {
+    if (!item) return null;
+    const siteUrl = "https://watech-solutions-platform-eight.vercel.app";
+    const currentUrl = `${siteUrl}/marketplace/${category}/${id}`;
+
+    if (type === "property") {
+      const p = item as PropertyItem;
+      return {
+        "@context": "https://schema.org",
+        "@type": "SingleFamilyResidence",
+        name: p.title,
+        description: p.description,
+        image: p.image,
+        url: currentUrl,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: p.city,
+          addressRegion: p.location,
+          addressCountry: "PK",
+        },
+        numberOfRooms: p.beds,
+        numberOfBathroomsTotal: p.baths,
+        offers: {
+          "@type": "Offer",
+          price: p.price,
+          priceCurrency: "PKR",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (type === "furniture") {
+      const f = item as FurnitureItem;
+      return {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: f.name,
+        description: f.description,
+        image: f.image,
+        url: currentUrl,
+        brand: {
+          "@type": "Brand",
+          name: "Chiniot Handcrafted Woodcraft",
+        },
+        material: `${f.woodType} Solid Wood`,
+        offers: {
+          "@type": "Offer",
+          price: f.price,
+          priceCurrency: "PKR",
+          availability: "https://schema.org/InStock",
+          itemCondition: "https://schema.org/NewCondition",
+        },
+      };
+    } else if (type === "event") {
+      const e = item as EventItem;
+      return {
+        "@context": "https://schema.org",
+        "@type": "FoodEstablishment",
+        name: e.title,
+        description: e.description,
+        image: e.image,
+        url: currentUrl,
+        servesCuisine: e.menuType,
+        priceRange: `PKR ${e.packagePrice} / head`,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: e.city,
+          streetAddress: e.venue,
+          addressCountry: "PK",
+        },
+      };
+    }
+    return null;
+  }, [type, item, category, id]);
+
+  // ----------------------------------------------------
   // RENDER PROPERTY DETAIL
   // ----------------------------------------------------
   if (type === "property") {
@@ -123,6 +199,12 @@ export default function ItemDetailPage() {
 
     return (
       <div className="w-full bg-white text-slate-900 selection:bg-[#2563EB] selection:text-white pb-24">
+        {jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
         {/* Inquiry Modal */}
         <InquiryModal
           isOpen={isInquiryModalOpen}
@@ -470,6 +552,12 @@ export default function ItemDetailPage() {
 
     return (
       <div className="w-full bg-white text-slate-900 selection:bg-[#16A34A] selection:text-white pb-24">
+        {jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
         {/* Inquiry Modal */}
         <InquiryModal
           isOpen={isInquiryModalOpen}
@@ -692,6 +780,12 @@ export default function ItemDetailPage() {
 
     return (
       <div className="w-full bg-white text-slate-900 selection:bg-[#EA580C] selection:text-white pb-24">
+        {jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
         {/* Inquiry Modal */}
         <InquiryModal
           isOpen={isInquiryModalOpen}

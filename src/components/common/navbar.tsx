@@ -13,6 +13,7 @@ export const Navbar = () => {
   const navLinks = [
     { name: "Home", href: "/", accent: "hover:text-slate-900" },
     { name: "Marketplace", href: "/marketplace", accent: "hover:text-[#16A34A]" },
+    { name: "Track Status", href: "/track", accent: "hover:text-[#16A34A]" },
     { name: "Digital Services", href: "/services", accent: "hover:text-[#2563EB]" },
     { name: "Blog", href: "/blog", accent: "hover:text-[#2563EB]" },
     { name: "Partners", href: "/partners", accent: "hover:text-[#EA580C]" },

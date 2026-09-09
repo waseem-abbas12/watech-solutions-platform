@@ -1,5 +1,10 @@
 ﻿import { MetadataRoute } from "next";
-import { INITIAL_BLOG_POSTS } from "@/lib/mock-data";
+import {
+  INITIAL_BLOG_POSTS,
+  INITIAL_PROPERTIES,
+  INITIAL_FURNITURE,
+  INITIAL_EVENTS,
+} from "@/lib/mock-data";
 import { DIGITAL_SERVICES } from "@/lib/services-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -36,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/marketplace/events`,
+      url: `${baseUrl}/marketplace/food-catering`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.85,
@@ -55,6 +60,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/partners`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/track`,
       lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.8,
@@ -83,5 +94,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...blogRoutes];
+  // Marketplace Real Estate Detail Routes
+  const propertyRoutes: MetadataRoute.Sitemap = INITIAL_PROPERTIES.map((prop) => ({
+    url: `${baseUrl}/marketplace/properties/${prop.id}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  // Marketplace Furniture Detail Routes
+  const furnitureRoutes: MetadataRoute.Sitemap = INITIAL_FURNITURE.map((furn) => ({
+    url: `${baseUrl}/marketplace/furniture/${furn.id}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  // Marketplace Food & Catering Detail Routes
+  const foodRoutes: MetadataRoute.Sitemap = INITIAL_EVENTS.map((food) => ({
+    url: `${baseUrl}/marketplace/food-catering/${food.id}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...serviceRoutes,
+    ...blogRoutes,
+    ...propertyRoutes,
+    ...furnitureRoutes,
+    ...foodRoutes,
+  ];
 }

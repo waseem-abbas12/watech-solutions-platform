@@ -28,6 +28,9 @@ import {
   EventItem,
 } from "@/lib/mock-data";
 import { InquiryModal, ModalItemDetails } from "@/components/marketplace/inquiry-modal";
+import { PropertyCalculatorModal } from "@/components/marketplace/property-calculator-modal";
+import { CateringCalculatorModal } from "@/components/marketplace/catering-calculator-modal";
+import { Calculator } from "lucide-react";
 
 function formatPKR(num: number): string {
   if (num >= 10000000) {
@@ -118,6 +121,10 @@ function MarketplaceContent() {
   // Inquiry Modal State
   const [modalItem, setModalItem] = useState<ModalItemDetails | null>(null);
 
+  // Conversion Calculator States
+  const [isPropertyCalcOpen, setIsPropertyCalcOpen] = useState(false);
+  const [isCateringCalcOpen, setIsCateringCalcOpen] = useState(false);
+
   // ----------------------------------------------------
   // Filtered Lists & Grouped Search Counts
   // ----------------------------------------------------
@@ -188,6 +195,18 @@ function MarketplaceContent() {
         isOpen={!!modalItem}
         onClose={() => setModalItem(null)}
         item={modalItem}
+      />
+
+      {/* Property Conversion Calculator Modal */}
+      <PropertyCalculatorModal
+        isOpen={isPropertyCalcOpen}
+        onClose={() => setIsPropertyCalcOpen(false)}
+      />
+
+      {/* Catering Conversion Calculator Modal */}
+      <CateringCalculatorModal
+        isOpen={isCateringCalcOpen}
+        onClose={() => setIsCateringCalcOpen(false)}
       />
 
       {/* Header Banner */}
@@ -367,6 +386,26 @@ function MarketplaceContent() {
                   className="w-full accent-[#16A34A] cursor-pointer"
                 />
               </div>
+            </div>
+
+            {/* Interactive Calculator Quick Launch Card */}
+            <div className="bg-gradient-to-r from-emerald-950 to-slate-900 text-white rounded-2xl p-5 border border-emerald-800/40 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                  <Calculator className="w-5 h-5 text-[#16A34A]" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm sm:text-base text-white">Marla Converter & Construction Cost Estimator</h3>
+                  <p className="text-xs text-slate-300">Convert Marla/Sq Ft (Lahore vs Islamabad standard) and estimate grey vs finished building cost in PKR</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsPropertyCalcOpen(true)}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#16A34A] hover:bg-emerald-600 text-white font-bold text-xs tracking-wider uppercase transition-all shadow-md shrink-0 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Open Calculator</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
 
             {/* Properties Grid */}
@@ -671,6 +710,26 @@ function MarketplaceContent() {
                   className="w-full accent-[#16A34A] cursor-pointer"
                 />
               </div>
+            </div>
+
+            {/* Interactive Food & Catering Calculator Quick Launch Card */}
+            <div className="bg-gradient-to-r from-emerald-950 to-slate-900 text-white rounded-2xl p-5 border border-emerald-800/40 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                  <Calculator className="w-5 h-5 text-[#16A34A]" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm sm:text-base text-white">Event Catering & Daig Budget Estimator</h3>
+                  <p className="text-xs text-slate-300">Calculate instant per-head & daig costs for Biryani, Qorma, BBQ, staffing, and event buffers</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsCateringCalcOpen(true)}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#16A34A] hover:bg-emerald-600 text-white font-bold text-xs tracking-wider uppercase transition-all shadow-md shrink-0 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Estimate Budget</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
 
             {/* Food & Catering Grid */}
