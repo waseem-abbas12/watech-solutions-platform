@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, MessageSquare, CheckCircle2 } from "lucide-react";
 import { submitInquiry } from "@/lib/firebase/client";
+import { createLead } from "@/lib/services/leads";
 
 export interface ModalItemDetails {
   id: string;
@@ -25,6 +26,7 @@ export const InquiryModal = ({ isOpen, onClose, item }: InquiryModalProps) => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [generatedLeadId, setGeneratedLeadId] = useState<string>("");
 
   useEffect(() => {
     if (item) {
@@ -38,6 +40,7 @@ export const InquiryModal = ({ isOpen, onClose, item }: InquiryModalProps) => {
         `Assalam-o-Alaikum, I am interested in this ${categoryName}: "${item.title}" (${item.priceFormatted}). Please share further availability and details.`
       );
       setIsSuccess(false);
+      setGeneratedLeadId("");
     }
   }, [item]);
 
@@ -49,17 +52,45 @@ export const InquiryModal = ({ isOpen, onClose, item }: InquiryModalProps) => {
 
     setIsSubmitting(true);
     try {
-      // 1. Store in Firebase inquiries
+      const leadCategory =
+        item.category === "property"
+          ? "real_estate"
+          : item.category === "furniture"
+          ? "furniture"
+          : "events";
+
+      // 1. Create official Tracked Lead in Master System
+      const leadRes = await createLead({
+        customerName: name,
+        phone,
+        whatsapp: phone,
+        category: leadCategory,
+        listingId: item.id,
+        listingTitle: item.title,
+        partnerPhone: item.partnerPhone,
+        source:
+          item.category === "property"
+            ? "property_inquiry"
+            : item.category === "furniture"
+            ? "furniture_inquiry"
+            : "event_inquiry",
+        notes: message,
+      });
+
+      const leadId = leadRes.leadId;
+      setGeneratedLeadId(leadId);
+
+      // 2. Store in Firebase inquiries
       await submitInquiry({
         name,
         phone,
         email: "",
-        serviceRequired: `${item.category.toUpperCase()}: ${item.title}`,
+        serviceRequired: `${item.category.toUpperCase()}: ${item.title} (Ref: ${leadId})`,
         message,
         category: item.category,
       });
 
-      // 2. Trigger n8n webhook (if configured) or fallback
+      // 3. Trigger n8n webhook (if configured) or fallback
       try {
         const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
         if (webhookUrl) {
@@ -67,6 +98,7 @@ export const InquiryModal = ({ isOpen, onClose, item }: InquiryModalProps) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+              leadId,
               leadName: name,
               leadPhone: phone,
               category: item.category,
@@ -84,16 +116,16 @@ export const InquiryModal = ({ isOpen, onClose, item }: InquiryModalProps) => {
 
       setIsSuccess(true);
 
-      // 3. Trigger direct WhatsApp notification / connection
+      // 4. Trigger direct WhatsApp notification / connection with Lead ID
       const encodedMsg = encodeURIComponent(
-        `New Inquiry from Watech Platform:\nLead Name: ${name}\nPhone: ${phone}\nItem: ${item.title} (${item.priceFormatted})\nMessage: ${message}`
+        `Assalam-o-Alaikum, I found this listing on Watech:\n• Item: "${item.title}" (${item.priceFormatted})\n• Ref ID: ${leadId}\n• Name: ${name}\n• Phone: ${phone}\n\n${message}`
       );
       const whatsappUrl = `https://wa.me/${item.partnerPhone}?text=${encodedMsg}`;
 
       setTimeout(() => {
         window.open(whatsappUrl, "_blank");
         onClose();
-      }, 1500);
+      }, 1800);
     } catch (err) {
       console.error(err);
     } finally {
@@ -135,6 +167,11 @@ export const InquiryModal = ({ isOpen, onClose, item }: InquiryModalProps) => {
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-bold text-slate-900">Inquiry Received!</h4>
+              {generatedLeadId && (
+                <div className="inline-block px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-slate-700">
+                  Lead Ref: <span className="text-[#16A34A]">{generatedLeadId}</span>
+                </div>
+              )}
               <p className="text-sm text-slate-600">
                 Opening WhatsApp to connect you directly with the verified partner...
               </p>

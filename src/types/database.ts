@@ -238,3 +238,88 @@ export interface WhatsAppMessageDocument {
   timestamp: FirestoreDate;
   direction: MessageDirection;
 }
+
+// ====================================================
+// WATECH MASTER PLATFORM EXTENSIONS (SECTIONS 4, 9, 10, 12, 13)
+// ====================================================
+
+export type LeadStatus = "new" | "contacted" | "negotiating" | "won" | "lost" | "invalid";
+
+export type LeadSource =
+  | "whatsapp"
+  | "call"
+  | "inquiry_form"
+  | "request_quote"
+  | "property_inquiry"
+  | "furniture_inquiry"
+  | "event_inquiry"
+  | "agency_consultation";
+
+export interface LeadRecord {
+  id: string; // Formatted LEAD-YYYY-XXXX
+  customerName: string;
+  phone: string;
+  whatsapp?: string;
+  email?: string;
+  category: "real_estate" | "furniture" | "events" | "digital_services" | "general";
+  listingId?: string;
+  listingTitle?: string;
+  partnerId?: string;
+  partnerPhone?: string;
+  source: LeadSource;
+  status: LeadStatus;
+  notes?: string;
+  budget?: string;
+  requiredService?: string;
+  city?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface DigitalServiceLeadInput {
+  businessName: string;
+  ownerName: string;
+  whatsappNumber: string;
+  city: string;
+  businessCategory: string;
+  website?: string;
+  socialMedia?: string;
+  requiredService: string;
+  monthlyBudget: string;
+  message: string;
+}
+
+export type PartnerVerificationStatus = "pending" | "verified" | "rejected" | "suspended";
+
+export interface MasterPartnerProfile {
+  uid: string;
+  businessName: string;
+  ownerName: string;
+  category: "Real Estate" | "Chinioti Furniture" | "Events & Catering";
+  subcategory?: string;
+  city: string;
+  area?: string;
+  address?: string;
+  whatsapp: string;
+  phone: string;
+  email: string;
+  facebook?: string;
+  instagram?: string;
+  website?: string;
+  logo?: string;
+  coverImage?: string;
+  description?: string;
+  services?: string[];
+  priceRange?: string;
+  verificationStatus: PartnerVerificationStatus;
+  verifiedBadge: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CommissionConfig {
+  type: "percentage" | "fixed";
+  value: number; // e.g. 1.5 for 1.5% or 5000 for PKR 5000
+  updatedAt: string;
+}
+
