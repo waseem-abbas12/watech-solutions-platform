@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
+    const n8nWebhookUrl = process.env.N8N_WHATSAPP_WEBHOOK_URL;
 
     // Asynchronously forward to n8n workflow if configured
     if (n8nWebhookUrl) {
