@@ -14,8 +14,8 @@ import {
   Menu,
   X,
   Building2,
-  Armchair,
-  Cake,
+  Sofa,
+  Utensils,
   TrendingUp,
   DollarSign,
   Clock,
@@ -32,13 +32,15 @@ import {
   Phone,
   Save,
 } from "lucide-react";
+import { getLocalCachedLeads, updateLeadStatus } from "@/lib/services/leads";
+import { LeadStatus } from "@/types/database";
 
 interface ListingItem {
   id: string;
   title: string;
   category: "Property" | "Furniture" | "Event";
   price: number;
-  status: "Active" | "Sold" | "Inactive";
+  status: "Active" | "Pending Approval" | "Sold" | "Inactive";
   views: number;
   inquiriesCount: number;
   createdAt: string;
@@ -51,7 +53,7 @@ interface InquiryRecord {
   buyerName: string;
   buyerPhone: string;
   message: string;
-  status: "New" | "Contacted" | "Closed";
+  status: "New" | "Contacted" | "Negotiating" | "Won" | "Lost" | "Invalid" | "Closed";
   date: string;
 }
 
@@ -81,6 +83,7 @@ export default function PartnerDashboard() {
     agencyName: "Al-Madina Real Estate & Builders",
     city: "Lahore",
     businessType: "Agent",
+    verificationStatus: "pending" as "pending" | "verified",
     password: "",
   });
 
@@ -91,25 +94,63 @@ export default function PartnerDashboard() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Load session from localStorage if available
+  // Load session & live leads from localStorage if available
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("watech_partner_session");
-      if (stored) {
+      // 1. Check newly registered partner profile
+      const newRegProfile = localStorage.getItem("watech_current_partner_profile");
+      if (newRegProfile) {
         try {
-          const parsed = JSON.parse(stored);
+          const parsed = JSON.parse(newRegProfile);
           setProfile((prev) => ({
             ...prev,
-            fullName: parsed.fullName || prev.fullName,
+            fullName: parsed.ownerName || prev.fullName,
             email: parsed.email || prev.email,
             phone: parsed.phone || prev.phone,
-            agencyName: parsed.agencyName || prev.agencyName,
+            agencyName: parsed.businessName || prev.agencyName,
             city: parsed.city || prev.city,
-            businessType: parsed.businessType || prev.businessType,
+            businessType: parsed.category || prev.businessType,
+            verificationStatus: parsed.verificationStatus || "pending",
           }));
         } catch {
           // Fallback
         }
+      }
+
+      // 2. Load live platform leads from lead engine
+      const liveLeads = getLocalCachedLeads();
+      if (liveLeads && liveLeads.length > 0) {
+        const mappedInquiries: InquiryRecord[] = liveLeads.map((l) => ({
+          id: l.id,
+          itemTitle: l.listingTitle || l.requiredService || "Platform Inquiry",
+          category:
+            l.category === "real_estate"
+              ? "Property"
+              : l.category === "furniture"
+              ? "Furniture"
+              : "Event",
+          buyerName: l.customerName,
+          buyerPhone: l.phone,
+          message: l.notes || "Customer requested details through Watech platform.",
+          status:
+            l.status === "new"
+              ? "New"
+              : l.status === "contacted"
+              ? "Contacted"
+              : l.status === "negotiating"
+              ? "Negotiating"
+              : l.status === "won"
+              ? "Won"
+              : l.status === "lost"
+              ? "Lost"
+              : "New",
+          date: l.createdAt ? new Date(l.createdAt).toLocaleDateString() : "Today",
+        }));
+
+        setInquiries((prev) => {
+          const ids = new Set(mappedInquiries.map((m) => m.id));
+          return [...mappedInquiries, ...prev.filter((p) => !ids.has(p.id))];
+        });
       }
     }
   }, []);
@@ -264,14 +305,22 @@ export default function PartnerDashboard() {
       title: newTitle,
       category: listingCategory,
       price: newPrice,
-      status: "Active",
+      status: "Pending Approval",
       views: 0,
       inquiriesCount: 0,
       createdAt: new Date().toISOString().split("T")[0],
     };
 
-    setListings([newListing, ...listings]);
-    showToast(`Success! New ${listingCategory} listing published to marketplace.`);
+    const updated = [newListing, ...listings];
+    setListings(updated);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("watech_partner_listings_cache", JSON.stringify(updated));
+      } catch {
+        // Fallback
+      }
+    }
+    showToast(`Success! New ${listingCategory} listing submitted for Admin Review (Pending Approval).`);
     setActiveSection("listings");
   };
 
@@ -296,11 +345,28 @@ export default function PartnerDashboard() {
     }
   };
 
-  const handleUpdateInquiryStatus = (id: string, newStatus: "New" | "Contacted" | "Closed") => {
+  const handleUpdateInquiryStatus = (
+    id: string,
+    newStatus: "New" | "Contacted" | "Negotiating" | "Won" | "Lost" | "Invalid" | "Closed"
+  ) => {
     setInquiries((prev) =>
       prev.map((inq) => (inq.id === id ? { ...inq, status: newStatus } : inq))
     );
-    showToast(`Inquiry status updated to ${newStatus}`);
+
+    // Sync with master lead service
+    const statusMap: Record<string, LeadStatus> = {
+      New: "new",
+      Contacted: "contacted",
+      Negotiating: "negotiating",
+      Won: "won",
+      Lost: "lost",
+      Invalid: "invalid",
+      Closed: "won",
+    };
+    if (statusMap[newStatus]) {
+      updateLeadStatus(id, statusMap[newStatus]);
+    }
+    showToast(`Lead status updated to ${newStatus}`);
   };
 
   const handleProfileSave = (e: React.FormEvent) => {
@@ -388,8 +454,17 @@ export default function PartnerDashboard() {
               <div className="overflow-hidden">
                 <h3 className="font-bold text-sm text-slate-900 truncate">{profile.agencyName}</h3>
                 <div className="flex items-center gap-1 mt-0.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  <span className="text-[11px] font-semibold text-emerald-600">Verified Partner</span>
+                  {profile.verificationStatus === "verified" ? (
+                    <>
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="text-[11px] font-semibold text-emerald-600">Verified Partner</span>
+                    </>
+                  ) : (
+                    <>
+                      <Clock className="w-3.5 h-3.5 text-amber-600" />
+                      <span className="text-[11px] font-semibold text-amber-600">Pending Verification</span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -1166,7 +1241,14 @@ export default function PartnerDashboard() {
                         onChange={(e) =>
                           handleUpdateInquiryStatus(
                             inq.id,
-                            e.target.value as "New" | "Contacted" | "Closed"
+                            e.target.value as
+                              | "New"
+                              | "Contacted"
+                              | "Negotiating"
+                              | "Won"
+                              | "Lost"
+                              | "Invalid"
+                              | "Closed"
                           )
                         }
                         className={`text-xs font-bold px-3 py-1.5 rounded-xl border cursor-pointer focus:outline-none ${
@@ -1174,12 +1256,19 @@ export default function PartnerDashboard() {
                             ? "bg-orange-50 border-orange-200 text-orange-700"
                             : inq.status === "Contacted"
                             ? "bg-blue-50 border-blue-200 text-blue-700"
-                            : "bg-emerald-50 border-emerald-200 text-emerald-700"
+                            : inq.status === "Negotiating"
+                            ? "bg-purple-50 border-purple-200 text-purple-700"
+                            : inq.status === "Won" || inq.status === "Closed"
+                            ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                            : "bg-slate-100 border-slate-200 text-slate-600"
                         }`}
                       >
                         <option value="New">New</option>
                         <option value="Contacted">Contacted</option>
-                        <option value="Closed">Closed</option>
+                        <option value="Negotiating">Negotiating</option>
+                        <option value="Won">Won (Closed)</option>
+                        <option value="Lost">Lost</option>
+                        <option value="Invalid">Invalid</option>
                       </select>
                     </div>
 

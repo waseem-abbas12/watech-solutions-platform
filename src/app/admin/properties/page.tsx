@@ -22,7 +22,7 @@ interface PropertyRow {
   price: number;
   city: string;
   location: string;
-  status: "Active" | "Sold" | "Inactive";
+  status: "Active" | "Pending Approval" | "Sold" | "Inactive";
   agent: string;
   bedrooms: number;
   bathrooms: number;
@@ -60,6 +60,20 @@ export default function AdminPropertiesPage() {
       area: "10 Marla (2,250 Sq Ft)",
       description: "Double-unit layout, solid ash wood doors, and Grohe sanitary.",
       createdAt: "2026-09-03",
+    },
+    {
+      id: "PROP-105",
+      title: "2 Kanal Farmhouse with Swimming Pool",
+      price: 120000000,
+      city: "Islamabad",
+      location: "Chak Shahzad Farms",
+      status: "Pending Approval",
+      agent: "New Partner Submissions",
+      bedrooms: 6,
+      bathrooms: 7,
+      area: "2 Kanal",
+      description: "Newly listed partner inventory awaiting moderator verification and approval.",
+      createdAt: "2026-09-08",
     },
     {
       id: "PROP-103",
@@ -107,7 +121,7 @@ export default function AdminPropertiesPage() {
     bathrooms: "4",
     area: "10 Marla",
     agent: "Al-Madina Estate & Builders",
-    status: "Active" as "Active" | "Sold" | "Inactive",
+    status: "Active" as "Active" | "Pending Approval" | "Sold" | "Inactive",
     description: "",
   });
 
@@ -128,7 +142,14 @@ export default function AdminPropertiesPage() {
     setProperties((prev) =>
       prev.map((p) => {
         if (p.id === id) {
-          const next = p.status === "Active" ? "Inactive" : p.status === "Inactive" ? "Active" : "Active";
+          const next =
+            p.status === "Pending Approval"
+              ? "Active"
+              : p.status === "Active"
+              ? "Inactive"
+              : p.status === "Inactive"
+              ? "Active"
+              : "Active";
           return { ...p, status: next };
         }
         return p;
@@ -292,6 +313,7 @@ export default function AdminPropertiesPage() {
           >
             <option value="All">All Statuses</option>
             <option value="Active">Active</option>
+            <option value="Pending Approval">Pending Approval</option>
             <option value="Sold">Sold</option>
             <option value="Inactive">Inactive</option>
           </select>
@@ -330,14 +352,17 @@ export default function AdminPropertiesPage() {
                     <button
                       onClick={() => handleToggleStatus(p.id)}
                       className={`px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-all ${
-                        p.status === "Active"
+                        p.status === "Pending Approval"
+                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-emerald-500/20 hover:text-emerald-300"
+                          : p.status === "Active"
                           ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                           : p.status === "Sold"
                           ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
                           : "bg-slate-800 text-slate-400 border border-slate-700"
                       }`}
+                      title={p.status === "Pending Approval" ? "Click to Approve Listing" : "Click to toggle status"}
                     >
-                      {p.status}
+                      {p.status === "Pending Approval" ? "Approve Listing" : p.status}
                     </button>
                   </td>
                   <td className="py-4 px-4 text-slate-500 font-mono">{p.createdAt}</td>

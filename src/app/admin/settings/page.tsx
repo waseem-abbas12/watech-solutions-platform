@@ -215,11 +215,78 @@ export default function AdminSettingsPage() {
 
       {/* 2. COMMISSION RATES & NOTIFICATIONS */}
       <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-6">
-        <h3 className="font-bold text-sm text-white uppercase tracking-wider border-b border-slate-800 pb-4">
-          Commission Policy & Automations
-        </h3>
+        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div>
+            <h3 className="font-bold text-sm text-white uppercase tracking-wider">
+              Commission Architecture (Section 13)
+            </h3>
+            <p className="text-[11px] text-slate-400 mt-0.5">
+              Configure global or sector-specific commission models: percentage share or fixed fee.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => showToast("Commission policy settings saved successfully.")}
+            className="px-4 py-2 rounded-full bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold transition-all cursor-pointer"
+          >
+            Update Policies
+          </button>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          {/* Real Estate Commission */}
+          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-blue-400">Real Estate Sector</span>
+              <span className="font-black text-white text-xs">1.0% Success Fee</span>
+            </div>
+            <p className="text-[10px] text-slate-400 leading-relaxed">
+              Standard agency brokerage cut applied to closed property transaction values.
+            </p>
+            <div className="flex items-center gap-2 pt-2 border-t border-slate-900">
+              <span className="text-[10px] font-bold text-slate-500">Type:</span>
+              <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono text-[10px]">
+                Percentage (1.0%)
+              </span>
+            </div>
+          </div>
+
+          {/* Furniture Commission */}
+          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-emerald-400">Furniture Marketplace</span>
+              <span className="font-black text-white text-xs">{defaultCommissionRate}% Margin</span>
+            </div>
+            <p className="text-[10px] text-slate-400 leading-relaxed">
+              Wholesale / retail vendor margin share automatically calculated on order checkout.
+            </p>
+            <div className="flex items-center gap-2 pt-2 border-t border-slate-900">
+              <span className="text-[10px] font-bold text-slate-500">Type:</span>
+              <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">
+                Percentage ({defaultCommissionRate}%)
+              </span>
+            </div>
+          </div>
+
+          {/* Event & Catering Commission */}
+          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-orange-400">Events & Catering</span>
+              <span className="font-black text-white text-xs">10% or PKR 25k Fixed</span>
+            </div>
+            <p className="text-[10px] text-slate-400 leading-relaxed">
+              Banquet halls & catering vendor flat referral fee or per-guest rate commission.
+            </p>
+            <div className="flex items-center gap-2 pt-2 border-t border-slate-900">
+              <span className="text-[10px] font-bold text-slate-500">Type:</span>
+              <span className="px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 font-mono text-[10px]">
+                Hybrid (Percentage / Fixed)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs pt-2">
           <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
             <div className="flex items-center justify-between">
               <span className="font-bold text-white">Default Platform Commission</span>

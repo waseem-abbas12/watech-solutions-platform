@@ -25,6 +25,7 @@ interface PartnerRow {
   joinedDate: string;
   listingsCount: number;
   closedDealsCount: number;
+  verificationStatus: "pending" | "verified" | "rejected";
 }
 
 export default function AdminPartnersPage() {
@@ -42,6 +43,7 @@ export default function AdminPartnersPage() {
       joinedDate: "2026-08-15",
       listingsCount: 4,
       closedDealsCount: 2,
+      verificationStatus: "verified",
     },
     {
       id: "PTR-02",
@@ -56,6 +58,7 @@ export default function AdminPartnersPage() {
       joinedDate: "2026-08-20",
       listingsCount: 6,
       closedDealsCount: 2,
+      verificationStatus: "verified",
     },
     {
       id: "PTR-03",
@@ -70,11 +73,84 @@ export default function AdminPartnersPage() {
       joinedDate: "2026-08-28",
       listingsCount: 3,
       closedDealsCount: 1,
+      verificationStatus: "pending",
     },
   ]);
 
+  // Load dynamically registered partners if in browser
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("watech_current_partner_profile");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          const newPartner: PartnerRow = {
+            id: parsed.id || "PTR-NEW",
+            name: parsed.ownerName || "New Partner",
+            businessType: parsed.category === "real_estate" ? "Real Estate Agent" : parsed.category === "furniture" ? "Furniture Manufacturer" : "Event Vendor",
+            agencyName: parsed.businessName || "New Business Agency",
+            city: parsed.city || "Pakistan",
+            commissionRate: parsed.agreedCommissionRate || 0.10,
+            totalSalesPKR: 0,
+            totalCommissionEarnedPKR: 0,
+            pendingPayoutPKR: 0,
+            joinedDate: new Date().toISOString().split("T")[0],
+            listingsCount: 0,
+            closedDealsCount: 0,
+            verificationStatus: (parsed.verificationStatus as "pending" | "verified") || "pending",
+          };
+          setPartners((prev) => {
+            if (prev.some((p) => p.id === newPartner.id || p.agencyName === newPartner.agencyName)) {
+              return prev;
+            }
+            return [newPartner, ...prev];
+          });
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }, []);
+
   const [search, setSearch] = useState("");
   const [selectedPartner, setSelectedPartner] = useState<PartnerRow | null>(null);
+
+  const handleToggleVerification = (id: string) => {
+    setPartners((prev) =>
+      prev.map((p) => {
+        if (p.id === id) {
+          const nextStatus = p.verificationStatus === "verified" ? "pending" : "verified";
+          // Also sync to localStorage if it's the registered partner
+          if (typeof window !== "undefined") {
+            const stored = localStorage.getItem("watech_current_partner_profile");
+            if (stored) {
+              try {
+                const parsed = JSON.parse(stored);
+                if (parsed.id === id || parsed.businessName === p.agencyName) {
+                  parsed.verificationStatus = nextStatus;
+                  localStorage.setItem("watech_current_partner_profile", JSON.stringify(parsed));
+                }
+              } catch {}
+            }
+          }
+          return { ...p, verificationStatus: nextStatus };
+        }
+        return p;
+      })
+    );
+
+    if (selectedPartner && selectedPartner.id === id) {
+      setSelectedPartner((prev) =>
+        prev
+          ? {
+              ...prev,
+              verificationStatus:
+                prev.verificationStatus === "verified" ? "pending" : "verified",
+            }
+          : null
+      );
+    }
+  };
 
   const handleMarkPayoutPaid = (id: string) => {
     setPartners((prev) =>
@@ -145,6 +221,7 @@ export default function AdminPartnersPage() {
               <tr>
                 <th className="py-4 px-6">Partner & Agency</th>
                 <th className="py-4 px-4">Business Type</th>
+                <th className="py-4 px-4">Verification</th>
                 <th className="py-4 px-4">Commission Rate</th>
                 <th className="py-4 px-4">Total Sales</th>
                 <th className="py-4 px-4">Commission Earned</th>
@@ -162,7 +239,12 @@ export default function AdminPartnersPage() {
                   }`}
                 >
                   <td className="py-4 px-6 font-bold text-white">
-                    <div>{p.agencyName}</div>
+                    <div className="flex items-center gap-1.5">
+                      <span>{p.agencyName}</span>
+                      {p.verificationStatus === "verified" && (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      )}
+                    </div>
                     <div className="text-[10px] text-slate-400 font-normal">
                       {p.name} ({p.city})
                     </div>
@@ -171,6 +253,29 @@ export default function AdminPartnersPage() {
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-500/20 text-orange-400 border border-orange-500/30">
                       {p.businessType}
                     </span>
+                  </td>
+                  <td className="py-4 px-4">
+                    <button
+                      onClick={() => handleToggleVerification(p.id)}
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 ${
+                        p.verificationStatus === "verified"
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30"
+                          : "bg-amber-500/20 text-amber-400 border border-amber-500/30 hover:bg-amber-500/30"
+                      }`}
+                      title="Click to toggle partner verification status"
+                    >
+                      {p.verificationStatus === "verified" ? (
+                        <>
+                          <CheckCircle2 className="w-3 h-3" />
+                          <span>Verified</span>
+                        </>
+                      ) : (
+                        <>
+                          <Clock className="w-3 h-3" />
+                          <span>Pending</span>
+                        </>
+                      )}
+                    </button>
                   </td>
                   <td className="py-4 px-4 font-mono font-bold text-white">
                     {(p.commissionRate * 100).toFixed(0)}%
@@ -238,6 +343,35 @@ export default function AdminPartnersPage() {
                   {selectedPartner.closedDealsCount} Transactions
                 </div>
               </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+              <div>
+                <span className="text-xs font-bold uppercase text-slate-400">Account Verification</span>
+                <div className="flex items-center gap-2 mt-1">
+                  {selectedPartner.verificationStatus === "verified" ? (
+                    <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" /> Official Verified Partner
+                    </span>
+                  ) : (
+                    <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                      <Clock className="w-4 h-4" /> Pending Document Review
+                    </span>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={() => handleToggleVerification(selectedPartner.id)}
+                className={`px-4 py-2 rounded-xl font-bold text-xs transition-colors cursor-pointer ${
+                  selectedPartner.verificationStatus === "verified"
+                    ? "bg-amber-600/20 text-amber-300 border border-amber-500/30 hover:bg-amber-600/30"
+                    : "bg-emerald-600 text-white hover:bg-emerald-500"
+                }`}
+              >
+                {selectedPartner.verificationStatus === "verified"
+                  ? "Revoke Verification"
+                  : "Approve & Verify Partner"}
+              </button>
             </div>
 
             <div className="p-5 rounded-2xl bg-orange-950/20 border border-orange-500/30 flex items-center justify-between">
