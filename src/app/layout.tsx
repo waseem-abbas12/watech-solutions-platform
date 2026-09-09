@@ -158,6 +158,17 @@ export default function RootLayout({
                     "https://waseemabbas.online",
                     "https://www.waseemabbas.online",
                   ],
+                  founder: {
+                    "@type": "Person",
+                    name: "Waseem Abbas",
+                    jobTitle: "Founder & Chief Executive Officer",
+                    image: `${siteUrl}/images/founder-waseem-abbas.jpg`,
+                    url: "https://waseemabbas.online",
+                    sameAs: [
+                      "https://wa.me/923270831470",
+                      "https://waseemabbas.online",
+                    ],
+                  },
                 },
                 {
                   "@type": "WebSite",

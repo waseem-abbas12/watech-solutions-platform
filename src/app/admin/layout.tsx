@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -568,15 +569,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-800"
                 }`}
               >
-                <div className="w-7 h-7 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
-                  SA
+                <div className="relative w-7 h-7 rounded-lg overflow-hidden border border-blue-500/60 shrink-0">
+                  <Image
+                    src="/images/founder-waseem-abbas.jpg"
+                    alt="Waseem Abbas"
+                    width={28}
+                    height={28}
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
                 <div className="hidden sm:block text-left">
                   <div className="text-xs font-bold leading-none">
-                    {adminUser?.name || "Admin"}
+                    {adminUser?.name || "Waseem Abbas"}
                   </div>
                   <div className="text-[10px] text-slate-400 font-mono leading-none mt-0.5">
-                    {adminUser?.role || "superAdmin"}
+                    {adminUser?.role || "Founder & CEO"}
                   </div>
                 </div>
               </button>
@@ -588,9 +595,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     isDarkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"
                   }`}
                 >
-                  <div className="px-3 py-2 border-b border-slate-800/60">
-                    <div className="text-xs font-bold text-white truncate">{adminUser?.name}</div>
-                    <div className="text-[11px] text-slate-400 truncate">{adminUser?.email}</div>
+                  <div className="px-3 py-2 border-b border-slate-800/60 flex items-center gap-2.5">
+                    <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-blue-500/50 shrink-0">
+                      <Image
+                        src="/images/founder-waseem-abbas.jpg"
+                        alt="Waseem Abbas"
+                        width={32}
+                        height={32}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </div>
+                    <div className="overflow-hidden">
+                      <div className="text-xs font-bold text-white truncate">{adminUser?.name || "Waseem Abbas"}</div>
+                      <div className="text-[11px] text-slate-400 truncate">{adminUser?.email || "waseem000094@gmail.com"}</div>
+                    </div>
                   </div>
                   <Link
                     href="/admin/settings"

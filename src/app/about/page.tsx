@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Sparkles,
   ArrowRight,
@@ -371,6 +372,98 @@ export default function AboutPage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5.5 MEET THE FOUNDER & CEO */}
+      <section className="py-24 px-6 bg-slate-950 text-white relative overflow-hidden border-t border-b border-slate-800">
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Executive Portrait Frame */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative group max-w-sm w-full">
+                <div className="absolute -inset-1.5 bg-gradient-to-tr from-[#2563EB] via-cyan-500 to-[#16A34A] rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-500" />
+                <div className="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/60 shadow-2xl">
+                  <Image
+                    src="/images/founder-waseem-abbas.jpg"
+                    alt="Waseem Abbas - Founder & CEO of WATECH Solutions"
+                    width={400}
+                    height={500}
+                    className="w-full h-auto object-cover object-top transition duration-500 group-hover:scale-105"
+                    priority
+                  />
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent p-5 text-center">
+                    <h4 className="text-xl font-bold text-white tracking-tight">Waseem Abbas</h4>
+                    <p className="text-xs text-blue-400 font-mono tracking-wider uppercase mt-0.5">
+                      Founder & Chief Executive Officer
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Founder Vision & Story */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-wider">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  Leadership & Vision
+                </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                  "Authentic Growth Requires Authentic Accountability."
+                </h2>
+              </div>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                As the founder of <strong>WATECH Solutions</strong>, I started this platform with a clear mission: to bridge Pakistan's rich traditional industries—from centuries-old Chinioti woodcraft and high-stakes Real Estate development to modern enterprise catering—with world-class digital technology and direct customer acquisition.
+              </p>
+
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                In a market filled with faceless portals and middlemen, WATECH stands as an accountable partner. We don't just list products; we verify properties, guarantee authentic Sheesham craftsmanship, automate sales pipelines, and personally ensure our partners and clients prosper.
+              </p>
+
+              {/* Badges / Key Highlights */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
+                <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                  <div className="text-2xl font-black text-white">100%</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">Verified Society Deals</div>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                  <div className="text-2xl font-black text-blue-400">17+ Yrs</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">On-Ground Heritage</div>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 col-span-2 sm:col-span-1">
+                  <div className="text-2xl font-black text-emerald-400">0% Risk</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">Pay-On-Success Partnering</div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <a
+                  href="https://wa.me/923270831470"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#2563EB] text-white text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-all shadow-lg shadow-blue-600/30 hover:-translate-y-0.5"
+                >
+                  <span>Consult with Founder on WhatsApp</span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://waseemabbas.online"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-slate-900 text-slate-200 hover:text-white hover:bg-slate-800 text-xs font-bold uppercase tracking-wider transition-all border border-slate-700 hover:-translate-y-0.5"
+                >
+                  <span>waseemabbas.online</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>

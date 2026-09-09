@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import {
   Building2,
@@ -147,6 +148,32 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
+          {/* Founder Authority Pill */}
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-3.5 mt-8 px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all border border-slate-700/80 shadow-md group hover:scale-[1.02]"
+          >
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-blue-400 shrink-0">
+              <Image
+                src="/images/founder-waseem-abbas.jpg"
+                alt="Waseem Abbas - Founder & CEO"
+                width={32}
+                height={32}
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div className="text-left">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-white tracking-tight">Waseem Abbas</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono font-semibold">Founder & CEO</span>
+              </div>
+              <p className="text-[11px] text-slate-400 truncate max-w-[280px] sm:max-w-md">
+                "Direct accountability on every deal & digital partnership."
+              </p>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all" />
+          </Link>
         </div>
 
         {/* Minimal Blinking Scroll Indicator */}
