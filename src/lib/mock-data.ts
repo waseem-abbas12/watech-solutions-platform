@@ -4,7 +4,7 @@ export interface PropertyItem {
   city: string;
   location: string;
   price: number;
-  type: "Plot" | "House" | "Commercial";
+  type: "House" | "Plot" | "Commercial";
   bedrooms: number;
   bathrooms: number;
   area: string;
@@ -13,13 +13,16 @@ export interface PropertyItem {
   description: string;
   features: string[];
   partnerPhone: string;
+  status?: "Active" | "Sold" | "Pending Approval";
+  createdAt?: string;
+  isDemo?: boolean;
 }
 
 export interface FurnitureItem {
   id: string;
   name: string;
   woodType: "Sheesham" | "Teak" | "Rosewood";
-  category: "Sofa" | "Bed" | "Dining";
+  category: "Bed" | "Sofa" | "Dining" | "Cabinet" | "Custom";
   price: number;
   dimensions: string;
   image: string;
@@ -27,6 +30,9 @@ export interface FurnitureItem {
   description: string;
   features: string[];
   partnerPhone: string;
+  status?: "In Stock" | "Sold" | "Made to Order";
+  createdAt?: string;
+  isDemo?: boolean;
 }
 
 export interface EventItem {
@@ -34,6 +40,7 @@ export interface EventItem {
   title: string;
   city: string;
   venue: string;
+  category: "Banquet Hall" | "Catering" | "Wedding Service" | "Corporate Event";
   capacity: number;
   menuType: "Desi" | "Chinese" | "BBQ" | "Continental";
   packagePrice: number;
@@ -43,6 +50,9 @@ export interface EventItem {
   description: string;
   amenities: string[];
   partnerPhone: string;
+  status?: "Available" | "Booked";
+  createdAt?: string;
+  isDemo?: boolean;
 }
 
 export const INITIAL_PROPERTIES: PropertyItem[] = [
@@ -66,6 +76,9 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     description: "Architect-designed brand new bungalow in the heart of DHA Phase 6. Features Spanish porcelain tile flooring, imported SMEG kitchen fittings, master jacuzzi bathrooms, servant quarters, and a manicured rooftop terrace garden. Direct access to Main Boulevard and top international schools.",
     features: ["Corner Lot", "Spanish Tiles", "Smart Home Automation", "Servant Quarter", "Generator Backup Ready", "Rooftop Garden"],
     partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-09-01",
+    isDemo: true,
   },
   {
     id: "prop-2",
@@ -86,6 +99,9 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     description: "Centrally located in Sector C, walking distance to Grand Jamia Mosque and commercial market. Double-unit layout perfect for joint family living. Solid ash-wood doors, Grohe bathroom sanitary, and false ceilings with warm ambient LED profiles.",
     features: ["Double Unit", "Ash Wood Doors", "Grohe Sanitary", "Walking Distance to Mosque", "Covered Car Porch"],
     partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-09-03",
+    isDemo: true,
   },
   {
     id: "prop-3",
@@ -106,6 +122,9 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     description: "High-yield commercial asset offering immediate rental ROI. Basement + Ground + 3 Floors with passenger elevator shaft, dedicated basement parking, and complete CDA commercial building compliance.",
     features: ["Commercial CDA Approved", "Elevator Shaft", "Basement Parking", "High Rental Yield", "Dual Main Road Facing"],
     partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-08-25",
+    isDemo: true,
   },
   {
     id: "prop-4",
@@ -125,6 +144,9 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     description: "100% on-ground possession plot with all utility connection dues cleared. Peaceful residential sector with 40-feet wide street and adjacent family park.",
     features: ["Possession Available", "Utilities Paid", "Park Facing", "40ft Wide Carpeted Road"],
     partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-08-29",
+    isDemo: true,
   },
   {
     id: "prop-5",
@@ -144,6 +166,9 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     description: "Panoramic Arabian Sea views with floor-to-ceiling double-glazed windows. Private resident beach access, infinity pool, fitness center, and round-the-clock 3-tier biometric security.",
     features: ["Direct Sea View", "Private Beach Access", "Infinity Pool", "Biometric Security", "Dedicated Parking"],
     partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-08-20",
+    isDemo: true,
   },
   {
     id: "prop-6",
@@ -162,6 +187,30 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     description: "Unmatched commercial frontage on Canal Road. Suitable for hospital, brand flagship showroom, or corporate headquarters.",
     features: ["Frontage 50ft", "Canal Road Main Access", "Commercial Approved", "High Footfall"],
     partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-09-02",
+    isDemo: true,
+  },
+  {
+    id: "prop-7",
+    title: "1 Kanal Developed Residential Plot (Facing Park)",
+    city: "Islamabad",
+    location: "DHA Phase 2, Sector B, Islamabad",
+    price: 34000000,
+    type: "Plot",
+    bedrooms: 0,
+    bathrooms: 0,
+    area: "1 Kanal (4,500 Sq Ft)",
+    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Prime park-facing residential plot in prestigious DHA Phase 2 Islamabad. Underground electricity, gas, and fast NOC processing for immediate construction.",
+    features: ["Park Facing", "Underground Electrification", "Sui Gas Approved", "Direct Highway Access"],
+    partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-09-04",
+    isDemo: true,
   },
 ];
 
@@ -182,6 +231,9 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     description: "Master carved by generational artisans in Chiniot. Made from seasoned 100% pure Pakistani Sheesham (Rosewood). Features opulent crown headboard carving with antique gold leaf touch-ups and high-density Turkish velvet tufting.",
     features: ["100% Pure Seasoned Sheesham", "Hand-Carved Crown Details", "Termite Treated 10-Year Guarantee", "High Gloss Lacquer Polish", "Includes 2 Side Tables & Dressing"],
     partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-08-28",
+    isDemo: true,
   },
   {
     id: "furn-2",
@@ -199,6 +251,9 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     description: "Classic Mughal floral relief carvings running along the crown and cabriole legs. Upholstered with imported stain-resistant jacquard fabric and high-resilience Molty Foam padding.",
     features: ["Original Master Carving", "Molty Master Foam (10-yr warranty)", "Stain Resistant Jacquard Fabric", "Solid Rosewood Structure"],
     partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-08-30",
+    isDemo: true,
   },
   {
     id: "furn-3",
@@ -215,6 +270,9 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     description: "Grand dining experience built to last decades. Hand-planed solid teak frame with tempered 12mm beveled glass top and ergonomically carved high-back chairs.",
     features: ["12mm Tempered Glass Top", "8 Ergonomic High-Back Chairs", "Durable Natural Teak Stain", "Seamless Mortise & Tenon Joints"],
     partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-08-25",
+    isDemo: true,
   },
   {
     id: "furn-4",
@@ -231,6 +289,9 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     description: "Custom bridal series featuring extended wings and deep diamond button tufting. Finished with export-grade polyurethane clear coat.",
     features: ["Bridal Extended Wings", "Diamond Button Tufting", "Export Grade Finish", "Reinforced Bed Base"],
     partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-09-02",
+    isDemo: true,
   },
   {
     id: "furn-5",
@@ -246,6 +307,9 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     description: "Signature blend of European Chesterfield styling with traditional Chinioti wood carving on top crown and feet.",
     features: ["Gold Leaf Accents", "Deep Tufted Back", "Heavy Solid Sheesham Base"],
     partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-09-04",
+    isDemo: true,
   },
   {
     id: "furn-6",
@@ -261,15 +325,56 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     description: "Compact luxury for cozy dining spaces. Sturdy single-pedestal lion-claw base handcrafted from seasoned rosewood.",
     features: ["Intricate Center Pedestal", "Round Space-Saving Layout", "Includes 6 Cushioned Chairs"],
     partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-09-03",
+    isDemo: true,
+  },
+  {
+    id: "furn-7",
+    name: "Royal Heritage 4-Door Crockery Cabinet",
+    woodType: "Sheesham",
+    category: "Cabinet",
+    price: 215000,
+    dimensions: "6.5x7 ft with Beveled Glass Displays",
+    image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Showcase heirloom china and crystal in full antique splendour. Built from selected seasoned Sheesham with brass drawer handles and interior spotlight fixtures.",
+    features: ["Interior Warm Spotlights", "100% Solid Wood Shelves", "Brass Antique Handles", "Safety Lock Installed"],
+    partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-09-05",
+    isDemo: true,
+  },
+  {
+    id: "furn-8",
+    name: "Bespoke Jharoka Carved Wall Console & Mirror",
+    woodType: "Rosewood",
+    category: "Custom",
+    price: 145000,
+    dimensions: "Custom Order (48x36 in Mirror with 4ft Console Table)",
+    image: "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Traditional Pakistani architectural Jharoka window pattern adapted into a foyer mirror and console. Completely customizable in dark walnut or antique gold leaf.",
+    features: ["Bespoke Dimensions Available", "Traditional Jharoka Lattice", "Beveled Belgian Mirror Included"],
+    partnerPhone: "923270831470",
+    status: "Made to Order",
+    createdAt: "2026-09-06",
+    isDemo: true,
   },
 ];
 
 export const INITIAL_EVENTS: EventItem[] = [
+  // BANQUET HALLS
   {
     id: "event-1",
     title: "Grand Crystal Ballroom & Lawn",
     city: "Lahore",
-    venue: "Royal Palm, Lahore",
+    venue: "Royal Palm Golf & Country Club, Lahore",
+    category: "Banquet Hall",
     capacity: 1200,
     menuType: "Desi",
     packagePrice: 3800,
@@ -283,12 +388,16 @@ export const INITIAL_EVENTS: EventItem[] = [
     description: "Premier wedding and corporate banquet destination in Lahore. Features 24ft high pillarless hall, crystal chandeliers, dedicated bride & groom VIP dressing suites, golf course lawn access, and state-of-the-art climate control.",
     amenities: ["Pillarless Hall", "Dedicated VIP Bridal Suite", "Valet Parking for 500+ Cars", "Standby 500kVA Generator", "Catering & Live Cooking Stations"],
     partnerPhone: "923270831470",
+    status: "Available",
+    createdAt: "2026-08-20",
+    isDemo: true,
   },
   {
     id: "event-2",
-    title: "Margalla View Marquee & Banquet",
+    title: "Margalla View Luxury Marquee & Open Terrace",
     city: "Islamabad",
     venue: "Club Road, Islamabad",
+    category: "Banquet Hall",
     capacity: 800,
     menuType: "Continental",
     packagePrice: 4500,
@@ -301,12 +410,17 @@ export const INITIAL_EVENTS: EventItem[] = [
     description: "Nestled at the foothills of Margalla, offering scenic open-terrace views for Barat, Walima, and high-profile diplomatic summits. World-class continental and fusion menu curated by five-star executive chefs.",
     amenities: ["Scenic Mountain View", "Outdoor Cocktail Terrace", "Executive Chef Custom Menus", "Central Air Conditioning", "Sound & Lighting Rigging"],
     partnerPhone: "923270831470",
+    status: "Available",
+    createdAt: "2026-08-24",
+    isDemo: true,
   },
+  // CATERING
   {
     id: "event-3",
-    title: "Creek Heritage Hall & Live BBQ Lawn",
+    title: "Creek Heritage Live BBQ & Royal Catering",
     city: "Karachi",
     venue: "DHA Golf Club, Karachi",
+    category: "Catering",
     capacity: 650,
     menuType: "BBQ",
     packagePrice: 3200,
@@ -315,32 +429,19 @@ export const INITIAL_EVENTS: EventItem[] = [
     gallery: [
       "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Creek-side breeze and open lawn setting famous for live BBQ stations, traditional Karahi, and festive Mehndi nights.",
+    description: "Creek-side breeze and open lawn setting famous for live BBQ stations, traditional Karahi, and festive Mehndi nights with certified hygienic food handling.",
     amenities: ["Live BBQ Counters", "Seaside Waterfront Breeze", "Custom Floral Decor Packages", "Spacious Lawn"],
     partnerPhone: "923270831470",
-  },
-  {
-    id: "event-4",
-    title: "The Palace Banquet & Event Complex",
-    city: "Faisalabad",
-    venue: "Jaranwala Road, Faisalabad",
-    capacity: 1500,
-    menuType: "Desi",
-    packagePrice: 2800,
-    eventDate: "2026-11-28",
-    image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
-    gallery: [
-      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
-    ],
-    description: "Largest luxury air-conditioned complex in Faisalabad, capable of hosting grand wedding gatherings up to 1,500 guests with complete protocol.",
-    amenities: ["Grand Capacity up to 1,500", "Full Air-Conditioned Halls", "Huge Parking Lot", "Security Guards & CCTV"],
-    partnerPhone: "923270831470",
+    status: "Available",
+    createdAt: "2026-09-01",
+    isDemo: true,
   },
   {
     id: "event-5",
-    title: "Imperial Pan-Asian & Chinese Banquet",
+    title: "Imperial Pan-Asian & Desi Gourmet Catering",
     city: "Lahore",
     venue: "Gulberg III, Lahore",
+    category: "Catering",
     capacity: 450,
     menuType: "Chinese",
     packagePrice: 4200,
@@ -349,26 +450,56 @@ export const INITIAL_EVENTS: EventItem[] = [
     gallery: [
       "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Intimate banquet hall tailored for corporate dinners, engagements, and Qawwali nights with gourmet Chinese and Pan-Asian spreads.",
+    description: "Intimate catering service tailored for corporate dinners, engagements, and Qawwali nights with gourmet Chinese and Pan-Asian spreads.",
     amenities: ["Intimate Luxury Ambience", "Acoustic Treated Sound", "Premium Pan-Asian Menu", "Central Gulberg Location"],
     partnerPhone: "923270831470",
+    status: "Available",
+    createdAt: "2026-09-03",
+    isDemo: true,
   },
+  // WEDDING SERVICES
+  {
+    id: "event-4",
+    title: "The Grand Royal Wedding Complex & Floral Setup",
+    city: "Faisalabad",
+    venue: "Jaranwala Road, Faisalabad",
+    category: "Wedding Service",
+    capacity: 1500,
+    menuType: "Desi",
+    packagePrice: 2800,
+    eventDate: "2026-11-28",
+    image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Largest luxury air-conditioned complex in Faisalabad, capable of hosting grand wedding gatherings up to 1,500 guests with complete protocol, fireworks, and photography teams.",
+    amenities: ["Grand Capacity up to 1,500", "Full Air-Conditioned Halls", "Huge Parking Lot", "Security Guards & CCTV"],
+    partnerPhone: "923270831470",
+    status: "Available",
+    createdAt: "2026-09-04",
+    isDemo: true,
+  },
+  // CORPORATE EVENTS
   {
     id: "event-6",
-    title: "Sufi Serene Open Air Marquee",
+    title: "Executive Summit & Corporate Expo Hall",
     city: "Rawalpindi",
     venue: "Chaklala Scheme III, Rawalpindi",
+    category: "Corporate Event",
     capacity: 900,
-    menuType: "Desi",
+    menuType: "Continental",
     packagePrice: 3100,
     eventDate: "2026-12-12",
     image: "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=1200&q=80",
     gallery: [
       "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=1200&q=80",
     ],
-    description: "Grand marquee setting with lush lawn areas, traditional Sufi lighting fixtures, and traditional Pakistani wedding menus.",
-    amenities: ["Lush Grass Lawns", "Traditional Decor Setup", "Bridal Suites", "Wide Road Entrance"],
+    description: "Full multimedia conference facility equipped with dual 4K LED backdrops, breakout meeting rooms, high-speed fiber internet, and executive tea/coffee buffets.",
+    amenities: ["4K LED Backdrops", "High-Speed Fiber Wi-Fi", "Breakout Rooms", "Ample Executive Parking"],
     partnerPhone: "923270831470",
+    status: "Available",
+    createdAt: "2026-09-06",
+    isDemo: true,
   },
 ];
 

@@ -71,9 +71,13 @@ function MarketplaceContent() {
   const [furnitureMaxPrice, setFurnitureMaxPrice] = useState(500000);
 
   // Filters for Events
+  const [eventCategory, setEventCategory] = useState("All");
   const [eventCity, setEventCity] = useState("All");
   const [eventMenuType, setEventMenuType] = useState("All");
   const [eventMinCapacity, setEventMinCapacity] = useState(100);
+
+  // Sorting
+  const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "newest">("featured");
 
   // Pagination / Load more limits
   const [visibleCount, setVisibleCount] = useState(6);
@@ -85,7 +89,7 @@ function MarketplaceContent() {
   // Filtered Lists & Grouped Search Counts
   // ----------------------------------------------------
   const filteredProperties = useMemo(() => {
-    return INITIAL_PROPERTIES.filter((p) => {
+    const list = INITIAL_PROPERTIES.filter((p) => {
       const matchSearch =
         !searchQuery ||
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -96,10 +100,15 @@ function MarketplaceContent() {
       const matchPrice = p.price <= propertyMaxPrice;
       return matchSearch && matchCity && matchType && matchPrice;
     });
-  }, [searchQuery, propertyCity, propertyType, propertyMaxPrice]);
+
+    if (sortBy === "price-asc") return list.sort((a, b) => a.price - b.price);
+    if (sortBy === "price-desc") return list.sort((a, b) => b.price - a.price);
+    if (sortBy === "newest") return list.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+    return list;
+  }, [searchQuery, propertyCity, propertyType, propertyMaxPrice, sortBy]);
 
   const filteredFurniture = useMemo(() => {
-    return INITIAL_FURNITURE.filter((f) => {
+    const list = INITIAL_FURNITURE.filter((f) => {
       const matchSearch =
         !searchQuery ||
         f.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -110,22 +119,34 @@ function MarketplaceContent() {
       const matchPrice = f.price <= furnitureMaxPrice;
       return matchSearch && matchWood && matchCat && matchPrice;
     });
-  }, [searchQuery, woodType, furnitureCategory, furnitureMaxPrice]);
+
+    if (sortBy === "price-asc") return list.sort((a, b) => a.price - b.price);
+    if (sortBy === "price-desc") return list.sort((a, b) => b.price - a.price);
+    if (sortBy === "newest") return list.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+    return list;
+  }, [searchQuery, woodType, furnitureCategory, furnitureMaxPrice, sortBy]);
 
   const filteredEvents = useMemo(() => {
-    return INITIAL_EVENTS.filter((e) => {
+    const list = INITIAL_EVENTS.filter((e) => {
       const matchSearch =
         !searchQuery ||
         e.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         e.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
         e.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        e.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
         e.menuType.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchCategory = eventCategory === "All" || e.category === eventCategory;
       const matchCity = eventCity === "All" || e.city === eventCity;
       const matchMenu = eventMenuType === "All" || e.menuType === eventMenuType;
       const matchCap = e.capacity >= eventMinCapacity;
-      return matchSearch && matchCity && matchMenu && matchCap;
+      return matchSearch && matchCategory && matchCity && matchMenu && matchCap;
     });
-  }, [searchQuery, eventCity, eventMenuType, eventMinCapacity]);
+
+    if (sortBy === "price-asc") return list.sort((a, b) => a.packagePrice - b.packagePrice);
+    if (sortBy === "price-desc") return list.sort((a, b) => b.packagePrice - a.packagePrice);
+    if (sortBy === "newest") return list.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+    return list;
+  }, [searchQuery, eventCategory, eventCity, eventMenuType, eventMinCapacity, sortBy]);
 
   return (
     <div className="w-full min-h-screen bg-slate-50/50 pb-24 text-slate-900 selection:bg-[#16A34A] selection:text-white">
@@ -169,17 +190,17 @@ function MarketplaceContent() {
           </div>
 
           {/* =========================================
-              SINGLE SEARCH BAR (ABOVE TABS)
+              SEARCH BAR & SORT CONTROLS
               ========================================= */}
-          <div className="mt-8 relative max-w-3xl">
-            <div className="relative">
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 max-w-4xl">
+            <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search properties, furniture, or events by city, name, or style..."
-                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-slate-200 shadow-sm text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#16A34A] focus:border-transparent transition-all"
+                className="w-full pl-12 pr-12 py-3.5 rounded-2xl bg-white border border-slate-200 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] focus:border-transparent transition-all"
               />
               {searchQuery && (
                 <button
@@ -189,6 +210,20 @@ function MarketplaceContent() {
                   Clear
                 </button>
               )}
+            </div>
+
+            <div className="shrink-0 flex items-center gap-2 bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-xs font-bold uppercase text-slate-400">Sort:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                className="text-xs font-bold text-slate-800 bg-transparent focus:outline-none cursor-pointer"
+              >
+                <option value="featured">Featured / Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="newest">Newest First</option>
+              </select>
             </div>
           </div>
 
@@ -425,9 +460,11 @@ function MarketplaceContent() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
                 >
                   <option value="All">All Categories</option>
-                  <option value="Bed">Bed Sets</option>
+                  <option value="Bed">Beds & Bedroom Sets</option>
                   <option value="Sofa">Sofa Sets</option>
                   <option value="Dining">Dining Tables</option>
+                  <option value="Cabinet">Crockery & Wall Cabinets</option>
+                  <option value="Custom">Custom & Bespoke Carvings</option>
                 </select>
               </div>
 
@@ -531,7 +568,24 @@ function MarketplaceContent() {
         {activeTab === "events" && (
           <div className="space-y-8">
             {/* Filter Bar */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-4 gap-6 items-center">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+                  Service Category
+                </label>
+                <select
+                  value={eventCategory}
+                  onChange={(e) => setEventCategory(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#16A34A] bg-white"
+                >
+                  <option value="All">All Categories</option>
+                  <option value="Banquet Hall">Banquet Halls & Marquees</option>
+                  <option value="Catering">Catering & Live BBQ</option>
+                  <option value="Wedding Service">Wedding Services & Decor</option>
+                  <option value="Corporate Event">Corporate Events & Expos</option>
+                </select>
+              </div>
+
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
                   Venue City
@@ -672,9 +726,53 @@ function MarketplaceContent() {
   );
 }
 
+function MarketplaceSkeleton() {
+  return (
+    <div className="w-full min-h-screen bg-slate-50/50 pb-24 text-slate-900 animate-pulse">
+      {/* Header Banner Skeleton */}
+      <section className="bg-white border-b border-slate-200 py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="h-4 w-36 bg-slate-200 rounded-full mb-3" />
+          <div className="h-10 w-80 bg-slate-200 rounded-2xl mb-4" />
+          <div className="h-4 w-96 max-w-full bg-slate-100 rounded-full mb-8" />
+
+          {/* Search bar skeleton */}
+          <div className="max-w-3xl h-14 bg-slate-100 rounded-2xl mb-8" />
+
+          {/* Tabs skeleton */}
+          <div className="flex gap-4 border-b border-slate-200 pb-3">
+            <div className="h-6 w-32 bg-slate-200 rounded-full" />
+            <div className="h-6 w-32 bg-slate-100 rounded-full" />
+            <div className="h-6 w-32 bg-slate-100 rounded-full" />
+          </div>
+        </div>
+      </section>
+
+      {/* Grid Skeleton */}
+      <main className="max-w-7xl mx-auto px-6 pt-8">
+        <div className="h-24 bg-white rounded-2xl border border-slate-200 mb-8" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+              <div className="aspect-video bg-slate-200 w-full" />
+              <div className="p-6 space-y-3">
+                <div className="h-6 w-32 bg-slate-200 rounded-full" />
+                <div className="h-5 w-48 bg-slate-200 rounded-full" />
+                <div className="h-4 w-40 bg-slate-100 rounded-full" />
+                <div className="pt-4 border-t border-slate-100 h-8" />
+                <div className="h-10 bg-slate-200 rounded-xl w-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+}
+
 export default function MarketplacePage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-slate-400">Loading Marketplace...</div>}>
+    <Suspense fallback={<MarketplaceSkeleton />}>
       <MarketplaceContent />
     </Suspense>
   );
