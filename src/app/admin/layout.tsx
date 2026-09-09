@@ -31,6 +31,7 @@ import {
   User,
 } from "lucide-react";
 import { INITIAL_NOTIFICATIONS, NotificationItem } from "@/lib/firebase/admin-service";
+import { BrandMark } from "@/components/common/brand-logo";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -282,9 +283,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               className="flex items-center gap-3 overflow-hidden"
               onClick={() => setIsMobileNavOpen(false)}
             >
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-700 to-blue-500 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-md shadow-blue-500/20">
-                WA
-              </div>
+              <BrandMark className="w-10 h-10" />
               {!isSidebarCollapsed && (
                 <div className="overflow-hidden">
                   <h3 className={`font-black text-sm tracking-tight truncate ${isDarkMode ? "text-white" : "text-slate-900"}`}>

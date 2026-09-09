@@ -61,6 +61,16 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "Watech",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/logo.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icons/logo.svg", type: "image/svg+xml" },
+    ],
+  },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "google26f686f9ab4c2d7a",
   },
@@ -96,9 +106,9 @@ export default function RootLayout({
                   url: siteUrl,
                   logo: {
                     "@type": "ImageObject",
-                    url: `${siteUrl}/favicon.ico`,
+                    url: `${siteUrl}/icons/logo.svg`,
                   },
-                  image: `${siteUrl}/favicon.ico`,
+                  image: `${siteUrl}/icons/logo.svg`,
                   description:
                     "Pakistan's premier multi-sector growth ecosystem combining Real Estate properties, authentic handcrafted Chinioti Sheesham furniture, Food & Catering, and high-performance digital services & AI automation.",
                   email: "waseem000094@gmail.com",

@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import React, { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ShieldCheck, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { BrandLogo } from "@/components/common/brand-logo";
 
 function AdminLoginForm() {
   const router = useRouter();
@@ -47,15 +48,10 @@ function AdminLoginForm() {
     <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6 selection:bg-[#2563EB] selection:text-white">
       <div className="w-full max-w-md">
         {/* Brand Header */}
-        <div className="text-center mb-8 space-y-3">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#2563EB]/10 border border-[#2563EB]/30 text-[#2563EB] mb-2">
-            <ShieldCheck className="w-8 h-8 text-[#2563EB]" />
-          </div>
-          <h1 className="text-2xl font-black tracking-tight text-white">
-            WATECH<span className="text-[#2563EB]">.</span> Console
-          </h1>
+        <div className="flex flex-col items-center mb-8 space-y-3 text-center">
+          <BrandLogo size="lg" isDark={true} />
           <p className="text-xs text-slate-400 font-mono tracking-wide uppercase">
-            Authorized Executive & Operations Login
+            Authorized Executive & Operations Console
           </p>
         </div>
 

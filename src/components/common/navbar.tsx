@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BrandLogo } from "@/components/common/brand-logo";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,13 +33,8 @@ export const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-2xl font-black tracking-tight text-slate-900 group-hover:opacity-90 transition-opacity">
-            WATECH<span className="text-[#2563EB]">.</span>
-          </span>
-          <span className="hidden sm:inline-block text-xs font-semibold uppercase tracking-widest text-slate-400 border-l border-slate-200 pl-2">
-            Ecosystem
-          </span>
+        <Link href="/" className="flex items-center group" aria-label="WATECH Solutions Home">
+          <BrandLogo size="md" />
         </Link>
 
         {/* Desktop Navigation */}

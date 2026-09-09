@@ -1,15 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import { SocialIcons } from "@/components/common/social-icons";
+import { BrandLogo } from "@/components/common/brand-logo";
 
 export const Footer = () => {
   return (
     <footer className="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="space-y-4">
-          <span className="text-2xl font-black tracking-tight text-white">
-            WATECH<span className="text-[#2563EB]">.</span>
-          </span>
+          <Link href="/" className="inline-block" aria-label="WATECH Home">
+            <BrandLogo size="md" isDark={true} />
+          </Link>
           <p className="text-sm text-slate-400 leading-relaxed">
             Pakistan's integrated ecosystem connecting Real Estate, Chinioti Handcrafted Furniture, and Food & Catering with modern technology.
           </p>
