@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
 import { MobileBottomNav } from "@/components/common/mobile-bottom-nav";
+import { AiAssistantWidget } from "@/components/common/ai-assistant-widget";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -42,6 +43,7 @@ export default function RootLayout({
         <main className="flex-grow pt-20">{children}</main>
         <Footer />
         <MobileBottomNav />
+        <AiAssistantWidget />
 
         {/* PWA Service Worker Registration */}
         <script
