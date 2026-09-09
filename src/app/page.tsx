@@ -386,10 +386,10 @@ export default function HomePage() {
                     </span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    FMCG Corporate Services, Direct Supply & Investment
+                    FMCG Distribution & Sales Consulting
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    17 saala on-ground tajurba — FMCG Brands ke liye Distribution Expansion & Route Planning, Dukaandaron ke liye Mill-Direct Wholesale Maal, aur Investors ke liye High-Turnover Dealership Joint Ventures.
+                    17 saala on-ground tajurba — Naye aur established FMCG Brands ke liye Nationwide Distribution Network Setup, Retail Territory Route Mapping, Order Bookers Training aur Strategic Dealership Alliances.
                   </p>
                   <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-600">
                     <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
@@ -399,12 +399,12 @@ export default function HomePage() {
                     <span>·</span>
                     <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Mill-Direct Wholesale Stock
+                      Route Planning & Sales Force
                     </span>
                     <span>·</span>
                     <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
                       <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
-                      Secured Working Capital JVs
+                      Dealership Joint Ventures
                     </span>
                   </div>
                 </div>
@@ -412,13 +412,13 @@ export default function HomePage() {
 
               <div className="shrink-0 flex flex-col sm:flex-row gap-3">
                 <a
-                  href="https://wa.me/923270831470?text=Assalam%20o%20Alaikum%20WATECH%2C%20Main%20FMCG%20Services%20%2F%20Direct%20Maal%20%2F%20Investment%20ke%20bare%20mein%20baat%20karna%20chahta%20hoon."
+                  href="https://wa.me/923270831470?text=Assalam%20o%20Alaikum%20WATECH%2C%20Main%20FMCG%20Distribution%20%26%20Sales%20Consulting%20ke%20silsilay%20mein%20baat%20karna%20chahta%20hoon."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md hover:shadow-amber-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>FMCG Direct Rabta</span>
+                  <span>FMCG Consulting Inquiry</span>
                 </a>
               </div>
             </div>
