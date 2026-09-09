@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: "Watech",
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "google-site-verification-watech",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "google26f686f9ab4c2d7a",
   },
 };
 
