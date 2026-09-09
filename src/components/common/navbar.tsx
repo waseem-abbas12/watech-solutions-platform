@@ -14,6 +14,7 @@ export const Navbar = () => {
     { name: "Services", href: "/services", accent: "hover:text-[#2563EB]" },
     { name: "Marketplace", href: "/marketplace", accent: "hover:text-[#16A34A]" },
     { name: "Partners", href: "/partners", accent: "hover:text-[#EA580C]" },
+    { name: "Blog", href: "/blog", accent: "hover:text-[#2563EB]" },
   ];
 
   return (

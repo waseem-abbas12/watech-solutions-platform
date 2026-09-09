@@ -323,3 +323,40 @@ export interface CommissionConfig {
   updatedAt: string;
 }
 
+// 14. Blog System (Phase 2)
+export type BlogCategory =
+  | "Real Estate"
+  | "Furniture & Chinioti Craft"
+  | "Events & Catering"
+  | "Digital Marketing"
+  | "AI & Automation"
+  | "Business Growth";
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: BlogCategory;
+  author: {
+    name: string;
+    role: string;
+    avatar: string;
+  };
+  featuredImage: string;
+  publishedAt: string;
+  readingTime: string;
+  content: string; // rich markdown / HTML formatted content
+  tags: string[];
+  cta: {
+    type: "marketplace" | "service" | "partner";
+    title: string;
+    description: string;
+    buttonText: string;
+    buttonLink: string;
+    whatsappMessage: string;
+  };
+  isFeatured?: boolean;
+  isDemo?: boolean;
+}
+

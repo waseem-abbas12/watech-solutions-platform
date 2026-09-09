@@ -528,3 +528,493 @@ export function getItemByCategoryAndId(category: string, id: string) {
   }
   return null;
 }
+
+// ====================================================
+// WATECH BLOG ECOSYSTEM (PHASE 2)
+// ====================================================
+
+import { BlogPost } from "@/types/database";
+
+export const INITIAL_BLOG_POSTS: BlogPost[] = [
+  // 1. REAL ESTATE
+  {
+    id: "blog-1",
+    slug: "pakistan-mein-property-kharidne-se-pehle-7-important-checks",
+    title: "Pakistan Mein Property Kharidne Se Pehle 7 Important Checks",
+    excerpt: "NOC, registry, fard, utility clearances aur LDA/CDA approvals — ghalti se bachne ke liye har buyer ke liye laazmi checklist.",
+    category: "Real Estate",
+    author: {
+      name: "Malik Muhammad Asif",
+      role: "Senior Real Estate Advisor",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+    },
+    featuredImage: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
+    publishedAt: "September 02, 2026",
+    readingTime: "6 min read",
+    tags: ["Real Estate", "Property Buying Guide", "Pakistan Real Estate", "DHA Lahore", "CDA Islamabad"],
+    isFeatured: true,
+    isDemo: true,
+    cta: {
+      type: "marketplace",
+      title: "Looking for 100% Verified Properties in Lahore & Islamabad?",
+      description: "Explore our audited portfolio of legal possession houses and plots with clear registry documentation.",
+      buttonText: "Browse Verified Properties",
+      buttonLink: "/marketplace?tab=properties",
+      whatsappMessage: "Assalam-o-Alaikum, I read your blog on 7 Property Checks and want to inquire about verified listings in Lahore/Islamabad.",
+    },
+    content: `
+### Introduction: Property Kharidna Ek Zindagi Ka Faisla Hai
+
+Pakistan ke real estate market mein property kharidna sirf financial investment nahi balkay aik ahem zindagi ka faisla hota hai. Har saal hazaron buyers legal issues, unapproved housing societies aur forged documents ki wajah se apne life savings ko risk mein daal dete hain.
+
+Watech Ecosystem ka maqsad transparent property marketplace faraham karna hai. Is guide mein hum 7 practical checks detail se discuss karenge jo aapko har plot ya ghar kharidne se pehle laazmi karne chahiye.
+
+---
+
+### Check 1: Housing Society Ki Official Approval (NOC Status)
+
+Sab se pehla aur basic check yeh hai ke kya society ko mutalliqa development authority se Approval aur NOC (No Objection Certificate) mila hua hai?
+- **Lahore:** LDA (Lahore Development Authority) ya RUDA approved honi chahiye.
+- **Islamabad/Rawalpindi:** CDA (Capital Development Authority) ya RDA approved ho.
+- **Karachi:** SBCA (Sindh Building Control Authority) approval check karein.
+
+> **Tip:** Kabhi bhi sirf "NOC under process" ke daawe par plot ya file na khareedein jab tak authority ke official portal par society approved show na ho.
+
+---
+
+### Check 2: Zameen Ka Mauza Aur Fard-e-Malkiyat
+
+Agar aap direct zameen ya private plot khareed rahe hain to:
+1. **Fard Baraye Bae (فرد برائے بیع):** Patwari ya Arazi Record Center (PLRA) se fresh verified fard haasil karein.
+2. **Aks-Shajra (عکس شجرہ):** Zameen ki geographical boundary aur location map verify karein.
+3. Tasdeeq karein ke seller ka computerized CNIC record revenue department mein match karta hai.
+
+---
+
+### Check 3: Site Inspection Aur Physical Possession
+
+Kaghzat par plot dekhna aur on-ground plot dekhna do mukhtalif cheezein hain.
+- Mauqay par ja kar plot ki actual dimension (e.g. 50x90 for 1 Kanal, 35x65 for 10 Marla) paimaish karein.
+- Check karein ke plot ke samne se passing road, street light poles, aur sewerage lines maujood hain.
+- High-tension electricity wires ya qabristan ke bilkul qareeb to nahi? Corner aur facing-park plots par premium rates hotay hain lekin unka demand margin bhi high hota hai.
+
+---
+
+### Check 4: Utility NOCs & Pending Dues Clearance
+
+Ghar kharidte waqt previous utility meters ke NOCs aur bills clear hona zaroori hain:
+- **Electricity (LESCO/IESCO/KE):** Meter reading aur pending dues check karein.
+- **Sui Gas (SNGPL/SSGC):** Gas connection legal hai aur compressor fine to nahi laga?
+- **Water & Sanitation / Society Maintenance:** Housing society office se NDC (No Demand Certificate) zaroor talab karein.
+
+---
+
+### Check 5: Bank Lien & Encumbrance Certificate
+
+Kahin seller ne is property par kisi bank ya financial institution se loan to nahi uthaya hua?
+- Sub-registrar office se Non-Encumbrance Certificate (Search Report) check karein.
+- Agar property mortgaged ho to clearance letter ke baghair transaction hargiz na karein.
+
+---
+
+### Check 6: Legal Sale Agreement (Bayanama) Ki Wazaahat
+
+Bayana dete waqt written agreement mein wazeh terms likhein:
+- Total negotiated price aur advance bayana amount.
+- Registry / Transfer ki final deadline date.
+- Agar koi party back out karti hai to penalty clause.
+- Payment hamesha **Bank Pay Order / Crossed Cheque** ke zariye karein, cash transaction se mukammal parhez karein taake legal banking trail maujood rahe.
+
+---
+
+### Check 7: Watech Verified Shield Listing Ka Faida
+
+Watech Marketplace par har property partner profile aur listing admin team ke document audit ke baad live hoti hai. Hum verify karte hain ke listing direct partner ki hai aur market price competitive hai.
+
+Agar aap Lahore, Islamabad ya Karachi mein verified ghar ya plot search kar rahe hain to hamare advisors se direct WhatsApp par mashwara le sakte hain.
+    `,
+  },
+
+  // 2. FURNITURE & CHINIOTI CRAFT
+  {
+    id: "blog-2",
+    slug: "chinioti-furniture-kharidte-waqt-quality-kaise-check-karein",
+    title: "Chinioti Furniture Kharidte Waqt Quality Kaise Check Karein",
+    excerpt: "Solid Sheesham pehchanne ka tareeqa, seasoning ke fawaid, hand carving aur machine carving mein farq ka practical guide.",
+    category: "Furniture & Chinioti Craft",
+    author: {
+      name: "Ustad Ghulam Rasool",
+      role: "Master Wood Artisan, Chiniot",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
+    },
+    featuredImage: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80",
+    publishedAt: "August 28, 2026",
+    readingTime: "5 min read",
+    tags: ["Chinioti Furniture", "Solid Wood", "Sheesham", "Handcrafted", "Furniture Care"],
+    isFeatured: false,
+    isDemo: true,
+    cta: {
+      type: "marketplace",
+      title: "Explore 100% Authentic Handcrafted Chinioti Wood Sets",
+      description: "Direct artisan master crafted Sheesham bed sets, floral 7-seater sofas, and royal dining tables.",
+      buttonText: "Browse Chinioti Collection",
+      buttonLink: "/marketplace?tab=furniture",
+      whatsappMessage: "Assalam-o-Alaikum, I read your guide on Chinioti furniture quality and would like to see original Sheesham bed & sofa sets.",
+    },
+    content: `
+### Chiniot Ka Asal Virsa: Lakhon Salon Ka Hunar
+
+Punjab ke shehr Chiniot ka lakri ka kaam poori dunya mein apni nafees naqqashi aur mazboot Sheesham lakri ke hawale se jana jata hai. Mughal dor se chalay aane wale yeh artisans lakri ko aam furniture nahi balkay aik fankarana shahkar banate hain.
+
+Lekin aaj market mein sasta MDF, particle board aur semi-hardwood ko "Chinioti Sheesham" keh kar becha ja raha hai. Asal aur naqal mein farq samajhna har buyer ke liye zaroori hai.
+
+---
+
+### 1. Asal Sheesham (Rosewood) Ki Pehchan Kaise Karein?
+
+Sheesham ki pehchan ke 3 basic asool hain:
+1. **Natural Grain & Texture:** Sheesham ke andar gehre brown, black aur golden streaks (dhaariyan) natural hoti hain jo kabhi repeat nahi hoti. Agar grain pattern bilkul artificial aur uniform lage to samajh jayein yeh veneer sheet hai.
+2. **Weight (Wazan):** Solid Sheesham bohot bhari aur dense lakri hoti hai. Aik standard Chinioti bed frame 100kg+ wazan ka hota hai.
+3. **Natural Fragrance:** Taaza kaati ya chisel ki hui Sheesham ki aik makhsoos halki sweet aur woody khushboo hoti hai.
+
+---
+
+### 2. Wood Seasoning Kyun Zaroori Hai?
+
+Sab se ahem marhala seasoning hai. Kachi lakri mein 25% se 40% tak moisture hota hai. Agar furniture kachi lakri se bana diya jaye to:
+- 6 se 12 mahinay baad lakri phatne (cracking) lagti hai.
+- Bed ke joints dheethe ho jate hain aur aawazein (creaking sound) nikalne lagti hain.
+- Darwaze aur drawers phansnay lagte hain.
+
+**Watech Standard:** Hamare Chiniot partners sirf kiln-seasoned lakri istemaal karte hain jisme moisture 10% se 12% tak maintain kiya jata hai, jiski wajah se furniture 50 saal tak bina warp hue rehta hai.
+
+---
+
+### 3. Hand Carving vs CNC Machine Carving
+
+- **CNC Machine:** Computer design se tezi se katati hai lekin uske kinare flat, dull aur be-jaan hotay hain. Carving ki gehrai kam hoti hai.
+- **Dasti Naqqashi (Hand Carving):** Ustad artisan apne hath ke cheeni (chisels) se phool ki patiyon ko 3D relief deta hai. Patiyon mein curvature aur roohani khoobsurti hoti hai jo machine kabhi create nahi kar sakti.
+
+---
+
+### 4. Polish Finish Aur Upholstery Standards
+
+- **Lacquer vs Deco Finish:** Royal furniture par multi-coat polyurethane lacquer polish lagti hai jo pani aur garmi se lakri ko mehfooz rakhti hai.
+- **Foam:** Sofa ya bed headboard mein hamesha **Molty Master High-Density Foam** ya Turkish springs check karein jo 10 saal tak dabti nahi hain.
+
+Watech Marketplace par direct Chiniot artisans ke sath rabta karein aur factory rates par delivery haasil karein.
+    `,
+  },
+
+  // 3. EVENTS & CATERING
+  {
+    id: "blog-3",
+    slug: "wedding-event-ke-liye-banquet-hall-select-karne-ka-complete-guide",
+    title: "Wedding Event Ke Liye Banquet Hall Select Karne Ka Complete Guide",
+    excerpt: "Guest capacity, air conditioning, menu selection, valet parking aur hidden charges se bachne ke practical wedding tips.",
+    category: "Events & Catering",
+    author: {
+      name: "Farhan Qureshi",
+      role: "Lead Event & Hospitality Director",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
+    },
+    featuredImage: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
+    publishedAt: "August 20, 2026",
+    readingTime: "5 min read",
+    tags: ["Wedding Planning", "Banquet Halls", "Catering Pakistan", "Lahore Events", "Marquee Booking"],
+    isFeatured: false,
+    isDemo: true,
+    cta: {
+      type: "marketplace",
+      title: "Book Verified Banquet Halls & Signature Catering Packages",
+      description: "Compare capacities, menus, per-head rates, and check seasonal dates across top marquees.",
+      buttonText: "Browse Event Venues",
+      buttonLink: "/marketplace?tab=events",
+      whatsappMessage: "Assalam-o-Alaikum, I am planning a wedding and want to check available banquet halls and menu rates.",
+    },
+    content: `
+### Shadi Ki Taqreeb: Venue Selection Sab Se Pehla Step Hai
+
+Pakistan mein Barat, Walima ya Mehndi plan karte waqt sab se bara faisla venue aur menu package ka hota hai. Shadi ka season (October se March) aate hi achay banquet halls aur marquees 6 se 8 mahine pehle book ho jate hain.
+
+Ghalat venue choose karne se traffic jams, garmi mein AC issue, ya kanooni waqt ki pabandiyan poore event ka maza kharab kar sakti hain. Yeh guide aapko right faisla lene mein madad karegi.
+
+---
+
+### 1. Actual Guest Count vs Hall Capacity
+
+Kabhi bhi hall ko uski maximum capacity par pack na karein:
+- Agar aapke guests **800** hain to kam az kam **1,000 to 1,200 capacity** ka hall choose karein.
+- Khana lagte waqt live buffet counters ke samne rush banta hai. Khula space hone se buzurgo aur aurton ko aramdehi milti hai.
+
+---
+
+### 2. Pillarless Hall vs Pillared Layout
+
+Pillars (sutoon) stage view ko block karte hain:
+- Hamesha **Pillarless Hall** ko tarjeeh dein taake har table se dulha-dulhan ka stage aur screen saaf nazar aaye.
+- Ceiling height kam az kam 18 se 24 feet honi chahiye taake professional truss lighting aur stage photography grand lage.
+
+---
+
+### 3. Backup Power & Climate Control (HVAC)
+
+Pakistan mein load shedding aur voltage fluctuation aam hai:
+- Hall management se confirmed standby generator ki capacity (kam az kam 350kVA - 500kVA) ka pouchhein.
+- Ensure karein ke generator changeover ke waqt hall ke sound aur main stage lights mein delay na aaye.
+- Summer season mein chilling unit (tonnage capacity) check karein.
+
+---
+
+### 4. Food Tasting Aur Catering Quality
+
+Sirf menu card par dishes ke naam na dekhein:
+- **Tasting Session:** Booking se pehle live wedding dinner mein unke Mutton Qorma, Biryani, live Seekh Kabab aur Kheer/Halwa taste karein.
+- Khana serve hone ka temperature garam hona chahiye aur crockery hotel-grade bone china honi chahiye.
+
+---
+
+### 5. Hidden Charges Ki Wazaahat
+
+Aksar final bill mein unexpected charges shamil kar diye jate hain. Pehle se written confirm karein:
+- Stage decor aur floral setup fees.
+- DJ sound system aur generator diesel surcharge.
+- Valet parking staff tips aur service charges.
+- One-dish policy compliance aur local administration closing time guidelines.
+
+Watech Marketplace par tamam listed banquet halls aur marquee packages verified rates aur transparent guest capacity ke sath mojood hain.
+    `,
+  },
+
+  // 4. DIGITAL MARKETING
+  {
+    id: "blog-4",
+    slug: "small-business-ke-liye-facebook-ads-kaise-kaam-karte-hain",
+    title: "Small Business Ke Liye Facebook Ads Kaise Kaam Karte Hain",
+    excerpt: "Kam budget mein genuine Pakistani buyer inquiries kaise generate ki jayein. Boost Post ki ghalti aur Ads Manager ka right tareeqa.",
+    category: "Digital Marketing",
+    author: {
+      name: "Waseem Abbas",
+      role: "Founder & Digital Growth Architect",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    },
+    featuredImage: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1200&q=80",
+    publishedAt: "September 05, 2026",
+    readingTime: "6 min read",
+    tags: ["Facebook Ads", "Meta Marketing", "Lead Generation", "Pakistani Business", "Digital Growth"],
+    isFeatured: false,
+    isDemo: true,
+    cta: {
+      type: "service",
+      title: "Ready to Scale Your Sales with High-ROI Paid Campaigns?",
+      description: "Our agency engineers dedicated Meta, Google & TikTok funnels delivering phone-verified leads daily.",
+      buttonText: "Grow My Business",
+      buttonLink: "/services#growth-form",
+      whatsappMessage: "Assalam-o-Alaikum Waseem, I read your article on Facebook Ads and want to run lead generation campaigns for my business.",
+    },
+    content: `
+### Sirf "Boost Post" Dabana Marketing Nahi Hai
+
+Pakistan mein 80% chhotay aur darmiyanay business owners (chahe real estate agent hon, furniture showroom ho, ya boutique) Facebook par post laga kar neeche "Boost Post" ka blue button daba dete hain.
+
+Nateeja? Hazaaron likes aur comments aate hain jinme log sirf "Price?", "AOA", ya "Detail" likhte hain, lekin genuine buyer leads nahi milti.
+
+Is guide mein hum discuss karenge ke professional **Meta Ads Manager** ke zariye serious buying customers kaise target kiye jate hain.
+
+---
+
+### 1. Boost Post vs Meta Ads Manager: Asal Farq Kya Hai?
+
+- **Boost Post (Engagement Objective):** Facebook ka algorithm un logon ko post dikhata hai jo aam tor par like ya scroll karte hain, chahe unki buying power ho ya na ho.
+- **Ads Manager (Leads & Sales Objective):** Meta ke machine-learning algorithm ko bataya jata hai ke mujhe sirf wo log chahiye jo **Instant Form fill karein** ya direct **WhatsApp par conversation initiate karein**.
+
+---
+
+### 2. Pakistani Audience Ke Liye Right Targeting Strategy
+
+Real Estate, Furniture aur Luxury Services ke liye broad targeting waste of money hai:
+- **Location Radius:** Shehr ke high-income posh areas ko pin-drop karein (e.g. DHA, Bahria, Gulberg, Model Town, F-6/F-7 Islamabad).
+- **Device Targeting:** Target karein high-end Android (Samsung S-series) aur iPhone users.
+- **Interests Layering:** High-net-worth indicators jaise Luxury lifestyle, Frequent International Travelers, Investment banking, Golf clubs.
+
+---
+
+### 3. Pakistani Buyers Ke Liye Direct WhatsApp Ads Ka Jadoo
+
+Pakistan mein email marketing ka open rate kam hai, lekin WhatsApp open rate **95%+** hai!
+- **Click-to-WhatsApp Ads:** Jab customer ad dekhta hai to aik click se uski screen par direct aapka WhatsApp open ho jata hai jisme pre-filled inquiry text likha hota hai.
+- Customer ka verified phone number aapke pass foran aa jata hai.
+
+---
+
+### 4. Video Ads (Reels) vs Static Images
+
+2026 mein static photo ads ki conversion 40% gir chuki hai jabke vertical video reels ki conversion 3x zyada hai:
+- 30-second ka video banaein jisme product ka real walkthrough ho.
+- Pehle 3 second mein strong hook dein: "Kya aap Lahore mein bina commission direct designer house dhoond rahe hain?"
+- Clear Call to Action (CTA) dein: "Abhi WhatsApp button dabayein aur price breakdown haasil karein."
+
+Watech Digital Services aapke business ke liye complete Meta, Google aur WhatsApp marketing automate karti hai.
+    `,
+  },
+
+  // 5. AI & AUTOMATION
+  {
+    id: "blog-5",
+    slug: "small-businesses-ai-automation-se-kya-benefits-le-sakte-hain",
+    title: "Small Businesses AI Automation Se Kya Benefits Le Sakte Hain",
+    excerpt: "24/7 Roman Urdu customer response, n8n automated lead logging aur manual kaam khatam karne ke practical tareeqe.",
+    category: "AI & Automation",
+    author: {
+      name: "Waseem Abbas",
+      role: "AI Workflow & Solutions Architect",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    },
+    featuredImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
+    publishedAt: "September 01, 2026",
+    readingTime: "5 min read",
+    tags: ["AI Automation", "WhatsApp Bots", "n8n Workflows", "Business Efficiency", "Roman Urdu AI"],
+    isFeatured: false,
+    isDemo: true,
+    cta: {
+      type: "service",
+      title: "Automate Your Customer Support & CRM with AI",
+      description: "Deploy autonomous Roman Urdu WhatsApp bots, zero-touch lead routing, and self-hosted n8n workflows.",
+      buttonText: "Explore AI Solutions",
+      buttonLink: "/services",
+      whatsappMessage: "Assalam-o-Alaikum Waseem, I want to set up automated AI workflows and WhatsApp chatbots for my company.",
+    },
+    content: `
+### AI Ab Sirf Bari Tech Companies Ke Liye Nahi Hai
+
+Ziada tar business owners samajhte hain ke Artificial Intelligence (AI) sirf Silicon Valley ki bari companies ke liye hai. Yeh aik bohot bari ghalt-fehmi hai.
+
+2026 mein AI aur no-code tools (jaise self-hosted **n8n**, OpenAI API, aur Meta Cloud API) ke zariye aik 5-logon ki choti company bhi 50-logon ki corporate team jaisi output de sakti hai.
+
+---
+
+### 1. Problem: Slow Response Se Lead zaya Ho Jana
+
+Research ke mutabiq, agar customer ki inquiry ka jawab **pehle 5 minute** ke andar na diya jaye to deal close hone ke chances **80% kam** ho jate hain.
+- Raat ke 11 bajay customer plot ya sofa dekh kar inquiry karta hai.
+- Aapki sales team subah 10 bajay online aati hai.
+- Is doran customer kisi doosre competitor se baat shuru kar chuka hota hai.
+
+---
+
+### 2. Solution: Autonomous WhatsApp Bot in Roman Urdu
+
+Watech AI Bot 24/7 second ke andar reply karta hai:
+- Roman Urdu aur English dono samajhta hai.
+- "Bhai 1 kanal DHA ka rate kya hai?" → Bot foran accurate price range, high-res photos aur PDF brochure bhej deta hai.
+- Customer ka naam, phone number aur budget filter karke subah aapke sales agent ke WhatsApp par lead notification bhej deta hai.
+
+---
+
+### 3. Automated Lead CRM (Zero-Touch Sync)
+
+Jab Meta Facebook ad se inquiry aati hai:
+1. AI automation foran lead data fetch karti hai.
+2. Google Sheets ya CRM mein log karti hai.
+3. Customer ko customized WhatsApp welcome message bhejti hai.
+4. Business owner ko mobile alert chala jata hai.
+Yeh poora process bina kisi insaani hath ke **2 second** mein mukammal hota hai.
+
+---
+
+### 4. Operational Cost Ki Bachat
+
+Manual receptionist ya data entry staff par mahana hazaron rupay kharch karne ke bajaye, automated AI pipelines aapki inquiry handling speed ko 10x karti hain aur human errors ko 0% par le aati hain.
+    `,
+  },
+
+  // 6. BUSINESS GROWTH
+  {
+    id: "blog-6",
+    slug: "local-business-ko-online-brand-banane-ka-practical-roadmap",
+    title: "Local Business Ko Online Brand Banane Ka Practical Roadmap",
+    excerpt: "Showroom aur dukaan se nikal kar digital authority banne ka 4-step framework: Branding, Website, Paid Ads aur Trust Building.",
+    category: "Business Growth",
+    author: {
+      name: "Waseem Abbas",
+      role: "Strategic Growth Consultant",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    },
+    featuredImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    publishedAt: "August 15, 2026",
+    readingTime: "7 min read",
+    tags: ["Business Growth", "Digital Transformation", "Branding Pakistan", "Online Sales", "Scale Your Business"],
+    isFeatured: false,
+    isDemo: true,
+    cta: {
+      type: "service",
+      title: "Partner with Watech to Scale Your Business Nationwide",
+      description: "Join our verified partner network or hire our digital agency team to turn your business into an authoritative digital brand.",
+      buttonText: "Start Growth Consultation",
+      buttonLink: "/services#growth-form",
+      whatsappMessage: "Assalam-o-Alaikum Waseem, I want to discuss a full digital growth strategy to expand my local business.",
+    },
+    content: `
+### Sirf Physical Showroom Ka Zamana Khatam Ho Chuka Hai
+
+Pehle daur mein agar aapka showroom Main Boulevard, Gulberg ya Chiniot Wood Market mein hota tha to customer chalkar aata tha aur business chalta rehta tha.
+
+Aaj customer showroom aane se pehle **Google, Instagram aur TikTok** par search karta hai. Agar aapka digital footprint nahi hai to aap us customer ke liye exist hi nahi karte.
+
+---
+
+### Step 1: Professional Digital Identity (Design & Branding)
+
+Aapka logo, brand color, aur mobile website aapka modern digital showroom hai:
+- Sasti templates ke bajaye modern, ultra-fast Next.js website banayein.
+- High-definition real photography lagayein. Stock photos Pakistani customers ko appeal nahi karti hain.
+- Google Business Profile (Google Maps) ko 100% complete karein aur real customer reviews lein.
+
+---
+
+### Step 2: Content Marketing Aur Educational Authority
+
+Sirf "Kharido Kharido" kehna band karein:
+- Log unse khareedte hain jin par wo aetibar (trust) karte hain.
+- Video banayein: "Yeh 5 baatein check karein", "Kachi lakri pehchanne ka tareeqa", "Real estate safe investment".
+- Jab aap customer ko guide karte hain to aap market ke undisputed leader ban jate hain.
+
+---
+
+### Step 3: Paid Funnels Aur WhatsApp Lead Generation
+
+Organic reach aahista aati hai, paid advertising tezi se scale karti hai:
+- Testing budget se shuru karein (e.g. PKR 50k - 100k mahana).
+- Apne best selling product ke liye specific campaign chalayein.
+- Har aane wale lead ka data mehfooz karein.
+
+---
+
+### Step 4: Ecosystem Partnership Ka Faida
+
+Akelay grow karna mehnga aur slow hota hai.
+Watech Platform ka maqsad yahi hai ke hum verified Real Estate agents, Chinioti manufacturers aur Event vendors ko technology aur customer demand faraham karte hain.
+
+Aapka product authentic ho, technology aur digital scale hum provide karenge.
+    `,
+  },
+];
+
+export function getBlogPostBySlug(slug: string): BlogPost | null {
+  const post = INITIAL_BLOG_POSTS.find((p) => p.slug === slug);
+  return post || null;
+}
+
+export function getRelatedBlogPosts(currentSlug: string, category: string, limit: number = 3): BlogPost[] {
+  const matching = INITIAL_BLOG_POSTS.filter(
+    (p) => p.slug !== currentSlug && p.category === category
+  );
+  if (matching.length >= limit) {
+    return matching.slice(0, limit);
+  }
+  const others = INITIAL_BLOG_POSTS.filter(
+    (p) => p.slug !== currentSlug && p.category !== category
+  );
+  return [...matching, ...others].slice(0, limit);
+}
+

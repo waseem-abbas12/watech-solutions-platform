@@ -37,6 +37,11 @@ export const Footer = () => {
                 Partner Ecosystem (Free Join)
               </Link>
             </li>
+            <li>
+              <Link href="/blog" className="hover:text-blue-400 transition-colors">
+                Blog & Insights Hub
+              </Link>
+            </li>
           </ul>
         </div>
 
