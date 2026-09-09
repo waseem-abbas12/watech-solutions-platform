@@ -3,11 +3,28 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import { Building2, Sofa, Utensils, ArrowRight, Mouse } from "lucide-react";
+import {
+  Building2,
+  Sofa,
+  Utensils,
+  Package,
+  Rocket,
+  ArrowRight,
+  Mouse,
+  CheckCircle2,
+  MessageCircle,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  TrendingUp,
+} from "lucide-react";
+import { SmartSalesFunnel } from "@/components/common/smart-sales-funnel";
+import { HomeFaqs } from "@/components/common/home-faqs";
+import { SocialIcons } from "@/components/common/social-icons";
 
 export default function HomePage() {
   // Typewriter effect for subheading
-  const fullText = "Real Estate · Furniture · Events";
+  const fullText = "Digital Services · Real Estate · Chinioti Furniture · FMCG Wholesale";
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
@@ -18,7 +35,7 @@ export default function HomePage() {
       if (index >= fullText.length) {
         clearInterval(interval);
       }
-    }, 60);
+    }, 50);
     return () => clearInterval(interval);
   }, []);
 
@@ -27,7 +44,7 @@ export default function HomePage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
       },
     },
   };
@@ -44,10 +61,10 @@ export default function HomePage() {
   return (
     <div className="w-full bg-white selection:bg-slate-900 selection:text-white">
       {/* =========================================
-          HERO SECTION (100vh Full Viewport Height)
+          HERO SECTION (Full Viewport Height)
           ========================================= */}
       <section className="relative h-[calc(100vh-5rem)] flex flex-col items-center justify-center overflow-hidden px-6">
-        {/* Subtle Animated Gradient Background using Framer Motion */}
+        {/* Subtle Animated Gradient Background */}
         <motion.div
           animate={{
             background: [
@@ -65,12 +82,12 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center justify-center">
           {/* Subheading with Typewriter Effect */}
           <div className="mb-6 flex items-center justify-center min-h-[1.75rem]">
-            <span className="text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-gray-500 font-mono">
+            <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-blue-600 font-mono">
               {displayedText}
               <motion.span
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 0.8, repeat: Infinity }}
-                className="inline-block w-1.5 h-3.5 bg-gray-400 ml-1 translate-y-0.5"
+                className="inline-block w-1.5 h-3.5 bg-blue-500 ml-1 translate-y-0.5"
               />
             </span>
           </div>
@@ -80,30 +97,172 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-black text-gray-900 tracking-tight leading-[1.05] max-w-4xl"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.2rem] font-black text-slate-900 tracking-tight leading-[1.05] max-w-4xl"
           >
             Your Space.
             <br />
             Our Expertise.
           </motion.h1>
+
+          <p className="text-base sm:text-lg text-slate-600 mt-6 max-w-2xl leading-relaxed">
+            Pakistan ka pehla integrated ecosystem — Digital Agency Services, Verified Properties, 774+ Asal Chinioti Furniture aur Mill-Direct Kiryana Wholesale Stock.
+          </p>
+
+          {/* Hero CTAs */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+            <Link
+              href="/services"
+              className="px-8 py-4 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 hover:shadow-xl hover:scale-105 transition-all"
+            >
+              Digital Services & Agency
+            </Link>
+            <Link
+              href="/marketplace"
+              className="px-8 py-4 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md hover:scale-105 transition-all"
+            >
+              Explore Products Marketplace
+            </Link>
+          </div>
         </div>
 
-        {/* Minimal Blinking Scroll Indicator at Bottom */}
+        {/* Minimal Blinking Scroll Indicator */}
         <motion.div
           animate={{ y: [0, 8, 0], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-8 flex flex-col items-center gap-2 text-gray-400 cursor-pointer"
+          className="absolute bottom-6 flex flex-col items-center gap-2 text-slate-400 cursor-pointer"
           onClick={() => {
             window.scrollTo({ top: window.innerHeight - 80, behavior: "smooth" });
           }}
         >
           <Mouse className="w-5 h-5 stroke-[1.5]" />
-          <span className="text-[10px] tracking-widest uppercase font-medium">Scroll</span>
+          <span className="text-[10px] tracking-widest uppercase font-medium">Scroll Down</span>
         </motion.div>
       </section>
 
       {/* =========================================
-          BELOW THE FOLD: THREE WAYS WE SERVE YOU
+          SMART INTERACTIVE SALES FUNNEL CONCIERGE
+          ========================================= */}
+      <SmartSalesFunnel />
+
+      {/* =========================================
+          SECTION 01: SERVICES TOP SECTION (HIGH PRIORITY)
+          ========================================= */}
+      <section className="w-full py-20 px-6 bg-slate-950 text-white relative overflow-hidden border-b border-slate-800">
+        {/* Glow Accents */}
+        <div className="absolute -top-24 right-10 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 left-10 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 border border-blue-400/25 text-blue-400 text-xs font-bold uppercase tracking-wider mb-3">
+                <Rocket className="w-3.5 h-3.5" />
+                <span>Primary Journey · WATECH Digital Agency</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
+                Business Growth & Tech Solutions
+              </h2>
+              <p className="text-sm sm:text-base text-slate-400 mt-2 max-w-2xl">
+                Pakistani businesses ke liye high-ROI Meta & TikTok Ads, Automated WhatsApp CRM Systems, aur Modern Next.js Web Platforms.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href="/services"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#2563EB] hover:bg-blue-600 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all group"
+              >
+                <span>View All 7 Services</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+
+          {/* 4 Core Pillars Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: Zap,
+                title: "Meta & TikTok Paid Ads",
+                desc: "Laser-targeted campaigns across Facebook, Instagram aur TikTok for real converting leads.",
+                tag: "High ROI Leads",
+              },
+              {
+                icon: MessageCircle,
+                title: "WhatsApp Automation & CRM",
+                desc: "24/7 automated inquiry responses, customer categorization aur bulk broadcast setup.",
+                tag: "0s Lead Delay",
+              },
+              {
+                icon: TrendingUp,
+                title: "Custom Web & App Portals",
+                desc: "Lightning fast Next.js 16 platforms with local Pakistani payment and catalog systems.",
+                tag: "Next.js 16 Architecture",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Real Estate & FMCG Tech",
+                desc: "Specialized inventory management, lead tracking aur partner commission dashboards.",
+                tag: "Turnkey Enterprise",
+              },
+            ].map((srv, idx) => {
+              const SrvIcon = srv.icon;
+              return (
+                <div
+                  key={idx}
+                  className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800/90 hover:border-blue-500/50 hover:bg-slate-900 transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-[#2563EB] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                      <SrvIcon className="w-6 h-6" />
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">
+                      {srv.tag}
+                    </span>
+                    <h4 className="text-lg font-bold text-white mt-1 mb-2">
+                      {srv.title}
+                    </h4>
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                      {srv.desc}
+                    </p>
+                  </div>
+                  <div className="pt-6 mt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-300 group-hover:text-blue-400 font-semibold">
+                    <span>Learn More</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Quick WhatsApp Growth Audit Banner */}
+          <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-900/50 via-slate-900 to-indigo-950/60 border border-blue-800/40 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-400">
+                Limited Time Offer
+              </span>
+              <h4 className="text-lg sm:text-xl font-bold text-white mt-1">
+                Apne Karobar Ke Liye Free 15-Minute WhatsApp Growth Audit Hasil Karein
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                Hum aapke social media aur sales process ka jaiza le kar specific sales barhane ka plan banayenge.
+              </p>
+            </div>
+            <a
+              href="https://wa.me/923270831470?text=Assalam%20o%20Alaikum%20WATECH%2C%20Mujhe%20apne%20karobar%20ke%20liye%20Free%2015-Minute%20Growth%20Audit%20chahiye."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:shadow-emerald-500/20 transition-all shrink-0 cursor-pointer"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Claim Free Audit</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
+          INTEGRATED CAPABILITIES (FIVE SECTOR STRIPS)
           ========================================= */}
       <section className="w-full border-t border-slate-100 bg-white">
         <div className="max-w-7xl mx-auto px-6 pt-24 pb-12 text-center">
@@ -117,7 +276,7 @@ export default function HomePage() {
               Integrated Capabilities
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mt-2">
-              Three Ways We Serve You
+              Five Sectors We Power Across Pakistan
             </h2>
           </motion.div>
         </div>
@@ -134,7 +293,7 @@ export default function HomePage() {
               ------------------------------------------------ */}
           <motion.div
             variants={itemVariants}
-            className="w-full py-20 border-b border-slate-100 bg-gradient-to-r from-blue-50/40 via-white to-white transition-all hover:bg-blue-50/60"
+            className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-blue-50/40 via-white to-white transition-all hover:bg-blue-50/60"
           >
             <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div className="flex items-start gap-6">
@@ -171,7 +330,7 @@ export default function HomePage() {
               ------------------------------------------------ */}
           <motion.div
             variants={itemVariants}
-            className="w-full py-20 border-b border-slate-100 bg-gradient-to-r from-emerald-50/40 via-white to-white transition-all hover:bg-emerald-50/60"
+            className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-emerald-50/40 via-white to-white transition-all hover:bg-emerald-50/60"
           >
             <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div className="flex items-start gap-6">
@@ -180,13 +339,13 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#16A34A]">
-                    Sector 02 · Craftsmanship
+                    Sector 02 · Craftsmanship (774+ Designs)
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
                     Chinioti Wood & Furniture
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Handcrafted luxury for your home — authentic wood, timeless designs, and master carving straight from Chiniot artisans.
+                    Handcrafted luxury for your home — authentic Sheesham wood, bridal sets, royal sofas, jhoolas and dining suites straight from Chiniot.
                   </p>
                 </div>
               </div>
@@ -204,11 +363,48 @@ export default function HomePage() {
           </motion.div>
 
           {/* ------------------------------------------------
-              STRIP 3: FOOD & CATERING (ORANGE #EA580C)
+              STRIP 3: ROZMARRAH ASHIYA & KIRYANA WHOLESALE (FMCG GOODS)
               ------------------------------------------------ */}
           <motion.div
             variants={itemVariants}
-            className="w-full py-20 bg-gradient-to-r from-orange-50/40 via-white to-white transition-all hover:bg-orange-50/60"
+            className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-amber-50/40 via-white to-white transition-all hover:bg-amber-50/60"
+          >
+            <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+              <div className="flex items-start gap-6">
+                <div className="p-4 rounded-2xl bg-amber-500/10 text-amber-600 shadow-sm shrink-0">
+                  <Package className="w-8 h-8" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-amber-600">
+                    Sector 03 · FMCG Goods Wholesale
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
+                    Rozmarrah Ashiya & Kiryana Wholesale
+                  </h3>
+                  <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
+                    Mill-Direct Ghee, Atta, Chawal, Daalein, Masala Jaat aur FMCG Brands — Kiryana Dukaandaron, Canteens aur Bulk Buyers ke liye Wholesale Rates par.
+                  </p>
+                </div>
+              </div>
+
+              <div className="shrink-0">
+                <Link
+                  href="/marketplace?tab=food-catering"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md hover:shadow-amber-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                >
+                  Wholesale Stock Dekhein
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ------------------------------------------------
+              STRIP 4: FOOD & CATERING (ORANGE #EA580C)
+              ------------------------------------------------ */}
+          <motion.div
+            variants={itemVariants}
+            className="w-full py-16 bg-gradient-to-r from-orange-50/40 via-white to-white transition-all hover:bg-orange-50/60"
           >
             <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div className="flex items-start gap-6">
@@ -217,13 +413,13 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#EA580C]">
-                    Sector 03 · Food & Hospitality
+                    Sector 04 · Food & Hospitality
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    Food & Catering
+                    Food, Pakwan & Daig Catering
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Verified restaurants, traditional pakwan centers, live BBQ catering, bakeries, sweets, and FMCG food suppliers across Pakistan.
+                    Verified Shahi Pakwan Centers, Daig delivery, live BBQ catering, marriage halls aur corporate events management across Pakistan.
                   </p>
                 </div>
               </div>
@@ -241,6 +437,20 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* =========================================
+          SOCIAL MEDIA BANNER
+          ========================================= */}
+      <section className="w-full py-12 px-6 bg-slate-50">
+        <div className="max-w-7xl mx-auto">
+          <SocialIcons variant="banner" />
+        </div>
+      </section>
+
+      {/* =========================================
+          HIGH CONVERTING FAQS SECTION
+          ========================================= */}
+      <HomeFaqs />
     </div>
   );
 }

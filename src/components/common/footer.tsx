@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { SocialIcons } from "@/components/common/social-icons";
 
 export const Footer = () => {
   return (
@@ -51,6 +52,11 @@ export const Footer = () => {
               </svg>
             </a>
           </div>
+
+          <div className="pt-2">
+            <SocialIcons variant="footer" />
+          </div>
+
           <div className="text-xs text-slate-500 pt-2">
             © {new Date().getFullYear()} Watech Solutions. All rights reserved.
           </div>
