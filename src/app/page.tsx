@@ -65,7 +65,7 @@ export default function HomePage() {
       {/* =========================================
           HERO SECTION (Full Viewport Height)
           ========================================= */}
-      <section className="relative h-[calc(100vh-5rem)] flex flex-col items-center justify-center overflow-hidden px-6">
+      <section className="relative min-h-[calc(100vh-5rem)] py-14 flex flex-col items-center justify-center overflow-hidden px-6">
         {/* Subtle Animated Gradient Background */}
         <motion.div
           animate={{
@@ -83,7 +83,7 @@ export default function HomePage() {
         {/* Hero Content Container */}
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center justify-center">
           {/* Subheading with Typewriter Effect */}
-          <div className="mb-6 flex items-center justify-center min-h-[1.75rem]">
+          <div className="mb-5 flex items-center justify-center min-h-[1.75rem]">
             <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-blue-600 font-mono">
               {displayedText}
               <motion.span
@@ -99,19 +99,19 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.2rem] font-black text-slate-900 tracking-tight leading-[1.05] max-w-4xl"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-[4.8rem] font-black text-slate-900 tracking-tight leading-[1.08] max-w-4xl"
           >
-            Your Space.
+            Building Pakistan&apos;s
             <br />
-            Our Expertise.
+            Leading Growth Ecosystem.
           </motion.h1>
 
-          <p className="text-base sm:text-lg text-slate-600 mt-6 max-w-2xl leading-relaxed">
-            17+ saala ground tajurba aur cutting-edge technology ka sangam — Enterprise Digital Marketing, FMCG Distribution & Direct Supply, Verified Properties aur Asal Chinioti Woodcraft.
+          <p className="text-base sm:text-lg text-slate-600 mt-5 max-w-2xl leading-relaxed">
+            17+ saala on-ground tajurba aur cutting-edge technology ka sangam — Omnichannel Digital Marketing, FMCG Corporate Consulting, Verified Real Estate aur Asal Chinioti Craft.
           </p>
 
           {/* Hero CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-7">
             <Link
               href="/services"
               className="px-8 py-4 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 hover:shadow-xl hover:scale-105 transition-all"
@@ -124,6 +124,28 @@ export default function HomePage() {
             >
               Products & Wholesale Marketplace
             </Link>
+          </div>
+
+          {/* Authority Metrics Numbers Strip */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-10 w-full max-w-3xl pt-6 border-t border-slate-200/80">
+            {[
+              { num: "17+", label: "Years On-Ground", sub: "FMCG Leadership" },
+              { num: "774+", label: "Authentic Designs", sub: "Chinioti Woodcraft" },
+              { num: "<30s", label: "WhatsApp Lead", sub: "Auto-Response Engine" },
+              { num: "100%", label: "Verified Deals", sub: "Deals & Partnership JVs" },
+            ].map((m, idx) => (
+              <div key={idx} className="flex flex-col items-center text-center p-2 rounded-2xl bg-white/50 border border-slate-100">
+                <span className="text-2xl sm:text-3xl font-black text-[#2563EB] tracking-tight font-mono">
+                  {m.num}
+                </span>
+                <span className="text-xs font-bold text-slate-900 mt-0.5">
+                  {m.label}
+                </span>
+                <span className="text-[10px] text-slate-500 font-medium">
+                  {m.sub}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 

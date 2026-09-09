@@ -35,7 +35,7 @@ export default function AdminPropertiesPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedCity, setSelectedCity] = useState<string>("all");
   const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(200000000);
+  const [maxPrice, setMaxPrice] = useState<number>(10000000000);
 
   // Selection for Bulk Actions
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -435,9 +435,9 @@ export default function AdminPropertiesPage() {
             <span className="truncate">Max: {formatPKR(maxPrice)}</span>
             <input
               type="range"
-              min="10000000"
-              max="200000000"
-              step="5000000"
+              min="0"
+              max="10000000000"
+              step="10000000"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
               className="w-full accent-blue-500 cursor-pointer"

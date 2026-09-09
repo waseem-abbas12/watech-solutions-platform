@@ -99,12 +99,12 @@ function MarketplaceContent() {
   // Filters for Properties
   const [propertyCity, setPropertyCity] = useState("All");
   const [propertyType, setPropertyType] = useState("All");
-  const [propertyMaxPrice, setPropertyMaxPrice] = useState(200000000); // 20 Crore max
+  const [propertyMaxPrice, setPropertyMaxPrice] = useState(10000000000); // 1000 Crore max
 
   // Filters for Furniture
   const [woodType, setWoodType] = useState("All");
   const [furnitureCategory, setFurnitureCategory] = useState("All");
-  const [furnitureMaxPrice, setFurnitureMaxPrice] = useState(500000);
+  const [furnitureMaxPrice, setFurnitureMaxPrice] = useState(10000000); // 1 Crore max
 
   // Filters for Events
   const [eventCategory, setEventCategory] = useState("All");
@@ -378,9 +378,9 @@ function MarketplaceContent() {
                 </div>
                 <input
                   type="range"
-                  min={5000000}
-                  max={200000000}
-                  step={5000000}
+                  min={0}
+                  max={10000000000}
+                  step={10000000}
                   value={propertyMaxPrice}
                   onChange={(e) => setPropertyMaxPrice(Number(e.target.value))}
                   className="w-full accent-[#16A34A] cursor-pointer"
@@ -550,9 +550,9 @@ function MarketplaceContent() {
                 </div>
                 <input
                   type="range"
-                  min={100000}
-                  max={600000}
-                  step={25000}
+                  min={0}
+                  max={10000000}
+                  step={50000}
                   value={furnitureMaxPrice}
                   onChange={(e) => setFurnitureMaxPrice(Number(e.target.value))}
                   className="w-full accent-[#16A34A] cursor-pointer"

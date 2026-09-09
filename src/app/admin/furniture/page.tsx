@@ -33,7 +33,7 @@ export default function AdminFurniturePage() {
   const [selectedWood, setSelectedWood] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
-  const [maxPrice, setMaxPrice] = useState<number>(500000);
+  const [maxPrice, setMaxPrice] = useState<number>(10000000);
 
   // Selection for Bulk Actions
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -366,9 +366,9 @@ export default function AdminFurniturePage() {
             <span className="truncate">Max: {formatPKR(maxPrice)}</span>
             <input
               type="range"
-              min="50000"
-              max="500000"
-              step="25000"
+              min="0"
+              max="10000000"
+              step="50000"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
               className="w-full accent-emerald-500 cursor-pointer"
