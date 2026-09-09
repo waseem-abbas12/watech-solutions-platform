@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Explore verified Real Estate plots and houses, authentic handcrafted Chinioti Sheesham wood furniture, and top-rated Food & Catering providers across Lahore, Islamabad, Karachi, and Faisalabad.",
   alternates: {
-    canonical: "https://watech-solutions-platform-eight.vercel.app/marketplace",
+    canonical: "https://www.waseemabbas.online/marketplace",
   },
   openGraph: {
     title: "WATECH Marketplace | Real Estate, Furniture & Food & Catering in Pakistan",
     description:
       "Direct verified marketplace connecting buyers with authentic properties, Chinioti furniture, and premium Food & Catering services.",
-    url: "https://watech-solutions-platform-eight.vercel.app/marketplace",
+    url: "https://www.waseemabbas.online/marketplace",
     type: "website",
   },
 };

@@ -14,7 +14,7 @@ const inter = Inter({
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://watech-solutions-platform-eight.vercel.app";
+  "https://www.waseemabbas.online";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

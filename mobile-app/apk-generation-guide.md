@@ -17,9 +17,9 @@ Aapki Next.js 16 application mein pehle se **Progressive Web App (PWA)** archite
 ## 2. Zero-Cost APK Generation Methods
 
 ### Method 1: Pakr / Web-to-APK (Fastest: 60 Seconds, 100% Free)
-1. Apni website ko Vercel par live karein (e.g. `https://watech-solutions.vercel.app`).
+1. Apni website ko live karein (`https://www.waseemabbas.online`).
 2. [apk.091224.xyz](https://apk.091224.xyz) ya [web2apk.com](https://web2apk.com) open karein.
-3. Apna live Vercel URL paste karein.
+3. Apna live URL `https://www.waseemabbas.online` paste karein.
 4. App Name: **Watech Solutions**
 5. Package Name: `com.watechsolutions.app`
 6. **"Generate APK"** click karein.

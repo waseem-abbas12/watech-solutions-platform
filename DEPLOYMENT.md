@@ -55,8 +55,8 @@ Yeh master deployment guide aapko **Website**, **Mobile App (APK)**, **Admin Con
    - `WHATSAPP_ACCESS_TOKEN`
    - `WHATSAPP_VERIFY_TOKEN`
    - `N8N_WHATSAPP_WEBHOOK_URL`
-5. **"Deploy"** click karein. 2 minutes ke andar aapka platform live ho jayega:
-   `https://watech-solutions.vercel.app`
+5. **"Deploy"** click karein. Aapka platform official domain par live ho jayega:
+   `https://www.waseemabbas.online`
 
 ---
 

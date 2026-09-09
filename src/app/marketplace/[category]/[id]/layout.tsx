@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const item = result.item;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://watech-solutions-platform-eight.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.waseemabbas.online";
   const canonicalUrl = `${siteUrl}/marketplace/${category}/${id}`;
 
   const title = (item as any).title || (item as any).name || "Marketplace Listing";

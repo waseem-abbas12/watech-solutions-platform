@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
       userText.includes("dha")
     ) {
       replyText =
-        "🏡 Watech Verified Real Estate:\n• 1 Kanal Luxury Villa DHA Ph 6 Lahore (PKR 8.5 Crore)\n• 10 Marla Brand New House Bahria Town (PKR 4.2 Crore)\n• 5 Marla Plot Bahria Ph 8 (PKR 95 Lac)\n\nInquire online: https://watech-solutions.vercel.app/marketplace/properties";
+        "🏡 Watech Verified Real Estate:\n• 1 Kanal Luxury Villa DHA Ph 6 Lahore (PKR 8.5 Crore)\n• 10 Marla Brand New House Bahria Town (PKR 4.2 Crore)\n• 5 Marla Plot Bahria Ph 8 (PKR 95 Lac)\n\nInquire online: https://www.waseemabbas.online/marketplace/properties";
     } else if (
       userText.includes("furniture") ||
       userText.includes("sofa") ||
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
       userText.includes("wood")
     ) {
       replyText =
-        "🪑 Watech Chinioti Handcrafted Furniture:\n• Maharaja Royal Bed Set (Pure Sheesham) - PKR 345,000\n• Hand-Carved 7-Seater Sofa - PKR 285,000\n• 8-Seater Solid Teak Dining Suite - PKR 395,000\n\n10-Year Warranty. Browse: https://watech-solutions.vercel.app/marketplace/furniture";
+        "🪑 Watech Chinioti Handcrafted Furniture:\n• Maharaja Royal Bed Set (Pure Sheesham) - PKR 345,000\n• Hand-Carved 7-Seater Sofa - PKR 285,000\n• 8-Seater Solid Teak Dining Suite - PKR 395,000\n\n10-Year Warranty. Browse: https://www.waseemabbas.online/marketplace/furniture";
     } else if (
       userText.includes("food") ||
       userText.includes("catering") ||
@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
       userText.includes("bbq")
     ) {
       replyText =
-        "🍲 Watech Food & Catering Services:\n• Shahi Daawat Pakwan & Catering (Lahore) - PKR 1,850/head\n• Dera Shinwari Live BBQ & Karahi (Islamabad) - PKR 2,200/head\n• Clifton Royal Caterers & Biryani (Karachi) - PKR 1,650/head\n\nBook online: https://watech-solutions.vercel.app/marketplace/food-catering";
+        "🍲 Watech Food & Catering Services:\n• Shahi Daawat Pakwan & Catering (Lahore) - PKR 1,850/head\n• Dera Shinwari Live BBQ & Karahi (Islamabad) - PKR 2,200/head\n• Clifton Royal Caterers & Biryani (Karachi) - PKR 1,650/head\n\nBook online: https://www.waseemabbas.online/marketplace/food-catering";
     }
 
     // 2. Log workflow execution

@@ -27,13 +27,13 @@ export const metadata: Metadata = {
   description:
     "WATECH is a technology-driven business ecosystem connecting customers, businesses, and service providers across Real Estate, Chinioti Furniture, and Food & Catering with modern digital services and automation.",
   alternates: {
-    canonical: "https://watech-solutions-platform-eight.vercel.app/about",
+    canonical: "https://www.waseemabbas.online/about",
   },
   openGraph: {
     title: "About Watech Solutions Platform",
     description:
       "Technology-driven business growth, marketplace transparency, and partner ecosystem in Pakistan.",
-    url: "https://watech-solutions-platform-eight.vercel.app/about",
+    url: "https://www.waseemabbas.online/about",
     siteName: "Watech Solutions Platform",
     type: "website",
   },

@@ -3,11 +3,12 @@
   "appName": "Watech Solutions",
   "webDir": "public",
   "server": {
-    "url": "https://watech-solutions-platform-eight.vercel.app",
+    "url": "https://www.waseemabbas.online",
     "cleartext": true,
     "androidScheme": "https",
     "allowNavigation": [
-      "watech-solutions-platform-eight.vercel.app",
+      "www.waseemabbas.online",
+      "waseemabbas.online",
       "*.vercel.app",
       "*.firebaseapp.com",
       "*.googleapis.com"

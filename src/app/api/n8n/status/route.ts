@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getWorkflowExecutionLogs, logWorkflowExecution } from "@/lib/server-store";
 
 export const WORKFLOWS_REGISTRY = [
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
     const logs = getWorkflowExecutionLogs();
     const webhookUrl =
       process.env.N8N_WHATSAPP_WEBHOOK_URL ||
-      "https://watech-solutions-platform-eight.vercel.app/api/webhooks/whatsapp";
+      "https://www.waseemabbas.online/api/webhooks/whatsapp";
 
     return NextResponse.json({
       success: true,

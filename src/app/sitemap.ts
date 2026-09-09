@@ -1,4 +1,4 @@
-﻿import { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
 import {
   INITIAL_BLOG_POSTS,
   INITIAL_PROPERTIES,
@@ -10,7 +10,7 @@ import { DIGITAL_SERVICES } from "@/lib/services-data";
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://watech-solutions-platform-eight.vercel.app";
+    "https://www.waseemabbas.online";
 
   const currentDate = new Date().toISOString();
 

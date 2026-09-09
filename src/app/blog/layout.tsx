@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Actionable market insights, investment analysis, and expert guides covering Real Estate properties, Chinioti handcrafted furniture, and Food & Catering in Pakistan.",
   alternates: {
-    canonical: "https://watech-solutions-platform-eight.vercel.app/blog",
+    canonical: "https://www.waseemabbas.online/blog",
   },
   openGraph: {
     title: "WATECH Blog | Business, Real Estate & Craftsmanship in Pakistan",
     description:
       "Expert knowledge hub for investors, homeowners, and growth-minded entrepreneurs.",
-    url: "https://watech-solutions-platform-eight.vercel.app/blog",
+    url: "https://www.waseemabbas.online/blog",
     type: "website",
   },
 };

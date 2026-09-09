@@ -119,7 +119,7 @@ export default function ItemDetailPage() {
   // ----------------------------------------------------
   const jsonLd = React.useMemo(() => {
     if (!item) return null;
-    const siteUrl = "https://watech-solutions-platform-eight.vercel.app";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.waseemabbas.online";
     const currentUrl = `${siteUrl}/marketplace/${category}/${id}`;
 
     if (type === "property") {

@@ -1,4 +1,4 @@
-﻿export interface SocialLinkItem {
+export interface SocialLinkItem {
   platform: string;
   url: string;
   label: string;
@@ -15,7 +15,7 @@ export const WATECH_CONTACT_CONFIG = {
   whatsappDisplay: "0327-0831470",
   portfolioUrl: "https://waseemabbas.online",
   locations: ["Lahore", "Faisalabad", "Islamabad", "Pakistan"],
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://watech-solutions-platform-eight.vercel.app",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.waseemabbas.online",
 };
 
 export const SOCIAL_LINKS = {

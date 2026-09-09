@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://watech-solutions-platform-eight.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.waseemabbas.online";
   const postUrl = `${siteUrl}/blog/${post.slug}`;
 
   return {
@@ -95,7 +95,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
   }
 
   const relatedPosts = getRelatedBlogPosts(post.slug, post.category, 3);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://watech-solutions-platform-eight.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.waseemabbas.online";
   const postUrl = `${siteUrl}/blog/${post.slug}`;
 
   // Article & BreadcrumbList JSON-LD Structured Data

@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://watech-solutions-platform-eight.vercel.app";
+    "https://www.waseemabbas.online";
   const serviceUrl = `${siteUrl}/services/${service.slug}`;
 
   return {
@@ -71,7 +71,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const otherServices = getOtherServices(service.slug);
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://watech-solutions-platform-eight.vercel.app";
+    "https://www.waseemabbas.online";
   const serviceUrl = `${siteUrl}/services/${service.slug}`;
 
   // JSON-LD Schema for Service & Breadcrumbs
