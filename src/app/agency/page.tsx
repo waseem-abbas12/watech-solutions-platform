@@ -409,38 +409,38 @@ export default function AgencyPortalPage() {
               {/* Output Card */}
               <div className="lg:col-span-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-7 shadow-md">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
-                  <span>Projected Campaign Results</span>
-                  <span className="text-blue-600 text-[10px] font-bold">Monthly Average</span>
+                  <span>Industry Benchmark Estimates</span>
+                  <span className="text-blue-600 text-[10px] font-bold">Non-Binding Market Averages</span>
                 </h4>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                    <div className="text-xs text-slate-500 font-medium">Target Impressions</div>
+                    <div className="text-xs text-slate-500 font-medium">Estimated Audience Reach</div>
                     <div className="text-xl font-black text-slate-900 font-mono mt-1">
                       ~{estimatedReach.toLocaleString()}
                     </div>
-                    <div className="text-[10px] text-blue-600 font-bold mt-0.5">High-intent reach</div>
+                    <div className="text-[10px] text-blue-600 font-bold mt-0.5">Targeted Meta & Google</div>
                   </div>
 
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                    <div className="text-xs text-slate-500 font-medium">Qualified Leads</div>
+                    <div className="text-xs text-slate-500 font-medium">Potential Inquiries</div>
                     <div className="text-xl font-black text-emerald-600 font-mono mt-1">
-                      {estimatedLeads} Leads
+                      ~{estimatedLeads} Inquiries
                     </div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">Direct on WhatsApp</div>
+                    <div className="text-[10px] text-slate-500 mt-0.5">WhatsApp & Web Funnels</div>
                   </div>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900 mb-5 leading-relaxed">
-                  💡 <strong>WATECH Strategy Note:</strong> Hum sirf lead generate nahi karte, balki instant WhatsApp AI Qualification bot laga kar cold leads ko filter karte hain taake aapka sales team sirf hot buyers se baat kare.
+                  💡 <strong>WATECH Realistic Strategy:</strong> Hum koi fake claims ya hawai dawe nahi karte. Nateeja hamesha video creatives ki quality, offer ki attractiveness, aur sales closing team par depend karta hai. Hum pehle 20-min call mein aapka audit karke exact plan design karte hain.
                 </div>
 
                 <button
                   onClick={handleCalculatorWhatsApp}
-                  className="w-full py-3.5 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 fill-current" />
-                  <span>Execute This Campaign on WhatsApp</span>
+                  <span>Request Custom Strategy Audit on WhatsApp</span>
                 </button>
               </div>
             </div>

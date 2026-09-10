@@ -312,14 +312,14 @@ export default function ItemDetailPage() {
             <div className="p-6 rounded-2xl bg-blue-50/70 border border-blue-100 flex items-baseline justify-between">
               <div>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Demand Price
+                  Verified Property Deal
                 </span>
-                <div className="text-3xl font-black text-[#2563EB] tracking-tight mt-0.5">
-                  {formatPKR(prop.price)}
+                <div className="text-2xl sm:text-3xl font-black text-[#2563EB] tracking-tight mt-0.5">
+                  {prop.price && prop.price > 0 ? formatPKR(prop.price) : "Demand on Consultation"}
                 </div>
               </div>
-              <span className="text-xs font-bold text-slate-600 bg-white px-3 py-1.5 rounded-full shadow-sm">
-                Direct Seller
+              <span className="text-xs font-bold text-slate-700 bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
+                100% Registry Cleared
               </span>
             </div>
 
@@ -639,14 +639,14 @@ export default function ItemDetailPage() {
             <div className="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-100 flex items-baseline justify-between">
               <div>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Direct Artisan Price
+                  Direct Factory Workshop Rate
                 </span>
-                <div className="text-3xl font-black text-[#16A34A] tracking-tight mt-0.5">
-                  {formatPKR(furn.price)}
+                <div className="text-2xl sm:text-3xl font-black text-[#16A34A] tracking-tight mt-0.5">
+                  {furn.price && furn.price > 0 ? formatPKR(furn.price) : "Direct Factory Rate — On Request"}
                 </div>
               </div>
-              <span className="text-xs font-bold text-slate-600 bg-white px-3 py-1.5 rounded-full shadow-sm">
-                100% Solid Wood
+              <span className="text-xs font-bold text-slate-700 bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
+                100% Seasoned Sheesham
               </span>
             </div>
 
@@ -865,19 +865,18 @@ export default function ItemDetailPage() {
               </div>
             </div>
 
-            {/* Price Box */}
+            {/* Price Banner */}
             <div className="p-6 rounded-2xl bg-orange-50/70 border border-orange-100 flex items-baseline justify-between">
               <div>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Price / Package Rate
+                  Catering & Menu Package
                 </span>
-                <div className="text-3xl font-black text-[#EA580C] tracking-tight mt-0.5">
-                  PKR {ev.packagePrice.toLocaleString()}{" "}
-                  <span className="text-xs text-slate-500 font-normal">/ unit or head</span>
+                <div className="text-2xl sm:text-3xl font-black text-[#EA580C] tracking-tight mt-0.5">
+                  Custom Menu Quotation
                 </div>
               </div>
-              <span className="text-xs font-bold text-slate-600 bg-white px-3 py-1.5 rounded-full shadow-sm">
-                Verified
+              <span className="text-xs font-bold text-slate-700 bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
+                Verified Kitchen Standard
               </span>
             </div>
 

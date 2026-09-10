@@ -313,6 +313,43 @@ export default function AdminFurniturePage() {
         </div>
       </div>
 
+      {/* Feature Guide & Rahnumai Banner */}
+      <div className="bg-slate-900/90 border border-emerald-500/20 p-5 rounded-2xl space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-md bg-emerald-500/20 text-emerald-400">
+              <Armchair className="w-4 h-4" />
+            </span>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+              Furniture Module Rahnumai (How It Works):
+            </h3>
+          </div>
+          <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            Real Price System
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-400">
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">1. Asal Factory Price:</span>
+            <p className="text-[11px] leading-relaxed">
+              Workshop direct real price enter karein. Agar &apos;0&apos; ya khali chhoringe to user website par &quot;Direct Factory Rate — On Request&quot; badge show hoga.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">2. Pure Sheesham Wood:</span>
+            <p className="text-[11px] leading-relaxed">
+              Koshish karein sirf seasoned Pakistani Sheesham ya Teak wood items list karein. 10-year anti-termite guarantee buyers ko attract karti hai.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">3. Stock &amp; Custom Orders:</span>
+            <p className="text-[11px] leading-relaxed">
+              Jo ready furniture showroom mein moojood ho use &quot;In Stock&quot; rakhein. Jo order par banna ho use &quot;Made to Order&quot; mark karein.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Filter & Search Bar */}
       <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -480,7 +517,13 @@ export default function AdminFurniturePage() {
                         <div className="text-[11px] text-slate-500">{item.color}</div>
                       </td>
                       <td className="p-4 font-mono font-bold text-emerald-400 text-sm">
-                        {formatPKR(item.price)}
+                        {item.price && item.price > 0 ? (
+                          formatPKR(item.price)
+                        ) : (
+                          <span className="text-xs text-slate-400 font-sans font-medium italic">
+                            Factory Rate on Request
+                          </span>
+                        )}
                       </td>
                       <td className="p-4 text-center">
                         <div className="inline-flex items-center gap-2 bg-slate-950 px-2.5 py-1 rounded-xl border border-slate-800">
@@ -632,11 +675,15 @@ export default function AdminFurniturePage() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Selling Price (PKR) *</label>
+                  <label className="block text-slate-300 font-bold mb-1">
+                    Real Factory Price in PKR (Optional)
+                  </label>
+                  <p className="text-[10px] text-slate-400 mb-1 leading-tight">
+                    Workshop ki real wholesale qemat likhein. Agar khali chhoringe to website par &quot;Direct Factory Rate — On Request&quot; show hoga.
+                  </p>
                   <input
                     type="number"
-                    required
-                    placeholder="e.g. 345000"
+                    placeholder="e.g. 285000 (ya khali chhor dein)"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                     className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"

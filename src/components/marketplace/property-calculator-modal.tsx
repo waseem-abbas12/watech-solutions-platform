@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,26 +26,11 @@ export const PropertyCalculatorModal: React.FC<PropertyCalculatorModalProps> = (
   const totalSqYards = (totalSqFt / 9).toFixed(1);
   const totalKanals = (marlas / 20).toFixed(2);
 
-  const ratePerSqFt = constructionTier === "grey" ? 2400 : 4200;
-  const totalConstructionCost = coveredAreaSqFt * ratePerSqFt;
-
-  function formatPKR(num: number): string {
-    if (num >= 10000000) {
-      const crore = num / 10000000;
-      return `PKR ${crore.toFixed(2)} Crore`;
-    }
-    if (num >= 100000) {
-      const lac = num / 100000;
-      return `PKR ${lac.toFixed(2)} Lac`;
-    }
-    return `PKR ${num.toLocaleString()}`;
-  }
-
   const handleWhatsAppConsult = () => {
     const text =
       activeTab === "area"
-        ? `Assalam-o-Alaikum Watech team, I calculated ${marlas} Marla (${standard.toUpperCase()} Standard = ${totalSqFt} SqFt / ${totalSqYards} SqYards). Please suggest available plots in this size.`
-        : `Assalam-o-Alaikum Watech team, I estimated ${coveredAreaSqFt} SqFt ${constructionTier.toUpperCase()} construction cost (${formatPKR(totalConstructionCost)}). I need builder consultation.`;
+        ? `Assalam-o-Alaikum WATECH Real Estate, I used the Area Converter for ${marlas} Marla (${standard.toUpperCase()} Standard = ${totalSqFt} SqFt / ${totalSqYards} SqYards). Please share available verified plots.`
+        : `Assalam-o-Alaikum WATECH Construction Desk, I am planning ${coveredAreaSqFt} SqFt ${constructionTier === "grey" ? "Grey Structure" : "A+ Executive Finishing"} construction. Please provide the latest market BOQ (Bill of Quantities) and material rate sheet.`;
 
     window.open(`https://wa.me/923270831470?text=${encodeURIComponent(text)}`, "_blank");
   };
@@ -201,27 +186,27 @@ export const PropertyCalculatorModal: React.FC<PropertyCalculatorModalProps> = (
                     <button
                       type="button"
                       onClick={() => setConstructionTier("grey")}
-                      className={`p-3 rounded-2xl border text-left text-xs font-semibold transition-all ${
+                      className={`p-3 rounded-2xl border text-left text-xs font-semibold transition-all cursor-pointer ${
                         constructionTier === "grey"
-                          ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
+                          ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB] ring-1 ring-[#2563EB]"
                           : "border-slate-200 text-slate-600 hover:bg-slate-50"
                       }`}
                     >
-                      <div className="font-bold">Grey Structure Only</div>
-                      <div className="text-[10px] text-slate-500">PKR 2,400 / Sq Ft</div>
+                      <div className="font-bold">Grey Structure Standard</div>
+                      <div className="text-[10px] text-slate-500">Foundation, Brickwork, Deformed Steel</div>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setConstructionTier("premium")}
-                      className={`p-3 rounded-2xl border text-left text-xs font-semibold transition-all ${
+                      className={`p-3 rounded-2xl border text-left text-xs font-semibold transition-all cursor-pointer ${
                         constructionTier === "premium"
-                          ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
+                          ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB] ring-1 ring-[#2563EB]"
                           : "border-slate-200 text-slate-600 hover:bg-slate-50"
                       }`}
                     >
-                      <div className="font-bold">A+ Luxury Finished</div>
-                      <div className="text-[10px] text-slate-500">PKR 4,200 / Sq Ft</div>
+                      <div className="font-bold">A+ Complete Turnkey</div>
+                      <div className="text-[10px] text-slate-500">Spanish Tiles, Grohe Sanitary, Ash Wood</div>
                     </button>
                   </div>
                 </div>
@@ -246,23 +231,41 @@ export const PropertyCalculatorModal: React.FC<PropertyCalculatorModalProps> = (
                     className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#2563EB]"
                   />
                   <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
-                    <span>5M (1,800)</span>
-                    <span>10M (3,200)</span>
-                    <span>1K (5,500)</span>
-                    <span>2K (9,000+)</span>
+                    <span>5 Marla (~1,800)</span>
+                    <span>10 Marla (~3,200)</span>
+                    <span>1 Kanal (~5,500)</span>
+                    <span>2 Kanal (~9,000+)</span>
                   </div>
                 </div>
 
-                {/* Cost Estimate Result */}
-                <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-100 space-y-2 text-center">
-                  <div className="text-xs font-bold uppercase tracking-wider text-emerald-900">
-                    Estimated Construction Budget
+                {/* Verified Material Checklist & Consultation */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 text-left">
+                  <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center justify-between">
+                    <span>Quality Specifications ({constructionTier === "grey" ? "Grey Structure" : "A+ Turnkey"})</span>
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full">
+                      Market Rate BOQ
+                    </span>
                   </div>
-                  <div className="text-2xl font-black text-[#16A34A]">
-                    {formatPKR(totalConstructionCost)}
+                  <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600">
+                    <div className="flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Grade 60 Deformed Steel</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Bestway / Lucky Cement</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>A-Grade Red Clay Bricks</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Concealed Plumbing & Piping</span>
+                    </div>
                   </div>
-                  <p className="text-[11px] text-slate-500">
-                    Based on current market cement, steel, tile & labor rates in Punjab/Islamabad.
+                  <p className="text-[10px] text-slate-500 border-t border-slate-200 pt-2 leading-relaxed">
+                    * Construction material ki market prices (sarya aur cement index) har hafte update hoti hain. Hum fake estimates ke bajaye aapke architect map ke mutabiq 100% itemized transparent BOQ sheet faraham karte hain.
                   </p>
                 </div>
               </div>

@@ -61,15 +61,16 @@ export default function FurniturePortalPage() {
     });
   }, [searchQuery, selectedCategory, selectedWood]);
 
-  function formatPricePKR(price: number) {
-    if (price >= 100000) {
-      return `PKR ${(price / 100000).toFixed(2)} Lac`;
+  function formatPricePKR(price?: number) {
+    if (price && price > 0) {
+      if (price >= 100000) return `PKR ${(price / 100000).toFixed(2)} Lac`;
+      return `PKR ${price.toLocaleString()}`;
     }
-    return `PKR ${price.toLocaleString()}`;
+    return "Direct Factory Rate — On Request";
   }
 
   const handleWhatsAppInquiry = (item: FurnitureItem) => {
-    const text = `Assalam-o-Alaikum WATECH Chiniot Furniture, I am interested in: "${item.name}" (${formatPricePKR(item.price)}) made of ${item.woodType} Wood. Please share video tour, factory discount, and delivery timeline.`;
+    const text = `Assalam-o-Alaikum WATECH Chiniot Furniture, I am interested in: "${item.name}" made of 100% Solid ${item.woodType} Wood (${item.dimensions}). Please share workshop direct factory rate, live video tour, and delivery schedule.`;
     window.open(`https://wa.me/923270831470?text=${encodeURIComponent(text)}`, "_blank");
   };
 
@@ -83,7 +84,7 @@ export default function FurniturePortalPage() {
       id: item.id,
       title: item.name,
       category: "furniture",
-      priceFormatted: formatPricePKR(item.price),
+      priceFormatted: "Direct Factory Rate — On Request",
       partnerPhone: item.partnerPhone || "923270831470",
     });
     setIsInquiryOpen(true);
@@ -424,9 +425,9 @@ export default function FurniturePortalPage() {
                   {/* Price */}
                   <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
                     <div>
-                      <div className="text-[11px] text-slate-300 font-medium">Workshop Direct Rate</div>
-                      <div className="text-lg font-black text-white tracking-tight font-mono">
-                        {formatPricePKR(item.price)}
+                      <div className="text-[10px] text-amber-300 font-bold uppercase tracking-wider">Handcrafted Seasoned Sheesham</div>
+                      <div className="text-sm sm:text-base font-black text-white tracking-tight">
+                        Direct Factory Rate
                       </div>
                     </div>
                     <div className="text-xs font-bold text-white bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-slate-700 flex items-center gap-1">

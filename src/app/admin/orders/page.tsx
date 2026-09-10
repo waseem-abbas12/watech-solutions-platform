@@ -125,6 +125,43 @@ export default function AdminOrdersPage() {
         </div>
       </div>
 
+      {/* Feature Guide & Rahnumai Banner */}
+      <div className="bg-slate-900/90 border border-purple-500/20 p-5 rounded-2xl space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-md bg-purple-500/20 text-purple-400">
+              <ShoppingBag className="w-4 h-4" />
+            </span>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+              Orders & Deals Module Rahnumai (How It Works):
+            </h3>
+          </div>
+          <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            Real Revenue Ledger
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-400">
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">1. Real Revenue Record:</span>
+            <p className="text-[11px] leading-relaxed">
+              Yeh WATECH ka verified financial ledger hai. Jab bhi koi plot ka bayana aaye, furniture bikkay ya catering confirm ho, use yahan record karein.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">2. Customer PDF Invoices:</span>
+            <p className="text-[11px] leading-relaxed">
+              Table mein kisi bhi order par &apos;Invoice&apos; button click karein. Official WATECH brand invoice with token details aur balance foran generate ho jayegi.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">3. Commission Tracking:</span>
+            <p className="text-[11px] leading-relaxed">
+              Affiliate agents aur workshops ka commission auto-calculate ho kar unke profile ledger mein settle hone ke liye tayyar rehta hai.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Filter & Search Bar */}
       <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

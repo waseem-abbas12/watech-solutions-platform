@@ -66,15 +66,16 @@ export default function RealEstatePortalPage() {
     });
   }, [searchQuery, selectedCity, selectedType, priceFilter]);
 
-  function formatPricePKR(price: number) {
-    if (price >= 10000000) {
-      return `PKR ${(price / 10000000).toFixed(2)} Crore`;
+  function formatPricePKR(price?: number) {
+    if (price && price > 0) {
+      if (price >= 10000000) return `PKR ${(price / 10000000).toFixed(2)} Crore`;
+      return `PKR ${(price / 100000).toFixed(2)} Lac`;
     }
-    return `PKR ${(price / 100000).toFixed(2)} Lac`;
+    return "Demand on Consultation";
   }
 
   const handleWhatsAppInquiry = (prop: PropertyItem) => {
-    const text = `Assalam-o-Alaikum WATECH Real Estate, I am interested in: "${prop.title}" (${formatPricePKR(prop.price)}) in ${prop.location}. Please share verification papers and schedule an on-ground visit.`;
+    const text = `Assalam-o-Alaikum WATECH Real Estate, I am interested in: "${prop.title}" (${prop.area}) in ${prop.location}. Please share the current verified demand price, legal registry documents, and schedule an on-ground visit.`;
     window.open(`https://wa.me/923270831470?text=${encodeURIComponent(text)}`, "_blank");
   };
 
@@ -83,7 +84,7 @@ export default function RealEstatePortalPage() {
       id: prop.id,
       title: prop.title,
       category: "property",
-      priceFormatted: formatPricePKR(prop.price),
+      priceFormatted: "Demand on Consultation",
       partnerPhone: prop.partnerPhone || "923270831470",
     });
     setIsInquiryOpen(true);
@@ -452,9 +453,9 @@ export default function RealEstatePortalPage() {
                   {/* Price */}
                   <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
                     <div>
-                      <div className="text-[11px] text-slate-300 font-medium">Demand</div>
-                      <div className="text-lg font-black text-white tracking-tight font-mono">
-                        {formatPricePKR(prop.price)}
+                      <div className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Direct Verified Deal</div>
+                      <div className="text-sm sm:text-base font-black text-white tracking-tight">
+                        Demand on Consultation
                       </div>
                     </div>
                     <div className="text-xs font-bold text-white bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-slate-700">

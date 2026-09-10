@@ -430,8 +430,8 @@ function MarketplaceContent() {
                     </Link>
 
                     <div className="p-6">
-                      <div className="text-xl font-black text-slate-900 tracking-tight mb-1 text-[#16A34A]">
-                        {formatPKR(prop.price)}
+                      <div className="text-sm font-black text-emerald-700 tracking-wider uppercase mb-1">
+                        Demand on Consultation
                       </div>
                       <Link href={`/marketplace/properties/${prop.id}`} className="block group-hover:text-[#16A34A] transition-colors">
                         <h3 className="text-base font-bold text-slate-900 leading-snug line-clamp-1 mb-2">
@@ -443,21 +443,21 @@ function MarketplaceContent() {
                         <span className="truncate">{prop.location}</span>
                       </div>
 
-                      <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                      <div className="flex items-center gap-4 py-3 border-t border-slate-100 text-xs text-slate-600">
                         {prop.bedrooms > 0 && (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1.5">
                             <Bed className="w-4 h-4 text-slate-400" />
                             <span>{prop.bedrooms} Beds</span>
                           </div>
                         )}
                         {prop.bathrooms > 0 && (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1.5">
                             <Bath className="w-4 h-4 text-slate-400" />
                             <span>{prop.bathrooms} Baths</span>
                           </div>
                         )}
-                        <div className="flex items-center gap-1">
-                          <Maximize2 className="w-4 h-4 text-slate-400" />
+                        <div className="flex items-center gap-1.5">
+                          <Maximize className="w-4 h-4 text-slate-400" />
                           <span>{prop.area}</span>
                         </div>
                       </div>
@@ -471,7 +471,7 @@ function MarketplaceContent() {
                           id: prop.id,
                           title: prop.title,
                           category: "property",
-                          priceFormatted: formatPKR(prop.price),
+                          priceFormatted: "Demand on Consultation",
                           partnerPhone: prop.partnerPhone,
                         })
                       }
@@ -609,8 +609,8 @@ function MarketplaceContent() {
                     </Link>
 
                     <div className="p-6">
-                      <div className="text-xl font-black text-slate-900 tracking-tight mb-1 text-[#16A34A]">
-                        {formatPKR(furn.price)}
+                      <div className="text-sm font-black text-emerald-700 tracking-wider uppercase mb-1">
+                        Direct Factory Rate
                       </div>
                       <Link href={`/marketplace/furniture/${furn.id}`} className="block group-hover:text-[#16A34A] transition-colors">
                         <h3 className="text-base font-bold text-slate-900 leading-snug line-clamp-1 mb-2">
@@ -636,7 +636,7 @@ function MarketplaceContent() {
                           id: furn.id,
                           title: furn.name,
                           category: "furniture",
-                          priceFormatted: formatPKR(furn.price),
+                          priceFormatted: "Direct Factory Rate — On Request",
                           partnerPhone: furn.partnerPhone,
                         })
                       }
@@ -784,9 +784,8 @@ function MarketplaceContent() {
                     </Link>
 
                     <div className="p-6">
-                      <div className="text-xl font-black text-slate-900 tracking-tight mb-1 text-[#16A34A]">
-                        PKR {event.packagePrice.toLocaleString()}{" "}
-                        <span className="text-xs text-slate-500 font-normal">/ unit or head</span>
+                      <div className="text-sm font-black text-emerald-700 tracking-wider uppercase mb-1">
+                        Custom Menu Quotation
                       </div>
                       <Link href={`/marketplace/food-catering/${event.id}`} className="block group-hover:text-[#16A34A] transition-colors">
                         <h3 className="text-base font-bold text-slate-900 leading-snug line-clamp-1 mb-2">
@@ -818,13 +817,13 @@ function MarketplaceContent() {
                           id: event.id,
                           title: event.title,
                           category: "event",
-                          priceFormatted: `PKR ${event.packagePrice.toLocaleString()} / unit`,
+                          priceFormatted: "Custom Menu Quotation",
                           partnerPhone: event.partnerPhone,
                         })
                       }
                       className="w-full py-3 px-4 rounded-xl bg-[#16A34A] text-white font-semibold text-xs tracking-wider uppercase hover:bg-emerald-700 shadow-md hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>Inquire / Order</span>
+                      <span>Inquire Menu & Booking</span>
                       <MessageCircle className="w-4 h-4" />
                     </button>
                   </div>

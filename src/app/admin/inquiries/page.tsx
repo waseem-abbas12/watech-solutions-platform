@@ -278,6 +278,43 @@ export default function AdminInquiriesPage() {
         </div>
       </div>
 
+      {/* Feature Guide & Rahnumai Banner */}
+      <div className="bg-slate-900/90 border border-cyan-500/20 p-5 rounded-2xl space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-md bg-cyan-500/20 text-cyan-400">
+              <MessageSquare className="w-4 h-4" />
+            </span>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+              Inquiries Desk Rahnumai (How It Works):
+            </h3>
+          </div>
+          <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            Live Intake Stream
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-400">
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">1. Automatic Capture:</span>
+            <p className="text-[11px] leading-relaxed">
+              Jab bhi koi client website par &quot;Inquire Now&quot; ya WhatsApp click karta hai, uska message, phone number, aur item automatically yahan log ho jata hai.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">2. Status Follow-up:</span>
+            <p className="text-[11px] leading-relaxed">
+              Lead aate hi use &quot;Contacted&quot; karein, direct WhatsApp message send karein, aur client ka budget aur plot/furniture preference discuss karein.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">3. Convert to Deal:</span>
+            <p className="text-[11px] leading-relaxed">
+              Jab deal confirm ho jaye to &quot;Convert to Order&quot; par click karein. Yeh lead seedha Deals Ledger mein transfer ho kar official invoice generate kar degi.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Filters Bar */}
       <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

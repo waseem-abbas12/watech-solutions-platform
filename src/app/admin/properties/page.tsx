@@ -383,6 +383,43 @@ export default function AdminPropertiesPage() {
         </div>
       </div>
 
+      {/* Feature Guide & Rahnumai Banner */}
+      <div className="bg-slate-900/90 border border-blue-500/20 p-5 rounded-2xl space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-md bg-blue-500/20 text-blue-400">
+              <Building2 className="w-4 h-4" />
+            </span>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+              Properties Module Rahnumai (How It Works):
+            </h3>
+          </div>
+          <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            Real Price System
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-400">
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">1. Asal Qemat (Real Prices):</span>
+            <p className="text-[11px] leading-relaxed">
+              Jab aap kisi ghar ya plot ki pakki demand confirm kar lein to yahan price save karein. Agar price '0' ho to website par &quot;Demand on Consultation&quot; display hoga.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">2. Registry &amp; Intiqal Check:</span>
+            <p className="text-[11px] leading-relaxed">
+              Koshish karein sirf wohi deals active karein jinki patwari fard ya housing authority NOC verified ho taake client trust 100% barkarar rahe.
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+            <span className="font-bold text-slate-200">3. Direct Deal Status:</span>
+            <p className="text-[11px] leading-relaxed">
+              Jab koi plot ya ghar bikk jaye to uska status &quot;Sold&quot; mark kar dein aur &apos;/admin/orders&apos; mein uski final sale price aur commission ledger mein darj karein.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Filter & Search Bar */}
       <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -549,7 +586,13 @@ export default function AdminPropertiesPage() {
                         </div>
                       </td>
                       <td className="p-4 font-mono font-bold text-emerald-400 text-sm">
-                        {formatPKR(prop.price)}
+                        {prop.price && prop.price > 0 ? (
+                          formatPKR(prop.price)
+                        ) : (
+                          <span className="text-xs text-slate-400 font-sans font-medium italic">
+                            Demand on Request
+                          </span>
+                        )}
                       </td>
                       <td className="p-4">
                         <div className="font-semibold text-slate-200">{prop.city}</div>
@@ -664,11 +707,15 @@ export default function AdminPropertiesPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Price in PKR *</label>
+                  <label className="block text-slate-300 font-bold mb-1">
+                    Real Demand Price in PKR (Optional)
+                  </label>
+                  <p className="text-[10px] text-slate-400 mb-1 leading-tight">
+                    Yahan asal price enter karein. Agar khali chhoringe to user portal par &quot;Demand on Consultation&quot; display hoga.
+                  </p>
                   <input
                     type="number"
-                    required
-                    placeholder="e.g. 85000000"
+                    placeholder="e.g. 85000000 (ya khali chhor dein)"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                     className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500"
