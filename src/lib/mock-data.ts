@@ -4,7 +4,7 @@ export interface PropertyItem {
   city: string;
   location: string;
   price: number;
-  type: "House" | "Plot" | "Commercial";
+  type: "House" | "Plot" | "Commercial" | "Agriculture" | "Installment";
   bedrooms: number;
   bathrooms: number;
   area: string;
@@ -22,7 +22,7 @@ export interface FurnitureItem {
   id: string;
   name: string;
   woodType: "Sheesham" | "Teak" | "Rosewood";
-  category: "Bed" | "Sofa" | "Dining" | "Cabinet" | "Console" | "Jhoola" | "Tables" | "Custom";
+  category: "Bed" | "Sofa" | "Dining" | "Cabinet" | "Console" | "Jhoola" | "Tables" | "Wardrobe" | "Jharoka" | "Custom";
   price: number;
   dimensions: string;
   image: string;
@@ -210,6 +210,71 @@ export const INITIAL_PROPERTIES: PropertyItem[] = [
     partnerPhone: "923270831470",
     status: "Active",
     createdAt: "2026-09-04",
+    isDemo: true,
+  },
+  {
+    id: "prop-8",
+    title: "4-Acre Lush Agricultural Land & Kinnow Orchard",
+    city: "Chiniot",
+    location: "Sargodha-Chiniot Road, Punjab",
+    price: 36000000,
+    type: "Agriculture",
+    bedrooms: 0,
+    bathrooms: 0,
+    area: "4 Acres (32 Kanals)",
+    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Fully cultivated fertile agricultural land with tube-well water supply, sweet groundwater, direct road frontage, and fruit-bearing Kinnow trees. 100% clean Registry & Intiqal ownership record.",
+    features: ["Direct Road Access", "Tube-well Electric Connection", "Sweet Ground Water", "100% Verified Registry", "Kinnow Fruit Trees"],
+    partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-09-06",
+    isDemo: true,
+  },
+  {
+    id: "prop-9",
+    title: "5 Marla Residential Plot — 3-Year Easy Installment Plan",
+    city: "Chiniot",
+    location: "Royal Residencia, Main Faisalabad Road, Chiniot",
+    price: 2500000,
+    type: "Installment",
+    bedrooms: 0,
+    bathrooms: 0,
+    area: "5 Marla (1,125 Sq Ft)",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Modern gated community living with underground electricity, community center, boundary wall, and 24/7 security. Booking starting with 20% down payment and flexible 36 monthly installments.",
+    features: ["36 Monthly Installments", "Gated Security", "Underground Electricity", "NOC Approved Layout", "20% Booking Token"],
+    partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-09-08",
+    isDemo: true,
+  },
+  {
+    id: "prop-10",
+    title: "8 Kanal Luxury Country Farmhouse with Pool",
+    city: "Lahore",
+    location: "Bedian Road, Near DHA Phase 9, Lahore",
+    price: 98000000,
+    type: "Agriculture",
+    bedrooms: 4,
+    bathrooms: 5,
+    area: "8 Kanals (36,000 Sq Ft)",
+    image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    ],
+    description: "Private oasis away from city noise. 4-bedroom luxury single-story villa with Olympic-size swimming pool, barbecue pergola, lush landscaped lawns, and horse stables.",
+    features: ["Private Swimming Pool", "8 Kanal Landscaped Area", "Horse Stables", "Barbecue Pergola", "Servant Barracks"],
+    partnerPhone: "923270831470",
+    status: "Active",
+    createdAt: "2026-09-09",
     isDemo: true,
   },
 ];
@@ -598,6 +663,44 @@ export const INITIAL_FURNITURE: FurnitureItem[] = [
     ],
     description: "Classic painter's studio display easel hand-carved in seasoned rosewood. Perfect for art studios, gallery displays, or luxury living room canvas displays.",
     features: ["Brass Adjustment Knobs", "Foldable Compact Storage", "Carved Crest Detailing"],
+    partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-09-09",
+    isDemo: true,
+  },
+  {
+    id: "furn-20",
+    name: "Royal Chinioti 4-Door Carved Sheesham Almirah (Wardrobe)",
+    woodType: "Sheesham",
+    category: "Wardrobe",
+    price: 285000,
+    dimensions: "7x6.5 ft 4-Door Master Wardrobe with Hanging & Drawers",
+    image: "/images/furniture/cabinets/cabinet_doors_dark_carved_pair.webp",
+    gallery: [
+      "/images/furniture/cabinets/cabinet_doors_dark_carved_pair.webp",
+      "/images/furniture/cabinets/cabinet_dark_carved_top.webp",
+    ],
+    description: "Grand master bedroom wardrobe built from heavy seasoned Sheesham planks. Hand-carved Mughal floral panels, velvet-lined inner drawers, and solid brass locks.",
+    features: ["Solid 1-Inch Sheesham Planks", "Anti-Termite 10-Yr Guarantee", "Velvet-Lined Jewelry Locker", "Heavy Cast Brass Lock Sets"],
+    partnerPhone: "923270831470",
+    status: "In Stock",
+    createdAt: "2026-09-09",
+    isDemo: true,
+  },
+  {
+    id: "furn-21",
+    name: "Mughal Lattice Jaali Handcrafted 4-Panel Room Divider",
+    woodType: "Sheesham",
+    category: "Jharoka",
+    price: 68000,
+    dimensions: "6 ft Height x 7 ft Expanded Width (4 Hinged Panels)",
+    image: "/images/furniture/consoles/console_carved_inlay_long.webp",
+    gallery: [
+      "/images/furniture/consoles/console_carved_inlay_long.webp",
+      "/images/furniture/cabinets/cabinet_inlay_brown_tall.webp",
+    ],
+    description: "Intricate pierced openwork fretwork (Jaali) screen divider. Traditional Chiniot geometric star motifs with double-action heavy brass folding hinges.",
+    features: ["Intricate Pierced Jaali Fretwork", "Double-Action Brass Hinges", "Natural Sheesham Grain Polish", "Free Standing & Foldable"],
     partnerPhone: "923270831470",
     status: "In Stock",
     createdAt: "2026-09-09",

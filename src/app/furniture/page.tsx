@@ -21,6 +21,11 @@ import {
   ArrowRight,
   Package,
   Award,
+  Layers,
+  Check,
+  FileCheck,
+  Shield,
+  Zap,
 } from "lucide-react";
 import { INITIAL_FURNITURE, FurnitureItem } from "@/lib/mock-data";
 import { InquiryModal, ModalItemDetails } from "@/components/marketplace/inquiry-modal";
@@ -32,15 +37,29 @@ export default function FurniturePortalPage() {
   const [selectedWood, setSelectedWood] = useState<string>("All");
 
   // Custom Order Builder State
-  const [customCategory, setCustomCategory] = useState("Bed Set");
+  const [customCategory, setCustomCategory] = useState("Bridal Bedroom Set");
   const [customWood, setCustomWood] = useState("100% Seasoned Sheesham");
-  const [customPolish, setCustomPolish] = useState("Natural Gloss Polish");
+  const [customPolish, setCustomPolish] = useState("Natural Gloss Lacquer");
   const [customNotes, setCustomNotes] = useState("");
 
   // Modals
   const [selectedItemForInquiry, setSelectedItemForInquiry] = useState<ModalItemDetails | null>(null);
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  const categories = [
+    { id: "All", label: "All Masterpieces", icon: "✨" },
+    { id: "Bed", label: "Bridal Bed Sets", icon: "🛏️" },
+    { id: "Sofa", label: "Carved Living Sofas", icon: "🛋️" },
+    { id: "Dining", label: "Dining Suites", icon: "🍽️" },
+    { id: "Wardrobe", label: "Almirahs / Wardrobes", icon: "🚪" },
+    { id: "Jhoola", label: "Royal Jhoolas / Swings", icon: "🌿" },
+    { id: "Console", label: "Consoles & Mirrors", icon: "🪞" },
+    { id: "Cabinet", label: "Crockery Cabinets", icon: "🏺" },
+    { id: "Tables", label: "Nesting & Coffee Tables", icon: "☕" },
+    { id: "Jharoka", label: "Jharokas & Jaali Screens", icon: "🪵" },
+    { id: "Custom", label: "Executive Desks & Studio", icon: "💼" },
+  ];
 
   // Filtered furniture
   const filteredFurniture = useMemo(() => {
@@ -61,21 +80,13 @@ export default function FurniturePortalPage() {
     });
   }, [searchQuery, selectedCategory, selectedWood]);
 
-  function formatPricePKR(price?: number) {
-    if (price && price > 0) {
-      if (price >= 100000) return `PKR ${(price / 100000).toFixed(2)} Lac`;
-      return `PKR ${price.toLocaleString()}`;
-    }
-    return "Direct Factory Rate — On Request";
-  }
-
   const handleWhatsAppInquiry = (item: FurnitureItem) => {
-    const text = `Assalam-o-Alaikum WATECH Chiniot Furniture, I am interested in: "${item.name}" made of 100% Solid ${item.woodType} Wood (${item.dimensions}). Please share workshop direct factory rate, live video tour, and delivery schedule.`;
+    const text = `Assalam-o-Alaikum WATECH Chiniot Furniture, I am interested in: "${item.name}" made of 100% Solid ${item.woodType} Wood (${item.dimensions}). Please share direct workshop factory rate, wood polish options, live workshop video, and doorstep delivery timeline.`;
     window.open(`https://wa.me/923270831470?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const handleCustomOrderWhatsApp = () => {
-    const text = `Assalam-o-Alaikum WATECH Chiniot Workshop, I want a custom order quotation:\n• Item: ${customCategory}\n• Wood: ${customWood}\n• Polish Finish: ${customPolish}\n• Custom Specs: ${customNotes || "Standard King/Family Size"}\nPlease share estimated pricing and manufacturing timeline.`;
+    const text = `Assalam-o-Alaikum WATECH Chiniot Workshop, I want a custom order quotation:\n• Item: ${customCategory}\n• Wood: ${customWood}\n• Polish Finish: ${customPolish}\n• Custom Specs / Dimensions: ${customNotes || "Standard Luxury Size"}\nPlease share estimated manufacturing timeline and factory price.`;
     window.open(`https://wa.me/923270831470?text=${encodeURIComponent(text)}`, "_blank");
   };
 
@@ -93,19 +104,23 @@ export default function FurniturePortalPage() {
   const faqs = [
     {
       q: "Kya furniture waqai Chiniot ki asli Sheesham lakri se bana hota hai?",
-      a: "100% Guaranteed! Humara workshop Chiniot mein waqia hai aur hum sirf seasoned (properly dry aur chemical-treated) pure Pakistani Sheesham lakri use karte hain.",
+      a: "100% Guaranteed! Humara workshop Chiniot Industrial Cluster mein waqia hai aur hum sirf seasoned (properly dry aur chemical-treated) pure Pakistani Sheesham (Dalbergia Sissoo) aur Rosewood lakri use karte hain. Har order ke sath 10-Year anti-termite guarantee di jaati hai.",
     },
     {
       q: "Deliver karte waqt lakri ya carving tootne ka risk to nahi hota?",
-      a: "Hum 3-Layer Heavy Industrial Foam + Corrugated Packing aur Wooden Crating use karte hain. Lahore, Islamabad, Karachi aur Faisalabad tak 100% damage-free delivery insurance ke sath hoti hai.",
+      a: "Hum 3-Tier Heavy Industrial Packing use karte hain: Pehle soft protective sheet, phir heavy bubble wrap, aur bahir custom wooden crate frame. Lahore, Islamabad, Karachi, Faisalabad aur Peshawar tak 100% safe damage-free delivery insurance ke sath ki jaati hai.",
     },
     {
-      q: "Kya hum apni marzi ka custom design ya size banwa sakte hain?",
-      a: "Ji bilkul! Aap Pinterest, Instagram ya kisi bhi picture ka screenshot humare Custom Order Builder ke zariye bhej sakte hain. Humare master karigar same to same bana kar denge.",
+      q: "Kya hum apni marzi ka custom design ya Pinterest screenshot banwa sakte hain?",
+      a: "Ji bilkul! Aap Pinterest, Instagram ya kisi bhi picture ka screenshot humare Custom Order Builder ke zariye WhatsApp par bhej sakte hain. Humare Chiniot ke master karigar exact same carving, size, aur polish shade bana kar denge.",
     },
     {
-      q: "Termite (Deemak) aur polish ki kya guarantee hai?",
-      a: "Hum har piece par 10-Year Anti-Termite (Deemak) guarantee aur premium weather-resistant PU/Lacquer polish provide karte hain jo saalon saal chamakti rehti hai.",
+      q: "Termite (Deemak) aur polish ki kya guarantee hoti hai?",
+      a: "Lakri ko fabrication se pehle vacuum pressure chamber mein anti-termite chemicals se treat kiya jata hai. Is par 10-Year Deemak guarantee aur weather-resistant export-grade PU/Lacquer polish lagayi jaati hai jo sadiyon tak qaim rehti hai.",
+    },
+    {
+      q: "Payment terms kya hoti hain?",
+      a: "Custom manufacturing orders par standard advance token deposit hota hai, production ke dauran live video updates share ki jati hain, aur balance delivery ke waqt clear hota hai.",
     },
   ];
 
@@ -117,16 +132,24 @@ export default function FurniturePortalPage() {
           <div className="flex items-center gap-2 text-[11px] sm:text-xs">
             <span className="inline-flex items-center gap-1 text-orange-400 font-semibold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-orange-400" />
-              Chiniot Royal Furniture Showroom
+              Chiniot Royal Furniture Showroom & Workshop
             </span>
             <span className="text-slate-600">|</span>
             <span className="text-slate-400">100% Seasoned Pure Sheesham Hardwood</span>
           </div>
 
           <div className="flex items-center gap-4 text-[11px] text-slate-400">
+            <Link href="/" className="hover:text-white transition-colors">
+              Main Hub
+            </Link>
+            <Link href="/real-estate" className="hover:text-white transition-colors">
+              Real Estate
+            </Link>
+            <Link href="/agency" className="hover:text-white transition-colors">
+              Agency & Tech
+            </Link>
+            <span className="text-slate-600">|</span>
             <span>Workshop Desk: <strong className="text-white font-mono">+92 327 0831470</strong></span>
-            <span className="hidden sm:inline text-slate-600">|</span>
-            <span className="hidden sm:inline text-orange-400 font-medium">Safe Nationwide Delivery Across Pakistan</span>
           </div>
         </div>
       </div>
@@ -161,33 +184,42 @@ export default function FurniturePortalPage() {
             <button
               onClick={() => {
                 setSelectedCategory("Bed");
-                window.scrollTo({ top: 400, behavior: "smooth" });
+                window.scrollTo({ top: 460, behavior: "smooth" });
               }}
-              className="hover:text-orange-600 transition-colors"
+              className="hover:text-orange-600 transition-colors cursor-pointer"
             >
               Bridal Bed Sets
             </button>
             <button
               onClick={() => {
                 setSelectedCategory("Sofa");
-                window.scrollTo({ top: 400, behavior: "smooth" });
+                window.scrollTo({ top: 460, behavior: "smooth" });
               }}
-              className="hover:text-orange-600 transition-colors"
+              className="hover:text-orange-600 transition-colors cursor-pointer"
             >
               Carved Living Sofas
             </button>
             <button
               onClick={() => {
                 setSelectedCategory("Dining");
-                window.scrollTo({ top: 400, behavior: "smooth" });
+                window.scrollTo({ top: 460, behavior: "smooth" });
               }}
-              className="hover:text-orange-600 transition-colors"
+              className="hover:text-orange-600 transition-colors cursor-pointer"
             >
               Dining Suites
             </button>
+            <button
+              onClick={() => {
+                setSelectedCategory("Jhoola");
+                window.scrollTo({ top: 460, behavior: "smooth" });
+              }}
+              className="hover:text-orange-600 transition-colors cursor-pointer"
+            >
+              Royal Jhoolas
+            </button>
             <a href="#custom-builder" className="hover:text-orange-600 transition-colors flex items-center gap-1">
               <Hammer className="w-3.5 h-3.5 text-orange-600" />
-              <span>Custom Order Builder</span>
+              <span>Custom Studio</span>
             </a>
           </nav>
 
@@ -203,7 +235,7 @@ export default function FurniturePortalPage() {
             </a>
 
             <a
-              href="https://wa.me/923270831470?text=Assalam-o-Alaikum%20WATECH%20Chiniot%20Furniture,%20I%20want%20to%20inquire%20about%20furniture%20designs."
+              href="https://wa.me/923270831470?text=Assalam-o-Alaikum%20WATECH%20Chiniot%20Furniture,%20I%20want%20to%20inquire%20about%20sheesham%20furniture%20designs."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-full bg-orange-600 hover:bg-orange-700 text-white shadow-md shadow-orange-600/20 transition-all"
@@ -215,7 +247,7 @@ export default function FurniturePortalPage() {
         </div>
       </header>
 
-      {/* 3. Hero Section (Clean White / Light Theme) */}
+      {/* 3. Hero Section (Clean White / Authority Theme) */}
       <section className="relative overflow-hidden pt-12 pb-16 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
@@ -227,20 +259,20 @@ export default function FurniturePortalPage() {
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 mb-4 leading-tight">
               Authentic Handcrafted Chinioti <br />
               <span className="text-orange-600">
-                Sheesham Wood Furniture
+                Sheesham Wood Masterpieces
               </span>
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 mb-8 leading-relaxed">
               Generational wood carving mastery direct from Chiniot to your doorstep. 
-              Royal Bridal Bedroom Sets, 7-Seater Carved Sofas, and Luxury Dining Tables with 10-Year Termite Guarantee.
+              Royal Bridal Bedroom Sets, 7-Seater Carved Sofas, Dining Suites, Handcrafted Jhoolas, Almirahs, and Bespoke Consoles with 10-Year Termite Guarantee.
             </p>
 
             {/* Authority Metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto mb-10">
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-center">
                 <div className="text-orange-600 font-black text-xl">100%</div>
-                <div className="text-slate-600 text-xs font-medium">Pure Seasoned Sheesham</div>
+                <div className="text-slate-600 text-xs font-medium">Seasoned Sheesham</div>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-center">
                 <div className="text-orange-600 font-black text-xl">10 Yrs</div>
@@ -252,7 +284,7 @@ export default function FurniturePortalPage() {
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-center">
                 <div className="text-orange-600 font-black text-xl">Safe</div>
-                <div className="text-slate-600 text-xs font-medium">Pakistan Delivery</div>
+                <div className="text-slate-600 text-xs font-medium">Insured Crated Delivery</div>
               </div>
             </div>
 
@@ -266,7 +298,7 @@ export default function FurniturePortalPage() {
                     <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
                     <input
                       type="text"
-                      placeholder="e.g. Maharaja Bed, Victorian Sofa, Dining..."
+                      placeholder="e.g. Maharaja Bed, Victorian Sofa, Dining, Jhoola..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-600 focus:ring-1 focus:ring-orange-600"
@@ -274,7 +306,7 @@ export default function FurniturePortalPage() {
                   </div>
                 </div>
 
-                {/* Category */}
+                {/* Category Dropdown (10+ Categories) */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Furniture Category</label>
                   <select
@@ -282,12 +314,17 @@ export default function FurniturePortalPage() {
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-orange-600"
                   >
-                    <option value="All">All Categories (Beds, Sofas, Dining...)</option>
+                    <option value="All">All Categories (10+ Collections)</option>
                     <option value="Bed">Royal Bridal Bed Sets</option>
                     <option value="Sofa">Hand-Carved Living Sofas</option>
                     <option value="Dining">Luxury Dining Suites</option>
-                    <option value="Console">Consoles & Heritage Cabinets</option>
-                    <option value="Jhoola">Jhoola & Heritage Deewans</option>
+                    <option value="Wardrobe">Carved Sheesham Almirahs / Wardrobes</option>
+                    <option value="Jhoola">Traditional Royal Jhoolas / Swings</option>
+                    <option value="Console">Consoles & Foyer Mirrors</option>
+                    <option value="Cabinet">Crockery Cabinets & Showcases</option>
+                    <option value="Tables">Nesting Tables & Brass Inlay</option>
+                    <option value="Jharoka">Jharokas & Lattice Jaali Screens</option>
+                    <option value="Custom">Executive Office Desks & Custom Studio</option>
                   </select>
                 </div>
 
@@ -307,36 +344,31 @@ export default function FurniturePortalPage() {
                 </div>
               </div>
 
-              {/* Fast Pills */}
+              {/* Fast Category Filter Pills (10 Collections) */}
               <div className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center gap-2 text-xs">
-                <span className="text-slate-500 font-medium text-[11px]">Popular Categories:</span>
-                <button
-                  onClick={() => setSelectedCategory("Bed")}
-                  className="px-3 py-1 rounded-full bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-700 border border-slate-200 text-xs transition-colors"
-                >
-                  🛏️ Bridal Bed Sets
-                </button>
-                <button
-                  onClick={() => setSelectedCategory("Sofa")}
-                  className="px-3 py-1 rounded-full bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-700 border border-slate-200 text-xs transition-colors"
-                >
-                  🛋️ 7-Seater Carved Sofas
-                </button>
-                <button
-                  onClick={() => setSelectedCategory("Dining")}
-                  className="px-3 py-1 rounded-full bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-700 border border-slate-200 text-xs transition-colors"
-                >
-                  🍽️ 8-Seater Dining
-                </button>
+                <span className="text-slate-500 font-medium text-[11px]">Collections:</span>
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                      selectedCategory === cat.id
+                        ? "bg-orange-600 text-white shadow-xs font-bold"
+                        : "bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-700 border border-slate-200"
+                    }`}
+                  >
+                    <span>{cat.icon}</span> {cat.label}
+                  </button>
+                ))}
                 <button
                   onClick={() => {
                     setSearchQuery("");
                     setSelectedCategory("All");
                     setSelectedWood("All");
                   }}
-                  className="ml-auto text-slate-500 hover:text-slate-900 text-xs underline"
+                  className="ml-auto text-slate-500 hover:text-slate-900 text-xs underline cursor-pointer"
                 >
-                  Reset All Filters
+                  Reset All
                 </button>
               </div>
             </div>
@@ -344,18 +376,18 @@ export default function FurniturePortalPage() {
         </div>
       </section>
 
-      {/* 5. Catalog Section */}
+      {/* 5. Catalog Grid Section */}
       <section className="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
-              <span>Chiniot Masterpiece Collection</span>
+              <span>Chiniot Masterpiece Catalog</span>
               <span className="text-xs px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-300 font-bold">
                 {filteredFurniture.length} Pieces Available
               </span>
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 mt-1">
-              Direct workshop rates with custom wood polish and fabric customization options.
+              Direct workshop rates with custom wood polish, high-density foam, and fabric customization options.
             </p>
           </div>
 
@@ -380,7 +412,7 @@ export default function FurniturePortalPage() {
                 setSelectedCategory("All");
                 setSelectedWood("All");
               }}
-              className="mt-4 px-5 py-2.5 text-xs rounded-full bg-orange-600 text-white font-bold hover:bg-orange-700 transition-colors"
+              className="mt-4 px-5 py-2.5 text-xs rounded-full bg-orange-600 text-white font-bold hover:bg-orange-700 transition-colors cursor-pointer"
             >
               Reset Filters
             </button>
@@ -422,7 +454,7 @@ export default function FurniturePortalPage() {
                     </span>
                   </div>
 
-                  {/* Price */}
+                  {/* Price Tag */}
                   <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
                     <div>
                       <div className="text-[10px] text-amber-300 font-bold uppercase tracking-wider">Handcrafted Seasoned Sheesham</div>
@@ -461,17 +493,17 @@ export default function FurniturePortalPage() {
                     </div>
                   </div>
 
-                  {/* Buttons (Orange Action) */}
+                  {/* Buttons */}
                   <div className="pt-4 border-t border-slate-100 flex items-center gap-2">
                     <button
                       onClick={() => handleOpenInquiry(item)}
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors text-center"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors text-center cursor-pointer"
                     >
                       View Specs
                     </button>
                     <button
                       onClick={() => handleWhatsAppInquiry(item)}
-                      className="py-2.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm shadow-orange-600/20"
+                      className="py-2.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm shadow-orange-600/20 cursor-pointer"
                     >
                       <MessageCircle className="w-4 h-4 fill-current" />
                       <span>WhatsApp</span>
@@ -484,20 +516,79 @@ export default function FurniturePortalPage() {
         )}
       </section>
 
-      {/* 6. Custom Order Builder Section */}
-      <section id="custom-builder" className="py-14 bg-white border-y border-slate-200">
+      {/* 6. Educational Craftsmanship & Wood Quality Lab */}
+      <section className="py-14 bg-slate-900 text-white border-y border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-orange-400 font-mono">
+              The Chiniot Standard
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Kachi Lakri Aur Asal Seasoned Sheesham Ka Farq
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Kachi lakri kuch maheene baad tedhi ho jati hai aur deemak lagti hai. WATECH par har lakri 4 marhalon se guzarti hai:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center font-bold">
+                01
+              </div>
+              <h3 className="text-base font-bold text-white">Kiln-Chamber Wood Seasoning</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Lakri ki nami ko 8% se 10% par laya jata hai taake AC ya mosami tabdeeli se lakri mein crack ya bend na aaye.
+              </p>
+            </div>
+
+            <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center font-bold">
+                02
+              </div>
+              <h3 className="text-base font-bold text-white">Vacuum Anti-Termite Immersion</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Chemical pressure chamber treatment jo deemsk (termite) aur fungal infection ko lakri ke core se hamesha ke liye khatam karta hai.
+              </p>
+            </div>
+
+            <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center font-bold">
+                03
+              </div>
+              <h3 className="text-base font-bold text-white">Generational Hand Carving</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Computer CNC machine ke saste cuts ke bajaye Chiniot ke ustaad karigaron ki barik dasti tarash (hand chisel relief).
+              </p>
+            </div>
+
+            <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center font-bold">
+                04
+              </div>
+              <h3 className="text-base font-bold text-white">Multi-Coat Polyurethane Polish</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Sealer, stain aur 4 coats clear PU lacquer jo garam chai ke daag aur kharonch se lakri ko mehfooz rakhta hai.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Custom Order Builder Section */}
+      <section id="custom-builder" className="py-14 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-orange-50 p-6 sm:p-10 rounded-3xl border border-orange-200 shadow-sm">
             <div className="max-w-3xl mb-8">
               <span className="inline-flex items-center gap-1.5 text-orange-800 text-xs font-bold uppercase tracking-wider mb-2">
                 <Hammer className="w-4 h-4 text-orange-600" />
-                Custom Woodcraft Workshop
+                Custom Woodcraft Workshop Studio
               </span>
               <h3 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
                 Apni Marzi Ka Custom Furniture Order Karein
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Aapke room ka exact size, pasandeeda polish shade (Deco, Lacquer, Antique Walnut) aur carving pattern select karein. Humare Chiniot master artisans aapke mutabiq banayenge.
+                Aapke kamray ka exact size, pasandeeda polish shade (Deco, High-Gloss Lacquer, Antique Walnut) aur carving pattern select karein. Pinterest screenshot bhi WhatsApp par share kar sakte hain.
               </p>
             </div>
 
@@ -513,8 +604,11 @@ export default function FurniturePortalPage() {
                   <option value="Bridal Bedroom Set">Bridal Bedroom Set (Bed + Tables + Dressing)</option>
                   <option value="7-Seater Royal Carved Sofa">7-Seater Royal Carved Living Sofa</option>
                   <option value="8-Seater Dining Table Suite">8-Seater Dining Table Suite</option>
+                  <option value="4-Door Master Wardrobe">4-Door Master Sheesham Wardrobe</option>
                   <option value="Heritage Handcrafted Jhoola">Heritage Handcrafted Jhoola / Swing</option>
-                  <option value="Custom TV Console / Wardrobe">Custom TV Console / Wardrobe</option>
+                  <option value="Jharoka / Jaali Screen Divider">Jharoka / Jaali 4-Panel Divider</option>
+                  <option value="Executive Office Desk & Chair">Executive Office Desk & Chair</option>
+                  <option value="Custom Foyer Console & Mirror">Custom Foyer Console & Mirror</option>
                 </select>
               </div>
 
@@ -552,7 +646,7 @@ export default function FurniturePortalPage() {
               </label>
               <textarea
                 rows={2}
-                placeholder="e.g. 6x6.5 ft Bed, Golden velvet fabric cushion, carving depth 2 inches..."
+                placeholder="e.g. 6x6.5 ft Bed, Golden velvet fabric cushion, deep 2-inch carving, or Pinterest design link..."
                 value={customNotes}
                 onChange={(e) => setCustomNotes(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-600"
@@ -562,11 +656,11 @@ export default function FurniturePortalPage() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
               <div className="text-xs text-slate-600 flex items-center gap-2">
                 <Truck className="w-4 h-4 text-orange-600 shrink-0" />
-                <span>Lahore, Karachi, Islamabad, Faisalabad Doorstep Insured Delivery</span>
+                <span>Lahore, Karachi, Islamabad, Faisalabad, Peshawar Doorstep Insured Delivery</span>
               </div>
               <button
                 onClick={handleCustomOrderWhatsApp}
-                className="w-full sm:w-auto px-6 py-3 rounded-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md shadow-orange-600/30 transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 rounded-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md shadow-orange-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 <span>Get Instant WhatsApp Workshop Quote</span>
@@ -576,7 +670,7 @@ export default function FurniturePortalPage() {
         </div>
       </section>
 
-      {/* 7. Craftsmanship & Founder Guarantee */}
+      {/* 8. Founder Guarantee */}
       <section className="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 flex flex-col md:flex-row items-center gap-8 shadow-xs">
           <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-2xl overflow-hidden border-2 border-orange-500 shrink-0 shadow-md">
@@ -612,7 +706,7 @@ export default function FurniturePortalPage() {
         </div>
       </section>
 
-      {/* 8. FAQs (Accordion) */}
+      {/* 9. FAQs (Accordion) */}
       <section className="py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-200">
         <h3 className="text-2xl font-black text-slate-900 text-center mb-6">
           Furniture FAQs (Aksar Pooche Jane Wale Sawalat)
@@ -625,7 +719,7 @@ export default function FurniturePortalPage() {
             >
               <button
                 onClick={() => setOpenFaqIndex(openFaqIndex === i ? null : i)}
-                className="w-full p-4.5 text-left flex items-center justify-between gap-4 text-sm font-bold text-slate-900 hover:text-orange-700"
+                className="w-full p-4.5 text-left flex items-center justify-between gap-4 text-sm font-bold text-slate-900 hover:text-orange-700 cursor-pointer"
               >
                 <span>{faq.q}</span>
                 <ChevronDown
@@ -644,7 +738,7 @@ export default function FurniturePortalPage() {
         </div>
       </section>
 
-      {/* 9. Dedicated Furniture Footer */}
+      {/* 10. Dedicated Furniture Footer */}
       <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-slate-800 text-xs">
@@ -674,23 +768,24 @@ export default function FurniturePortalPage() {
                 Product Collections
               </div>
               <ul className="space-y-2">
-                <li><button onClick={() => setSelectedCategory("Bed")} className="hover:text-orange-400">Bridal Bedroom Sets</button></li>
-                <li><button onClick={() => setSelectedCategory("Sofa")} className="hover:text-orange-400">7-Seater Carved Living Sofas</button></li>
-                <li><button onClick={() => setSelectedCategory("Dining")} className="hover:text-orange-400">Luxury Dining Tables</button></li>
-                <li><a href="#custom-builder" className="hover:text-orange-400">Custom Furniture Builder</a></li>
+                <li><button onClick={() => setSelectedCategory("Bed")} className="hover:text-orange-400 cursor-pointer">Bridal Bedroom Sets</button></li>
+                <li><button onClick={() => setSelectedCategory("Sofa")} className="hover:text-orange-400 cursor-pointer">7-Seater Carved Living Sofas</button></li>
+                <li><button onClick={() => setSelectedCategory("Dining")} className="hover:text-orange-400 cursor-pointer">Luxury Dining Tables</button></li>
+                <li><button onClick={() => setSelectedCategory("Wardrobe")} className="hover:text-orange-400 cursor-pointer">Sheesham Almirahs & Wardrobes</button></li>
+                <li><button onClick={() => setSelectedCategory("Jhoola")} className="hover:text-orange-400 cursor-pointer">Royal Handcrafted Jhoolas</button></li>
               </ul>
             </div>
 
             {/* Col 3 */}
             <div>
               <div className="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">
-                Delivery Coverage
+                Safe Delivery Coverage
               </div>
               <p className="text-slate-400 leading-relaxed mb-2">
-                Heavy Crating & Foam Packing ke sath mahfooz delivery:
+                Heavy Crating & 3-Layer Foam Packing ke sath mahfooz delivery:
               </p>
               <p className="text-slate-300">
-                Lahore · Islamabad · Karachi · Faisalabad · Multan · Sialkot
+                Lahore · Islamabad · Karachi · Faisalabad · Peshawar · Multan · Sialkot
               </p>
             </div>
 
