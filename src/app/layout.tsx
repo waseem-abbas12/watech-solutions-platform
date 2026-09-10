@@ -1,10 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/common/navbar";
-import { Footer } from "@/components/common/footer";
-import { MobileBottomNav } from "@/components/common/mobile-bottom-nav";
-import { AiAssistantWidget } from "@/components/common/ai-assistant-widget";
+import { SiteShell } from "@/components/common/site-shell";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -186,11 +183,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col antialiased selection:bg-slate-900 selection:text-white pb-14 md:pb-0">
-        <Navbar />
-        <main className="flex-grow pt-20">{children}</main>
-        <Footer />
-        <MobileBottomNav />
-        <AiAssistantWidget />
+        <SiteShell>{children}</SiteShell>
 
         {/* PWA Service Worker Registration */}
         <script
