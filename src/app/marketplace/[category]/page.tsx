@@ -255,7 +255,7 @@ export default function CategoryBrowsePage() {
               <Link
                 href="/marketplace/food-catering"
                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                  resolvedCategory === "food-catering" || resolvedCategory === "events"
+                  resolvedCategory === "food-catering"
                     ? "bg-[#EA580C] text-white shadow-md shadow-orange-500/20"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
@@ -611,7 +611,7 @@ export default function CategoryBrowsePage() {
         )}
 
         {/* FOOD & CATERING SECTOR CONTENT */}
-        {(resolvedCategory === "food-catering" || resolvedCategory === "events") && (
+        {resolvedCategory === "food-catering" && (
           <div className="space-y-8">
             {/* Filter Bar */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">

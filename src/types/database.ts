@@ -252,7 +252,9 @@ export type LeadSource =
   | "property_inquiry"
   | "furniture_inquiry"
   | "event_inquiry"
-  | "agency_consultation";
+  | "agency_consultation"
+  | `service_page_${string}`
+  | string;
 
 export interface LeadRecord {
   id: string; // Formatted LEAD-YYYY-XXXX

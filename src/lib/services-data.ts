@@ -6,7 +6,8 @@ export interface ServiceDeliverable {
 export interface ServiceStep {
   step: string;
   title: string;
-  description: string;
+  description?: string;
+  desc?: string;
 }
 
 export interface ServiceFAQ {

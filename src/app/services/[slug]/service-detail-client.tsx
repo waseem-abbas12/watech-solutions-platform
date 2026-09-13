@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -376,7 +376,7 @@ export function ServiceDetailClient({ service, otherServices }: Props) {
                   {step.title}
                 </h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  {step.desc}
+                  {step.desc || step.description}
                 </p>
               </div>
             ))}

@@ -832,7 +832,7 @@ export default function PartnerDashboard() {
                     : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
                 }`}
               >
-                <Armchair className="w-4 h-4" />
+                <Sofa className="w-4 h-4" />
                 <span>Chinioti Furniture</span>
               </button>
 
@@ -845,7 +845,7 @@ export default function PartnerDashboard() {
                     : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
                 }`}
               >
-                <Cake className="w-4 h-4" />
+                <Utensils className="w-4 h-4" />
                 <span>Events & Catering</span>
               </button>
             </div>

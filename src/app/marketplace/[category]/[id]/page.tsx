@@ -137,8 +137,8 @@ export default function ItemDetailPage() {
           addressRegion: p.location,
           addressCountry: "PK",
         },
-        numberOfRooms: p.beds,
-        numberOfBathroomsTotal: p.baths,
+        numberOfRooms: p.bedrooms,
+        numberOfBathroomsTotal: p.bathrooms,
         offers: {
           "@type": "Offer",
           price: p.price,

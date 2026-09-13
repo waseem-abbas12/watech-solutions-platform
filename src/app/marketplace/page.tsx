@@ -457,7 +457,7 @@ function MarketplaceContent() {
                           </div>
                         )}
                         <div className="flex items-center gap-1.5">
-                          <Maximize className="w-4 h-4 text-slate-400" />
+                          <Maximize2 className="w-4 h-4 text-slate-400" />
                           <span>{prop.area}</span>
                         </div>
                       </div>

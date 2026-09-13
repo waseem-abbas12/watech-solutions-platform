@@ -40,7 +40,7 @@ export interface EventItem {
   title: string;
   city: string;
   venue: string;
-  category: "Banquet Hall" | "Catering" | "Wedding Service" | "Corporate Event";
+  category: "Banquet Hall" | "Catering" | "Wedding Service" | "Corporate Event" | "Pakwan Center" | "Restaurant" | "Bakeries & Sweets" | "Fast Food" | "Food Suppliers";
   capacity: number;
   menuType: "Desi" | "Chinese" | "BBQ" | "Continental";
   packagePrice: number;
