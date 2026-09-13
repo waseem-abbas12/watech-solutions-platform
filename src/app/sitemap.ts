@@ -6,6 +6,7 @@ import {
   INITIAL_EVENTS,
 } from "@/lib/mock-data";
 import { DIGITAL_SERVICES } from "@/lib/services-data";
+import { TOOLS_REGISTRY } from "@/data/toolsRegistry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
@@ -65,6 +66,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/tools`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/tracker`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/track`,
       lastModified: currentDate,
       changeFrequency: "weekly",
@@ -118,6 +131,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // 100 Free Pakistan Tools Standalone Routes
+  const toolsRoutes: MetadataRoute.Sitemap = TOOLS_REGISTRY.map((tool) => ({
+    url: `${baseUrl}/tools/${tool.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
   return [
     ...staticRoutes,
     ...serviceRoutes,
@@ -125,5 +146,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...propertyRoutes,
     ...furnitureRoutes,
     ...foodRoutes,
+    ...toolsRoutes,
   ];
 }

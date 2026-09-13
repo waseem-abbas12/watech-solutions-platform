@@ -13,11 +13,12 @@ export const Navbar = () => {
 
   const navLinks = [
     { name: "Home", href: "/", accent: "hover:text-slate-900" },
+    { name: "100 Free Tools", href: "/tools", accent: "hover:text-[#2563EB]" },
+    { name: "Daily Tracker", href: "/tracker", accent: "hover:text-[#EA580C]" },
     { name: "Marketplace", href: "/marketplace", accent: "hover:text-[#16A34A]" },
     { name: "Digital Services", href: "/services", accent: "hover:text-[#2563EB]" },
     { name: "Blog", href: "/blog", accent: "hover:text-[#2563EB]" },
     { name: "Partners", href: "/partners", accent: "hover:text-[#EA580C]" },
-    { name: "About", href: "/about", accent: "hover:text-[#2563EB]" },
   ];
 
   const checkIsActive = (href: string) => {

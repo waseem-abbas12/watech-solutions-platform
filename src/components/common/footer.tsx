@@ -69,6 +69,16 @@ export const Footer = () => {
           </h4>
           <ul className="space-y-2.5 text-sm">
             <li>
+              <Link href="/tools" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors flex items-center gap-1.5">
+                <span>⚡ 100 Free Pakistan Tools</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/tracker" className="text-amber-400 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1.5">
+                <span>🔥 Life & Daily Growth Tracker</span>
+              </Link>
+            </li>
+            <li>
               <Link href="/services" className="hover:text-blue-400 transition-colors">
                 Digital Services & Agency
               </Link>
@@ -81,11 +91,6 @@ export const Footer = () => {
             <li>
               <Link href="/partners" className="hover:text-orange-400 transition-colors">
                 Partner Ecosystem (Free Join)
-              </Link>
-            </li>
-            <li>
-              <Link href="/about" className="hover:text-white transition-colors">
-                About WATECH
               </Link>
             </li>
             <li>
