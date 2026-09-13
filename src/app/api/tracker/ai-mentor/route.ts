@@ -2,8 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { mode, persona = 'reset', message = '', yesterdayScore = 50, currentStruggle = '' } = body;
+    let body: Record<string, unknown> = {};
+    try {
+      body = (await req.json()) as Record<string, unknown>;
+    } catch {
+      body = {};
+    }
+    const mode = (typeof body.mode === 'string' ? body.mode : (typeof body.action === 'string' ? body.action : 'generate_daily_plan'));
+    const persona = typeof body.persona === 'string' ? body.persona : 'reset';
+    const message = typeof body.message === 'string' ? body.message : '';
+    const yesterdayScore = typeof body.yesterdayScore === 'number' ? body.yesterdayScore : 50;
+    const currentStruggle = typeof body.currentStruggle === 'string' ? body.currentStruggle : '';
 
     // 1. GENERATE DAILY PERSONALIZED PLAN
     if (mode === 'generate_daily_plan') {
