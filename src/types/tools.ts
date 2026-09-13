@@ -36,17 +36,51 @@ export interface ToolItem {
   faqs?: Array<{ question: string; answer: string }>;
 }
 
-export interface TrackerPillar {
+export type UserPersonaId = 
+  | 'karobaari'
+  | 'freelancer'
+  | 'student'
+  | 'jobseeker'
+  | 'reset';
+
+export interface PersonaPillarItem {
   id: string;
   title: string;
   urduTitle: string;
-  description: string;
+  desc: string;
   icon: string;
-  completed: boolean;
+}
+
+export interface UserPersona {
+  id: UserPersonaId;
+  title: string;
+  urduTitle: string;
+  tagline: string;
+  icon: string;
+  color: string;
+  defaultPriorityPlaceholder: string;
+  defaultDistractionWarning: string;
+  pillars: PersonaPillarItem[];
+}
+
+export interface MentorMessage {
+  id: string;
+  sender: 'user' | 'mentor';
+  text: string;
+  timestamp: string;
+}
+
+export interface DailyHistoryRecord {
+  date: string;
+  score: number;
+  oneThing: string;
+  persona: UserPersonaId;
+  deepWorkHours: number;
 }
 
 export interface TrackerDayState {
   date: string; // YYYY-MM-DD
+  persona: UserPersonaId;
   mainPriority: string;
   distractionWarning: string;
   winCondition: string;
