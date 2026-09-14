@@ -28,6 +28,21 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
+# Prune heavy static images & previous APK downloads from android assets directory to keep APK ultra-lightweight (< 5MB)
+$androidAssetsPublic = "android\app\src\main\assets\public"
+if (Test-Path $androidAssetsPublic) {
+    # Remove recursive APK inside assets/public/downloads
+    if (Test-Path "$androidAssetsPublic\downloads") {
+        Remove-Item -Path "$androidAssetsPublic\downloads" -Recurse -Force -ErrorAction SilentlyContinue
+    }
+    # Remove heavy images (the app loads all catalog images dynamically from the live site)
+    if (Test-Path "$androidAssetsPublic\images") {
+        Remove-Item -Path "$androidAssetsPublic\images" -Recurse -Force -ErrorAction SilentlyContinue
+        New-Item -ItemType Directory -Path "$androidAssetsPublic\images" -Force | Out-Null
+    }
+    Write-Host "[OK] Pruned recursive APK & heavy web images. App size optimized!" -ForegroundColor Green
+}
+
 # 3. Build with Gradle
 Set-Location -Path "android"
 
