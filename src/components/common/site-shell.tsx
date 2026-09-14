@@ -6,6 +6,7 @@ import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
 import { MobileBottomNav } from "@/components/common/mobile-bottom-nav";
 import { AiAssistantWidget } from "@/components/common/ai-assistant-widget";
+import { PWAInstallPrompt } from "@/components/common/pwa-install-prompt";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -21,7 +22,12 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     return (
       <>
         <main className="flex-grow">{children}</main>
-        {!pathname.startsWith("/admin") && <AiAssistantWidget />}
+        {!pathname.startsWith("/admin") && (
+          <>
+            <AiAssistantWidget />
+            <PWAInstallPrompt />
+          </>
+        )}
       </>
     );
   }
@@ -33,6 +39,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <Footer />
       <MobileBottomNav />
       <AiAssistantWidget />
+      <PWAInstallPrompt />
     </>
   );
 }
