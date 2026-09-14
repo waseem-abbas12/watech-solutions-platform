@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
@@ -388,7 +388,7 @@ export const Navbar = () => {
           {/* Mobile App Download Pill */}
           <Link
             href="/download"
-            title="Download Android APK / PWA"
+            title="Install Watech Mobile App (iOS & Android)"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-all hover:scale-105"
           >
             <Smartphone className="w-3.5 h-3.5 text-blue-600" />
@@ -521,10 +521,10 @@ export const Navbar = () => {
                 <Link
                   href="/download"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-2xl bg-blue-600 text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-700 transition-colors shadow-sm"
+                  className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-2xl bg-emerald-600 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 transition-colors shadow-sm"
                 >
                   <Smartphone className="w-4 h-4" />
-                  <span>Download Android App (.APK)</span>
+                  <span>Install Mobile App (Instant PWA)</span>
                 </Link>
 
                 <div className="grid grid-cols-2 gap-2">
