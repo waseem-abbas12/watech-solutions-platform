@@ -4,7 +4,7 @@
   "webDir": "public",
   "server": {
     "url": "https://www.waseemabbas.online",
-    "cleartext": true,
+    "cleartext": false,
     "androidScheme": "https",
     "allowNavigation": [
       "www.waseemabbas.online",
@@ -15,8 +15,9 @@
     ]
   },
   "android": {
-    "allowMixedContent": true,
+    "allowMixedContent": false,
     "captureInput": true,
-    "webContentsDebuggingEnabled": false
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#ffffff"
   }
 }

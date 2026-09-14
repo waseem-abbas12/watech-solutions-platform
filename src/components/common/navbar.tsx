@@ -64,6 +64,12 @@ export const Navbar = () => {
         {/* CTA Area */}
         <div className="hidden lg:flex items-center gap-3">
           <Link
+            href="/download"
+            className="text-xs font-semibold px-3 py-1.5 rounded-full text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all border border-blue-200"
+          >
+            Get App
+          </Link>
+          <Link
             href="/track"
             className="text-xs font-semibold px-3 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
           >
@@ -119,6 +125,13 @@ export const Navbar = () => {
                 );
               })}
               <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+                <Link
+                  href="/download"
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full text-center py-2.5 px-6 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-xs uppercase tracking-wider hover:bg-blue-100 transition-colors"
+                >
+                  Download Mobile App (APK)
+                </Link>
                 <Link
                   href="/track"
                   onClick={() => setIsOpen(false)}

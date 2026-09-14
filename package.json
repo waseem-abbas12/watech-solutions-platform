@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "app:sync": "npx cap sync android",
+    "app:build": "powershell -ExecutionPolicy Bypass -File scripts/build-apk.ps1",
+    "app:bundle": "powershell -ExecutionPolicy Bypass -File scripts/build-apk.ps1 -Bundle"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",

@@ -1,4 +1,4 @@
-﻿# dependencies
+# dependencies
 /node_modules
 /.pnp
 .pnp.js
@@ -33,3 +33,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# mobile & signing keys
+*.jks
+*.keystore
+android/keystore.properties
+android/local.properties
+android/.gradle/
+android/app/build/
