@@ -24,6 +24,7 @@ import {
   Hammer,
   ShieldCheck,
   TrendingUp,
+  Download,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BrandLogo } from "@/components/common/brand-logo";
@@ -388,11 +389,11 @@ export const Navbar = () => {
           {/* Mobile App Download Pill */}
           <Link
             href="/download"
-            title="Install Watech Mobile App (iOS & Android)"
+            title="Download Android App APK (3.35 MB)"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-all hover:scale-105"
           >
             <Smartphone className="w-3.5 h-3.5 text-blue-600" />
-            <span>App</span>
+            <span>App (APK)</span>
           </Link>
 
           {/* Track Inquiry Status */}
@@ -518,14 +519,15 @@ export const Navbar = () => {
 
               {/* Mobile Action Buttons */}
               <div className="pt-4 border-t border-slate-100 flex flex-col gap-2.5">
-                <Link
-                  href="/download"
+                <a
+                  href="/downloads/watech-solutions.apk"
+                  download="watech-solutions.apk"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-2xl bg-emerald-600 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 transition-colors shadow-sm"
+                  className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-2xl bg-blue-600 text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-700 transition-colors shadow-sm cursor-pointer"
                 >
-                  <Smartphone className="w-4 h-4" />
-                  <span>Install Mobile App (Instant PWA)</span>
-                </Link>
+                  <Download className="w-4 h-4" />
+                  <span>Download Android App (.APK - 3.3 MB)</span>
+                </a>
 
                 <div className="grid grid-cols-2 gap-2">
                   <Link
