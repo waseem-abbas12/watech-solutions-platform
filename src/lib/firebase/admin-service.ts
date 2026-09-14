@@ -673,11 +673,12 @@ export const INITIAL_SETTINGS: SettingsConfig = {
     { minDeals: 15, rate: 5 },
   ],
   socialLinks: {
-    facebook: "https://facebook.com/watechsolutions",
-    instagram: "https://instagram.com/watechsolutions",
-    youtube: "https://youtube.com/watechsolutions",
-    tiktok: "https://tiktok.com/@watechsolutions",
-    linkedin: "https://linkedin.com/company/watechsolutions",
+    facebook: "https://www.facebook.com/share/1EqXm2Hz43/",
+    instagram: "https://www.instagram.com/waseem79199?stkn=MWVtMmZhc3BjN3Vucg==",
+    youtube: "https://youtube.com/@wamedia79979?si=C6-sgoMhrPIsY8da",
+    tiktok: "https://www.tiktok.com/@waseem97199",
+    twitter: "https://x.com/WaseemAbba34198",
+    linkedin: "https://www.linkedin.com/in/waseem-abbas-441496163?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
   emailSettings: {
     smtpHost: "smtp.mailgun.org",
