@@ -627,6 +627,57 @@ export default function DailyGrowthTrackerPage() {
           </div>
         </div>
 
+        {/* Cross-Sector Growth Funnel Banner */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-slate-900 rounded-2xl p-6 border border-blue-900/40 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">🚀 High-ROAS Growth</span>
+              <h4 className="text-lg font-bold text-white">WATECH Digital Agency</h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Meta & TikTok Ads, custom CRM, and sales funnels built to scale your business revenue.
+              </p>
+            </div>
+            <Link
+              href="/agency"
+              className="mt-4 inline-block text-center py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition"
+            >
+              Scale with Agency →
+            </Link>
+          </div>
+
+          <div className="bg-slate-900 rounded-2xl p-6 border border-emerald-900/40 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">🏡 Verified Property</span>
+              <h4 className="text-lg font-bold text-white">WATECH Real Estate</h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Invest your business profits into verified plots & installment schemes across Lahore & Islamabad.
+              </p>
+            </div>
+            <Link
+              href="/real-estate"
+              className="mt-4 inline-block text-center py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition"
+            >
+              Explore Properties →
+            </Link>
+          </div>
+
+          <div className="bg-slate-900 rounded-2xl p-6 border border-amber-900/40 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">🪵 Pure Sheesham Wood</span>
+              <h4 className="text-lg font-bold text-white">Chinioti Furniture</h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Authentic handcrafted bridal bedroom sets & luxury living furniture at direct factory prices.
+              </p>
+            </div>
+            <Link
+              href="/furniture"
+              className="mt-4 inline-block text-center py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition"
+            >
+              View Woodcraft →
+            </Link>
+          </div>
+        </div>
+
         {/* Bottom CTA for Community & Founder Mentorship */}
         <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-8 border border-slate-800 text-center space-y-4">
           <span className="text-xs uppercase font-bold tracking-widest text-amber-400">
@@ -636,11 +687,11 @@ export default function DailyGrowthTrackerPage() {
             &quot;Har Bara Insaan Is Dor Se Guzra Hai. Consistency Se Taqdeer Badalti Hai.&quot;
           </h3>
           <p className="text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-            Agar aapko business start karne, digital marketing agency chalane ya career guidance ki zaroorat hai, WATECH Community aapke sath khari hai.
+            Agar aapko business start karne, digital marketing agency chalane ya personal growth guidance ki zaroorat hai, CEO Waseem Abbas se direct baat karein.
           </p>
           <div className="pt-2 flex flex-wrap justify-center gap-4">
             <a
-              href="https://api.whatsapp.com/send?phone=923177651230&text=Assalam-o-Alaikum%20Waseem%20Bhai!%20Maine%20aapka%20AI%20Life%20Tracker%20dekha,%20mujhe%20apne%20career%20aur%20skills%20ke%20hawale%20se%20guidance%20chahiye."
+              href="https://api.whatsapp.com/send?phone=923177651230&text=Assalam-o-Alaikum%20Waseem%20Bhai!%20Maine%20aapka%20AI%20Life%20Tracker%20dekha,%20mujhe%20apne%20business%20aur%20agency%20growth%20ke%20hawale%20se%20guidance%20chahiye."
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-sm transition"

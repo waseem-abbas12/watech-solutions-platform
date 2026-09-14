@@ -126,41 +126,114 @@ export default function ToolLayout({ tool, children }: ToolLayoutProps) {
           {children}
         </div>
 
-        {/* High-Converting Agency & WhatsApp Lead Magnet Banner */}
-        <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-8 text-white shadow-xl border border-slate-800 mb-12 relative overflow-hidden">
-          <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
-            <div className="space-y-2 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
-                <span>🚀 Need Custom Development or Ads?</span>
+        {/* DYNAMIC CONVERSION FUNNEL ENGINE */}
+        {/* FUNNEL 1: REAL ESTATE TOOLS -> PROPERTY SALES */}
+        {tool.category === 'real-estate-construction' ? (
+          <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-8 text-white shadow-xl border border-blue-800/40 mb-12 relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+              <div className="space-y-2 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
+                  <span>🏡 Verified Plots & Houses Across Pakistan</span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold">
+                  Planning to Buy or Build? Get Verified Deals
+                </h3>
+                <p className="text-slate-300 text-sm md:text-base max-w-xl leading-relaxed">
+                  Avoid fraud and middleman commissions. Explore 100% legal, registry-verified plots and easy installment schemes in Lahore, Islamabad, and Karachi directly through WATECH Real Estate.
+                </p>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold">
-                Grow Your Business with WATECH Solutions
-              </h3>
-              <p className="text-slate-300 text-sm md:text-base max-w-xl leading-relaxed">
-                Whether you need high-ROI Meta & TikTok Ads, a custom website/app, or AI automation for your store, talk directly with Founder & CEO Waseem Abbas.
-              </p>
-            </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
-              <a
-                href={`https://api.whatsapp.com/send?phone=923177651230&text=${encodeURIComponent(`Assalam-o-Alaikum Watech Team! I was using the "${tool.title}" tool on waseemabbas.online and want to discuss custom agency/software services for my business.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-center text-sm transition shadow-lg hover:shadow-emerald-500/20 active:scale-95"
-              >
-                Chat on WhatsApp Now
-              </a>
-              <Link
-                href="/agency"
-                className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-center text-sm transition"
-              >
-                View Agency Pillars
-              </Link>
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                <Link
+                  href="/real-estate"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-center text-sm transition shadow-lg hover:shadow-blue-500/25 active:scale-95"
+                >
+                  Explore Verified Properties
+                </Link>
+                <a
+                  href={`https://api.whatsapp.com/send?phone=923270831470&text=${encodeURIComponent(`Assalam-o-Alaikum WATECH Real Estate! I used the "${tool.title}" calculator on waseemabbas.online and want details on verified plots and houses.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-center text-sm transition active:scale-95"
+                >
+                  WhatsApp Consultant
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        ) : tool.category === 'furniture-woodwork' ? (
+          /* FUNNEL 2: FURNITURE TOOLS -> CHINIOTI FACTORY SALES */
+          <div className="bg-gradient-to-br from-amber-950 via-stone-900 to-amber-950 rounded-3xl p-8 text-white shadow-xl border border-amber-800/40 mb-12 relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+              <div className="space-y-2 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold">
+                  <span>🪵 Direct from Master Chinioti Artisans</span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold">
+                  Get 100% Pure Sheesham Wood at Factory Price
+                </h3>
+                <p className="text-amber-100/80 text-sm md:text-base max-w-xl leading-relaxed">
+                  Skip high showroom markups. Order handcrafted bridal bedroom sets, luxury carving sofa sets, and custom dining furniture made in Chiniot with safe doorstep delivery nationwide.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                <Link
+                  href="/furniture"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-center text-sm transition shadow-lg hover:shadow-amber-500/25 active:scale-95"
+                >
+                  View Furniture Catalog
+                </Link>
+                <a
+                  href={`https://api.whatsapp.com/send?phone=923270831470&text=${encodeURIComponent(`Assalam-o-Alaikum WATECH Furniture! I was calculating woodwork specs via "${tool.title}" and want factory prices for bridal furniture.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-center text-sm transition active:scale-95"
+                >
+                  WhatsApp Factory Desk
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* FUNNEL 3: E-COMMERCE, MARKETING & GENERAL TOOLS -> WATECH AGENCY */
+          <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-8 text-white shadow-xl border border-slate-800 mb-12 relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+              <div className="space-y-2 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
+                  <span>🚀 Need More Customers & High-ROAS Sales?</span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold">
+                  Scale Your Business with WATECH Digital Agency
+                </h3>
+                <p className="text-slate-300 text-sm md:text-base max-w-xl leading-relaxed">
+                  Free tools save time, but scalable Meta & TikTok ads, custom web development, and WhatsApp automation explode your profit. Partner directly with Founder & Growth Strategist Waseem Abbas.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                <Link
+                  href="/agency"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-center text-sm transition shadow-lg hover:shadow-blue-500/25 active:scale-95"
+                >
+                  View Agency Case Studies
+                </Link>
+                <a
+                  href={`https://api.whatsapp.com/send?phone=923177651230&text=${encodeURIComponent(`Assalam-o-Alaikum Watech Agency! I was using the "${tool.title}" tool on waseemabbas.online and want to discuss high-ROAS marketing and custom software for my business.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-center text-sm transition active:scale-95"
+                >
+                  WhatsApp Waseem Abbas
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Pakistan Context, Guide & FAQs */}
         <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200">

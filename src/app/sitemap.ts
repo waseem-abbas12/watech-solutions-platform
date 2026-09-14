@@ -5,6 +5,8 @@ import {
   INITIAL_FURNITURE,
   INITIAL_EVENTS,
 } from "@/lib/mock-data";
+import { DIGITAL_SERVICES } from "@/lib/services-data";
+import { TOOLS_REGISTRY } from "@/data/toolsRegistry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
@@ -13,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const currentDate = new Date().toISOString();
 
-  // Core Static Routes (Focused Exclusively on Real Estate, Furniture, Marketplace & Core)
+  // High-Priority Organic Traffic Magnet Hubs & Core Landing Pages
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -22,16 +24,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/tools`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 1.0, // Major Traffic Magnet
+    },
+    {
+      url: `${baseUrl}/tracker`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 1.0, // High-Retention Growth Funnel
+    },
+    {
+      url: `${baseUrl}/agency`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.95, // Primary High-Ticket Conversion Goal
+    },
+    {
       url: `${baseUrl}/real-estate`,
       lastModified: currentDate,
       changeFrequency: "daily",
-      priority: 1.0,
+      priority: 0.95, // Core Sector
     },
     {
       url: `${baseUrl}/furniture`,
       lastModified: currentDate,
       changeFrequency: "daily",
-      priority: 1.0,
+      priority: 0.95, // Core Sector
+    },
+    {
+      url: `${baseUrl}/services`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/marketplace`,
@@ -83,6 +109,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
+  // 100 Free Pakistan Business & Growth Tools (Massive Google Search Catchment)
+  const toolsRoutes: MetadataRoute.Sitemap = TOOLS_REGISTRY.map((tool) => ({
+    url: `${baseUrl}/tools/${tool.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
+  // Digital Agency Services Detail Routes
+  const serviceRoutes: MetadataRoute.Sitemap = DIGITAL_SERVICES.map((srv) => ({
+    url: `${baseUrl}/services/${srv.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
   // Blog Article Detail Routes
   const blogRoutes: MetadataRoute.Sitemap = INITIAL_BLOG_POSTS.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
@@ -117,6 +159,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticRoutes,
+    ...toolsRoutes,
+    ...serviceRoutes,
     ...blogRoutes,
     ...propertyRoutes,
     ...furnitureRoutes,

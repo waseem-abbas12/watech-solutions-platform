@@ -16,20 +16,19 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "WATECH Solutions | Pakistan's Premier Hub — Real Estate & Authentic Chinioti Furniture",
+    default: "WATECH Solutions | Free Business Tools, Digital Agency, Real Estate & Chinioti Furniture",
     template: "%s | WATECH Solutions",
   },
   description:
-    "Pakistan's trusted platform for Verified Real Estate, Residential & Commercial Plots, and Authentic Handcrafted Chinioti Sheesham Wood Furniture at Direct Factory Rates.",
+    "Pakistan's premier multi-sector ecosystem: 100 Free Online Business Calculators, Performance Digital Marketing Agency (Meta/TikTok Ads), Verified Real Estate & Authentic Handcrafted Chinioti Furniture.",
   keywords: [
     "Watech Solutions",
+    "Free business calculators Pakistan",
+    "Digital marketing agency Pakistan",
     "Real Estate Pakistan",
-    "Plots for sale Lahore",
-    "Commercial plots Islamabad",
+    "Plots for sale Lahore Islamabad",
     "Chinioti Furniture factory price",
-    "Authentic Sheesham Wood Furniture",
-    "Chiniot bridal bedroom sets",
-    "Property Portal Pakistan",
+    "Meta Ads Agency Lahore",
     "Waseem Abbas Watech",
   ],
   authors: [{ name: "Watech Solutions", url: siteUrl }],
@@ -39,9 +38,9 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   openGraph: {
-    title: "WATECH Solutions | Verified Real Estate & Authentic Chinioti Furniture in Pakistan",
+    title: "WATECH Solutions | Free Business Tools, Digital Agency, Real Estate & Chinioti Furniture",
     description:
-      "Buy verified properties & plots, authentic handcrafted Chinioti Sheesham furniture at factory rates with nationwide delivery.",
+      "Access 100 free calculators, scale with performance digital marketing, buy verified real estate plots, and order authentic Chinioti luxury woodcraft.",
     url: siteUrl,
     siteName: "WATECH Solutions Platform",
     locale: "en_PK",
