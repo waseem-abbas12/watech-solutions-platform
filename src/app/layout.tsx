@@ -16,20 +16,21 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "WATECH | Digital Marketing, Technology & Business Marketplace in Pakistan",
+    default: "WATECH Solutions | Pakistan's Premier Hub — Real Estate, Luxury Furniture & Digital Growth",
     template: "%s | WATECH Solutions",
   },
   description:
-    "WATECH is Pakistan's integrated multi-sector growth platform connecting Real Estate properties, authentic Chinioti wood furniture, and Food & Catering with modern digital services and automation.",
+    "Pakistan's trusted multi-sector platform: Verified Real Estate & Plots, authentic Chinioti Handcrafted Furniture, and High-ROAS Performance Marketing & Business Automation.",
   keywords: [
     "Watech Solutions",
     "Real Estate Pakistan",
-    "Chinioti Furniture",
-    "Food and Catering Pakistan",
-    "Pakwan Center Lahore",
+    "Plots for sale Lahore Islamabad",
+    "Chinioti Furniture factory price",
     "Digital Marketing Agency Pakistan",
+    "Meta Ads Pakistan",
     "WhatsApp Automation Pakistan",
     "Property Portal Pakistan",
+    "Waseem Abbas Watech",
   ],
   authors: [{ name: "Watech Solutions", url: siteUrl }],
   creator: "Watech Solutions",
@@ -38,9 +39,9 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   openGraph: {
-    title: "WATECH | Digital Marketing, Technology & Business Marketplace in Pakistan",
+    title: "WATECH Solutions | Pakistan's Multi-Sector Hub: Real Estate, Chinioti Furniture & Digital Growth",
     description:
-      "Integrated ecosystem platform combining Real Estate properties, Chinioti luxury wood furniture, Food & Catering, and digital agency services.",
+      "Buy verified properties & plots, authentic handcrafted Chinioti Sheesham furniture, and scale your business with enterprise digital marketing & automation.",
     url: siteUrl,
     siteName: "WATECH Solutions Platform",
     locale: "en_PK",
