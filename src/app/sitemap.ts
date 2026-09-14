@@ -5,8 +5,6 @@ import {
   INITIAL_FURNITURE,
   INITIAL_EVENTS,
 } from "@/lib/mock-data";
-import { DIGITAL_SERVICES } from "@/lib/services-data";
-import { TOOLS_REGISTRY } from "@/data/toolsRegistry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
@@ -15,10 +13,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const currentDate = new Date().toISOString();
 
-  // Core Static Routes
+  // Core Static Routes (Focused Exclusively on Real Estate, Furniture, Marketplace & Core)
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/real-estate`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/furniture`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 1.0,
@@ -33,43 +43,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/marketplace/properties`,
       lastModified: currentDate,
       changeFrequency: "daily",
-      priority: 0.85,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/marketplace/furniture`,
       lastModified: currentDate,
       changeFrequency: "daily",
-      priority: 0.85,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/marketplace/food-catering`,
       lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: currentDate,
       changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/agency`,
-      lastModified: currentDate,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/real-estate`,
-      lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/furniture`,
-      lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 0.95,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/download`,
@@ -90,24 +76,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/tools`,
-      lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/tracker`,
-      lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/track`,
-      lastModified: currentDate,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/about`,
       lastModified: currentDate,
       changeFrequency: "monthly",
@@ -115,20 +83,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Digital Service Detail Routes (7 Services)
-  const serviceRoutes: MetadataRoute.Sitemap = DIGITAL_SERVICES.map((srv) => ({
-    url: `${baseUrl}/services/${srv.slug}`,
-    lastModified: currentDate,
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
-
   // Blog Article Detail Routes
   const blogRoutes: MetadataRoute.Sitemap = INITIAL_BLOG_POSTS.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: currentDate,
     changeFrequency: "monthly",
-    priority: 0.75,
+    priority: 0.8,
   }));
 
   // Marketplace Real Estate Detail Routes
@@ -136,7 +96,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/marketplace/properties/${prop.id}`,
     lastModified: currentDate,
     changeFrequency: "weekly",
-    priority: 0.8,
+    priority: 0.85,
   }));
 
   // Marketplace Furniture Detail Routes
@@ -144,7 +104,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/marketplace/furniture/${furn.id}`,
     lastModified: currentDate,
     changeFrequency: "weekly",
-    priority: 0.8,
+    priority: 0.85,
   }));
 
   // Marketplace Food & Catering Detail Routes
@@ -152,24 +112,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/marketplace/food-catering/${food.id}`,
     lastModified: currentDate,
     changeFrequency: "weekly",
-    priority: 0.8,
-  }));
-
-  // 100 Free Pakistan Tools Standalone Routes
-  const toolsRoutes: MetadataRoute.Sitemap = TOOLS_REGISTRY.map((tool) => ({
-    url: `${baseUrl}/tools/${tool.slug}`,
-    lastModified: currentDate,
-    changeFrequency: "weekly",
-    priority: 0.85,
+    priority: 0.75,
   }));
 
   return [
     ...staticRoutes,
-    ...serviceRoutes,
     ...blogRoutes,
     ...propertyRoutes,
     ...furnitureRoutes,
     ...foodRoutes,
-    ...toolsRoutes,
   ];
 }
