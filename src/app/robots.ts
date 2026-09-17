@@ -28,6 +28,8 @@ export default function robots(): MetadataRoute.Robots {
           "/blog",
           "/blog/*",
           "/partners",
+          "/locations",
+          "/locations/*",
         ],
         disallow: [
           "/admin",
