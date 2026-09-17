@@ -7,6 +7,7 @@ import {
 } from "@/lib/mock-data";
 import { DIGITAL_SERVICES } from "@/lib/services-data";
 import { TOOLS_REGISTRY } from "@/data/toolsRegistry";
+import { LOCATIONS_DATA } from "@/data/locationsData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
@@ -22,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/locations`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.95, // Local SEO Hub Index
     },
     {
       url: `${baseUrl}/tools`,
@@ -157,8 +164,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
+  // Pakistan City & Geo-Targeted Local SEO Hubs (Lahore, Islamabad, Faisalabad, Karachi, Chiniot)
+  const locationRoutes: MetadataRoute.Sitemap = LOCATIONS_DATA.map((loc) => ({
+    url: `${baseUrl}/locations/${loc.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "daily",
+    priority: 0.95,
+  }));
+
   return [
     ...staticRoutes,
+    ...locationRoutes,
     ...toolsRoutes,
     ...serviceRoutes,
     ...blogRoutes,

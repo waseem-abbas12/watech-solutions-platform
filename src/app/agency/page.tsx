@@ -425,6 +425,28 @@ export default function AgencyPortalPage() {
               ))}
             </div>
 
+            {/* Geo-Targeted City Hubs Link Bar (Local SEO Booster) */}
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Service Hubs:
+              </span>
+              {[
+                { name: "Lahore (DHA & Gulberg)", slug: "lahore" },
+                { name: "Islamabad & Rawalpindi", slug: "islamabad-rawalpindi" },
+                { name: "Faisalabad", slug: "faisalabad" },
+                { name: "Karachi", slug: "karachi" },
+                { name: "Chiniot (Factory Direct)", slug: "chiniot" },
+              ].map((hub, i) => (
+                <Link
+                  key={i}
+                  href={`/locations/${hub.slug}`}
+                  className="px-3 py-1 rounded-full bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold transition-colors flex items-center gap-1"
+                >
+                  <span>📍 {hub.name}</span>
+                </Link>
+              ))}
+            </div>
+
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href="#audit-form"

@@ -158,6 +158,42 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
+
+      {/* Pakistan Local SEO City Hubs Bar */}
+      <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300 block mb-2">
+              📍 Pakistan City Hubs & Local Services:
+            </span>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-slate-400">
+              <Link href="/locations/lahore" className="hover:text-blue-400 transition-colors">
+                Lahore (DHA, Gulberg)
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/locations/islamabad-rawalpindi" className="hover:text-blue-400 transition-colors">
+                Islamabad & Rawalpindi (Bahria, DHA)
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/locations/faisalabad" className="hover:text-blue-400 transition-colors">
+                Faisalabad (D-Ground, Susan Rd)
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/locations/karachi" className="hover:text-blue-400 transition-colors">
+                Karachi (Clifton, Shahrah-e-Faisal)
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/locations/chiniot" className="hover:text-blue-400 transition-colors">
+                Chiniot (Sheesham Wood Hub)
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/locations" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+                View All Cities Directory →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
   );
 };
