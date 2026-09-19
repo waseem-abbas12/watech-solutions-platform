@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { INITIAL_FURNITURE, FurnitureItem } from "@/lib/mock-data";
 import { InquiryModal, ModalItemDetails } from "@/components/marketplace/inquiry-modal";
+import { InteractiveImageZoom } from "@/components/common/interactive-image-zoom";
 
 export default function FurniturePortalPage() {
   // Filters state
@@ -427,35 +428,38 @@ export default function FurniturePortalPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-orange-500 transition-all hover:shadow-xl flex flex-col justify-between group"
               >
-                {/* Image */}
-                <div className="relative h-60 w-full overflow-hidden bg-slate-100">
-                  <Image
+                {/* Interactive Image with 2.4x Zoom, Touch Pan & HD Lightbox */}
+                <div className="relative h-64 w-full overflow-hidden bg-slate-100">
+                  <InteractiveImageZoom
                     src={item.image}
                     alt={item.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    zoomScale={2.4}
+                    aspectRatio="auto"
+                    containerClassName="w-full h-full"
+                    lightboxTitle={item.name}
+                    lightboxSubtitle={`100% Solid ${item.woodType} Wood · ${item.dimensions}`}
+                    badge={
+                      <div className="flex items-center gap-1.5">
+                        <span className="px-2.5 py-0.5 rounded-full bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                          {item.woodType} Wood
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-bold border border-slate-200">
+                          {item.category}
+                        </span>
+                      </div>
+                    }
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
 
-                  {/* Badges */}
-                  <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                    <span className="px-2.5 py-0.5 rounded-full bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                      {item.woodType} Wood
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-bold border border-slate-200">
-                      {item.category}
-                    </span>
-                  </div>
-
-                  <div className="absolute top-3 right-3">
-                    <span className="px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-emerald-800 text-[10px] font-bold border border-slate-200">
+                  <div className="absolute top-3 right-3 z-10 pointer-events-none">
+                    <span className="px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-emerald-800 text-[10px] font-bold border border-slate-200 shadow-xs">
                       {item.status || "In Stock"}
                     </span>
                   </div>
 
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
+
                   {/* Price Tag */}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between z-10">
                     <div>
                       <div className="text-[10px] text-amber-300 font-bold uppercase tracking-wider">Handcrafted Seasoned Sheesham</div>
                       <div className="text-sm sm:text-base font-black text-white tracking-tight">

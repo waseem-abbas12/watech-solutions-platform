@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { getItemByCategoryAndId, PropertyItem, FurnitureItem, EventItem } from "@/lib/mock-data";
 import { InquiryModal } from "@/components/marketplace/inquiry-modal";
+import { InteractiveImageZoom } from "@/components/common/interactive-image-zoom";
 
 function formatPKR(num: number): string {
   if (num >= 10000000) {
@@ -261,17 +262,21 @@ export default function ItemDetailPage() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 mt-4">
           {/* Left Column: Image Gallery (7 cols) */}
           <div className="lg:col-span-7 space-y-4">
-            {/* Active Big Image */}
-            <div className="relative aspect-video w-full rounded-3xl overflow-hidden bg-slate-100 shadow-md">
-              <img
-                src={gallery[activeImageIndex]}
-                alt={prop.title}
-                className="w-full h-full object-cover transition-all duration-300"
-              />
-              <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
-                {prop.type}
-              </span>
-            </div>
+            {/* Active Big Image with 2.4x Zoom, Touch Pan & HD Lightbox */}
+            <InteractiveImageZoom
+              src={gallery[activeImageIndex]}
+              alt={prop.title}
+              zoomScale={2.4}
+              aspectRatio="video"
+              containerClassName="rounded-3xl shadow-md border border-slate-200"
+              lightboxTitle={prop.title}
+              lightboxSubtitle={`${prop.city} · ${prop.location} · ${formatPKR(prop.price)}`}
+              badge={
+                <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm border border-slate-200">
+                  {prop.type}
+                </span>
+              }
+            />
 
             {/* Thumbnails row */}
             {gallery.length > 1 && (
@@ -592,16 +597,21 @@ export default function ItemDetailPage() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 mt-4">
           {/* Gallery (7 cols) */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="relative aspect-video w-full rounded-3xl overflow-hidden bg-slate-100 shadow-md">
-              <img
-                src={gallery[activeImageIndex]}
-                alt={furn.name}
-                className="w-full h-full object-cover transition-all duration-300"
-              />
-              <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
-                {furn.woodType} Wood
-              </span>
-            </div>
+            {/* Active Big Image with 2.4x Zoom, Touch Pan & HD Lightbox */}
+            <InteractiveImageZoom
+              src={gallery[activeImageIndex]}
+              alt={furn.name}
+              zoomScale={2.4}
+              aspectRatio="video"
+              containerClassName="rounded-3xl shadow-md border border-slate-200"
+              lightboxTitle={furn.name}
+              lightboxSubtitle={`Chinioti Solid ${furn.woodType} Wood · ${furn.category} · ${formatPKR(furn.price)}`}
+              badge={
+                <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm border border-slate-200">
+                  {furn.woodType} Wood
+                </span>
+              }
+            />
 
             {gallery.length > 1 && (
               <div className="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
@@ -820,16 +830,21 @@ export default function ItemDetailPage() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 mt-4">
           {/* Gallery (7 cols) */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="relative aspect-video w-full rounded-3xl overflow-hidden bg-slate-100 shadow-md">
-              <img
-                src={gallery[activeImageIndex]}
-                alt={ev.title}
-                className="w-full h-full object-cover transition-all duration-300"
-              />
-              <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm">
-                {ev.category}
-              </span>
-            </div>
+            {/* Active Big Image with 2.4x Zoom, Touch Pan & HD Lightbox */}
+            <InteractiveImageZoom
+              src={gallery[activeImageIndex]}
+              alt={ev.title}
+              zoomScale={2.4}
+              aspectRatio="video"
+              containerClassName="rounded-3xl shadow-md border border-slate-200"
+              lightboxTitle={ev.title}
+              lightboxSubtitle={`${ev.city} · ${ev.category} · ${ev.pricingPerHead ? `PKR ${ev.pricingPerHead}/head` : "Demand on Consultation"}`}
+              badge={
+                <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-slate-900 shadow-sm backdrop-blur-sm border border-slate-200">
+                  {ev.category}
+                </span>
+              }
+            />
 
             {gallery.length > 1 && (
               <div className="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
