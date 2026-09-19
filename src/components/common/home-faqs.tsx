@@ -2,78 +2,37 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, HelpCircle, MessageCircle, ArrowRight } from "lucide-react";
-
-interface FAQItem {
-  question: string;
-  category: "General" | "Services" | "Furniture" | "Real Estate" | "FMCG Wholesale";
-  answer: string;
-}
-
-const FAQS_DATA: FAQItem[] = [
-  {
-    category: "General",
-    question: "WATECH Solutions kya hai aur yeh aam marketplace se kaise mukhtalif hai?",
-    answer:
-      "WATECH Pakistan ka pehla integrated multi-sector ecosystem hai. Yeh sirf aam directory nahi hai, balki Real Estate, Chinioti Handcrafted Furniture, Rozmarrah Kiryana Wholesale (FMCG) aur Food & Catering ko advanced Digital Marketing aur WhatsApp automation ke sath jodta hai taake buyers ko authentic cheezein aur businesses ko direct sales milein.",
-  },
-  {
-    category: "Services",
-    question: "WATECH Digital Agency hamare business ki sales aur leads kaise barha sakti hai?",
-    answer:
-      "Hum Pakistani consumers aur B2B buyers ke behavior ke mutabiq targeted Omnichannel Performance Marketing (Meta & Google Ads) run karte hain, automated WhatsApp CRM setup karte hain jo zero-latency mein har aane wali inquiry ko capture karta hai, aur high-converting modern web portals banate hain. Hamara main focus direct confirmed orders aur scalable cashflow hai.",
-  },
-  {
-    category: "FMCG Wholesale",
-    question: "FMCG Brands & Factories ke liye WATECH kya services provide karta hai?",
-    answer:
-      "Hamari 17+ saala on-ground FMCG sales leadership ke zariye hum nayi aur existing FMCG brands ke liye Punjab aur nationwide distribution network build karte hain, retail route mapping karte hain, order bookers ki training & automated workflow deploy karte hain, aur retailer push marketing setup karte hain.",
-  },
-  {
-    category: "FMCG Wholesale",
-    question: "FMCG Dealership aur Warehousing mein Investors ke liye kya opportunity hai?",
-    answer:
-      "FMCG daily essentials (Atta, Ghee, Cooking Oil, Rice, Spices) fast-moving consumer goods hain jin mein zero dead-stock risk hota hai. WATECH verified working capital aur warehousing joint ventures offer karta hai jismein 100% legal partnership deeds, high-turnover daily cashflow rotation, aur transparent audited profit sharing milti hai.",
-  },
-  {
-    category: "FMCG Wholesale",
-    question: "Rozmarrah Ashiya & Kiryana Wholesale mein dukaandar direct maal kaise le sakte hain?",
-    answer:
-      "Kiryana dukaandar, mart owners, canteens aur bulk buyers direct WhatsApp helpline par apni required items ki list bhejte hain. Hamein mill-direct rate par bulk supply provide karte hain aur fast logistics ke zariye doorstep delivery karte hain.",
-  },
-  {
-    category: "Furniture",
-    question: "Kya aapka Chinioti Furniture 100% authentic aur pure lakri ka hota hai?",
-    answer:
-      "Ji 100%! Hamare tamam 774+ designs Chiniot ke puraney maahir karigaron ke hath se bani hui 100% seasoned Sheesham aur Rosewood se tayyar kiye jate hain. Har furniture piece termite-treated hota hai aur structure ki 10 saal tak ki guarantee di jaati hai. Delivery poore Pakistan aur international export ke zariye hoti hai.",
-  },
-  {
-    category: "Real Estate",
-    question: "Real Estate properties ki verification ka kya process hai?",
-    answer:
-      "Hamare platform par listed properties (LDA/RDA/CDA approved societies jaise DHA, Bahria, New Metro City) ki registry, fard aur society transfer documentation verify ki jaati hai. Buyer ka direct rabta verified owners ya authorised partners se karwaya jata hai bina kisi fuzool commissions ke.",
-  },
-  {
-    category: "General",
-    question: "Partner ya Vendor banne ka kya procedure hai aur kya koi fee hai?",
-    answer:
-      "WATECH Partner Program mein shamil hone ki 0% Registration Fee hai — bilkul FREE! Agar aap property agent, furniture manufacturer, Kiryana stockist ya event service provider hain, toh aap 'Partners' page se register ho kar apna inventory poore Pakistan mein promote karwa sakte hain.",
-  },
-];
+import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
 
 export const HomeFaqs = () => {
+  const { t, language } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const [filterCategory, setFilterCategory] = useState<string>("All");
-
-  const categories = ["All", "Services", "Furniture", "FMCG Wholesale", "Real Estate", "General"];
-
-  const filteredFaqs = FAQS_DATA.filter((faq) => {
-    if (filterCategory === "All") return true;
-    return faq.category === filterCategory;
-  });
 
   const toggleFaq = (idx: number) => {
     setOpenIndex(openIndex === idx ? null : idx);
+  };
+
+  const ctaText = {
+    en: {
+      heading: "Still Have Questions or Specific Requirements?",
+      subheading: "Our team is available live on WhatsApp, contact us directly.",
+      button: "Ask on WhatsApp",
+    },
+    ur: {
+      heading: "کوئی مزید سوال یا خاص ضرورت ہے؟",
+      subheading: "ہماری ٹیم واٹس ایپ پر لائیو دستیاب ہے، ابھی براہِ راست بات کریں۔",
+      button: "واٹس ایپ پر پوچھیں",
+    },
+    roman: {
+      heading: "Mazeed Koi Sawal Ya Specific Requirement Hai?",
+      subheading: "Hamari team WhatsApp par live mojood hai, abhi direct baat karein.",
+      button: "WhatsApp Par Poochain",
+    },
+  }[language] || {
+    heading: "Still Have Questions or Specific Requirements?",
+    subheading: "Our team is available live on WhatsApp, contact us directly.",
+    button: "Ask on WhatsApp",
   };
 
   return (
@@ -83,36 +42,19 @@ export const HomeFaqs = () => {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-100/70 text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-3">
             <HelpCircle className="w-4 h-4" />
-            <span>Frequently Asked Questions</span>
+            <span>{t.faqs.tag}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Aam Taur Par Pooche Gaye Sawalaat
+            {t.faqs.title}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 mt-2">
-            WATECH Solutions, hamari services, Chinioti furniture aur wholesale purchasing ke bare mein mukammal rehnumai.
+          <p className="text-sm sm:text-base text-slate-600 mt-2 max-w-2xl mx-auto leading-relaxed">
+            {t.faqs.subtitle}
           </p>
-
-          {/* Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilterCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                  filterCategory === cat
-                    ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/20"
-                    : "bg-white text-slate-600 hover:bg-slate-200/70 border border-slate-200"
-                }`}
-              >
-                {cat === "FMCG Wholesale" ? "Kiryana / FMCG" : cat}
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* Accordion Container */}
         <div className="space-y-4">
-          {filteredFaqs.map((faq, index) => {
+          {t.faqs.items.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
@@ -120,12 +62,13 @@ export const HomeFaqs = () => {
                 className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden transition-all duration-200 hover:border-slate-300"
               >
                 <button
+                  type="button"
                   onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
+                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-hidden"
                   aria-expanded={isOpen}
                 >
                   <span className="text-base font-bold text-slate-900 leading-snug">
-                    {faq.question}
+                    {faq.q}
                   </span>
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 ${
@@ -145,7 +88,7 @@ export const HomeFaqs = () => {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
                       <div className="px-6 pb-6 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                        {faq.answer}
+                        {faq.a}
                       </div>
                     </motion.div>
                   )}
@@ -159,20 +102,20 @@ export const HomeFaqs = () => {
         <div className="mt-12 p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div>
             <h4 className="text-lg font-bold text-slate-900">
-              Mazeed Koi Sawal Ya Specific Requirement Hai?
+              {ctaText.heading}
             </h4>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Hamari team WhatsApp par live mojood hai, abhi direct baat karein.
+              {ctaText.subheading}
             </p>
           </div>
           <a
-            href="https://wa.me/923270831470?text=Assalam%20o%20Alaikum%20WATECH%2C%20Mujhe%20mazeed%20information%20chahiye."
+            href="https://wa.me/923270831470"
             target="_blank"
             rel="noopener noreferrer"
             className="py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:shadow-emerald-500/20 transition-all shrink-0 cursor-pointer"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>WhatsApp Par Poochain</span>
+            <span>{ctaText.button}</span>
           </a>
         </div>
       </div>

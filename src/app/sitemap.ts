@@ -16,6 +16,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const currentDate = new Date().toISOString();
 
+  // Multi-Language Alternate Hreflang Generator for Google XML Sitemap
+  const getAlternates = (path: string = "") => ({
+    languages: {
+      en: `${baseUrl}${path}?lang=en`,
+      ur: `${baseUrl}${path}?lang=ur`,
+      "ur-Latn": `${baseUrl}${path}?lang=roman`,
+      "x-default": `${baseUrl}${path}`,
+    },
+  });
+
   // High-Priority Organic Traffic Magnet Hubs & Core Landing Pages
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -23,54 +33,63 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 1.0,
+      alternates: getAlternates(),
     },
     {
       url: `${baseUrl}/locations`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.95, // Local SEO Hub Index
+      alternates: getAlternates("/locations"),
     },
     {
       url: `${baseUrl}/tools`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 1.0, // Major Traffic Magnet
+      alternates: getAlternates("/tools"),
     },
     {
       url: `${baseUrl}/tracker`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 1.0, // High-Retention Growth Funnel
+      alternates: getAlternates("/tracker"),
     },
     {
       url: `${baseUrl}/agency`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.95, // Primary High-Ticket Conversion Goal
+      alternates: getAlternates("/agency"),
     },
     {
       url: `${baseUrl}/real-estate`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.95, // Core Sector
+      alternates: getAlternates("/real-estate"),
     },
     {
       url: `${baseUrl}/furniture`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.95, // Core Sector
+      alternates: getAlternates("/furniture"),
     },
     {
       url: `${baseUrl}/services`,
       lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.9,
+      alternates: getAlternates("/services"),
     },
     {
       url: `${baseUrl}/marketplace`,
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.9,
+      alternates: getAlternates("/marketplace"),
     },
     {
       url: `${baseUrl}/marketplace/properties`,

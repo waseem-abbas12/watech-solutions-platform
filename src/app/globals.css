@@ -7,4 +7,21 @@
     font-family: var(--font-inter), sans-serif;
     overflow-x: hidden;
   }
+
+  body.font-urdu,
+  [dir="rtl"],
+  .lang-ur {
+    font-family: var(--font-noto-urdu), "Jameel Noori Nastaleeq", "Noto Nastaliq Urdu", Tahoma, sans-serif;
+  }
+
+  /* RTL line-height adjustments for Urdu Nastaliq typography */
+  [dir="rtl"] p,
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] span,
+  [dir="rtl"] button {
+    line-height: 1.8;
+  }
 }

@@ -1,11 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/common/site-shell";
+import { LanguageProvider } from "@/lib/i18n/context";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const notoUrdu = Noto_Nastaliq_Urdu({
+  variable: "--font-noto-urdu",
+  subsets: ["arabic"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -36,6 +44,12 @@ export const metadata: Metadata = {
   publisher: "Watech Solutions",
   alternates: {
     canonical: siteUrl,
+    languages: {
+      en: `${siteUrl}/?lang=en`,
+      ur: `${siteUrl}/?lang=ur`,
+      "ur-Latn": `${siteUrl}/?lang=roman`,
+      "x-default": siteUrl,
+    },
   },
   openGraph: {
     title: "WATECH Solutions | Free Business Tools, Digital Agency, Real Estate & Chinioti Furniture",
@@ -86,7 +100,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${notoUrdu.variable}`} suppressHydrationWarning>
       <head>
         {/* Global Organization, LocalBusiness (GMB Rank Booster) & WebSite JSON-LD */}
         <script
@@ -195,7 +209,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col antialiased selection:bg-slate-900 selection:text-white pb-14 md:pb-0">
-        <SiteShell>{children}</SiteShell>
+        <LanguageProvider>
+          <SiteShell>{children}</SiteShell>
+        </LanguageProvider>
 
         {/* PWA Service Worker Registration */}
         <script

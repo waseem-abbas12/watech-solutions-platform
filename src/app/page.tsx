@@ -19,19 +19,28 @@ import {
   Zap,
   TrendingUp,
   Award,
-  Briefcase,
 } from "lucide-react";
 import { SmartSalesFunnel } from "@/components/common/smart-sales-funnel";
 import { HomeFaqs } from "@/components/common/home-faqs";
 import { SocialIcons } from "@/components/common/social-icons";
+import { useTranslation } from "@/lib/i18n/context";
 
 export default function HomePage() {
-  // Typewriter effect for subheading
-  const fullText = "Digital Performance Agency · 17+ Yrs FMCG Authority · Real Estate · Chinioti Craft";
+  const { t, language, isRTL } = useTranslation();
+
+  // Subheading typewriter texts for each language
+  const typewriterByLang = {
+    en: "Digital Performance Agency · 17+ Yrs FMCG Authority · Real Estate · Chinioti Craft",
+    ur: "ڈیجیٹل مارکیٹنگ ایجنسی · 17+ سالہ تجارتی مہارت · تصدیق شدہ پراپرٹی · چنیوٹی فرنیچر",
+    roman: "Digital Performance Agency · 17+ Saal FMCG Leadership · Real Estate · Chinioti Craft",
+  };
+
+  const fullText = typewriterByLang[language] || typewriterByLang.en;
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
     let index = 0;
+    setDisplayedText("");
     const interval = setInterval(() => {
       setDisplayedText(fullText.slice(0, index + 1));
       index++;
@@ -40,34 +49,239 @@ export default function HomePage() {
       }
     }, 45);
     return () => clearInterval(interval);
-  }, []);
+  }, [fullText]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
+        staggerChildren: 0.12,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 25 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
+  // Localized sector content
+  const sectorsContent = {
+    en: {
+      gatewayTag: "Zero-Confusion Navigation · 3 Dedicated Portals",
+      gatewayTitle: "Which Sector Would You Like to Explore Today?",
+      gatewayDesc: "Direct access to dedicated platforms built with maximum transparency and speed:",
+      realEstatePortal: "WATECH Real Estate",
+      realEstateDesc: "100% verified luxury bungalows, investment plots, commercial plazas and flexible installment schemes in Punjab.",
+      realEstatePoints: [
+        "Registry & Land Ownership 100% Verified",
+        "Plot & Construction Cost Calculator",
+        "Direct Owner & Verified Agent Contact",
+      ],
+      realEstateBtn: "Explore Real Estate Portal",
+      furniturePortal: "Chiniot Royal Furniture",
+      furnitureDesc: "Authentic Chinioti solid Sheesham wood bridal bedroom sets, hand-carved sofas, dining tables and custom orders.",
+      furniturePoints: [
+        "100% Seasoned Solid Sheesham Wood",
+        "Custom Furniture Order Builder Tool",
+        "Direct Factory Pricing (Zero Middlemen)",
+      ],
+      furnitureBtn: "Explore Furniture Showroom",
+      agencyPortal: "WATECH AI & Digital Agency",
+      agencyDesc: "High-converting Meta Ads, TikTok campaigns, Next.js web platforms and 24/7 automated WhatsApp AI sales systems.",
+      agencyPoints: [
+        "3.8x+ Average Verified Client ROAS",
+        "Live Ad Spend & Profit Margin Calculator",
+        "Free 15-Minute Strategy Consultation",
+      ],
+      agencyBtn: "Explore Agency Services",
+      enterpriseTitle: "Enterprise Business Growth & Tech Solutions",
+      enterpriseDesc: "High-ROI omnichannel performance marketing, automated WhatsApp CRM systems, and bespoke software built for Pakistani founders.",
+      servicesPillars: [
+        {
+          tag: "Meta & Google Ads",
+          title: "Omnichannel Paid Ads",
+          desc: "Targeted customer acquisition campaigns across Meta and Google for high-ticket verified buyers.",
+        },
+        {
+          tag: "0s Lead Latency",
+          title: "Automated WhatsApp CRM",
+          desc: "Instant zero-second inquiry responses, lead qualification and automated broadcast pipelines.",
+        },
+        {
+          tag: "Next.js 16 Speed",
+          title: "Custom Web Platforms",
+          desc: "Lightning fast Next.js web platforms with local payment integrations, WhatsApp checkout and live analytics.",
+        },
+        {
+          tag: "Enterprise Systems",
+          title: "FMCG & Real Estate Tech",
+          desc: "Specialized inventory management, on-ground sales force tracking and automated dealer commission engines.",
+        },
+      ],
+      auditHeading: "Claim Your Free 15-Minute WhatsApp Growth Audit",
+      auditDesc: "We audit your digital marketing, sales pipeline and lead conversion to share a practical scaling blueprint.",
+      auditBtn: "Claim Free Audit",
+      fiveSectorsTag: "Integrated Capabilities",
+      fiveSectorsTitle: "Five Key Sectors We Power Across Pakistan",
+      fmcgTitle: "FMCG Distribution & Commercial Consulting",
+      fmcgDesc: "17+ years of on-ground commercial authority — Nationwide distribution network setup, retail route planning, sales force deployment and strategic dealership alliances.",
+      cateringTitle: "Food, Pakwan & Event Catering",
+      cateringDesc: "Verified Shahi Pakwan centers, fresh daig delivery, live BBQ catering, banquet hall reservations and corporate event hospitality.",
+      founderHeading: "“Personal Accountability on Every Deal & Digital Partnership.”",
+      founderDesc1: "Welcome to WATECH Solutions. In an era where online commerce is often faceless and transactional, we built WATECH to bring personal trust and tangible results back to Pakistan's largest economic sectors.",
+      founderDesc2: "Whether you are investing in a verified residential plot in DHA Lahore, commissioning hand-carved pure Sheesham furniture from our master artisans in Chiniot, or hiring our digital agency to scale your brand — you deal with an organization built on authenticity and precision.",
+      founderDirectBtn: "Direct WhatsApp with Founder",
+      founderStoryBtn: "Read Full Vision & Story",
+    },
+    ur: {
+      gatewayTag: "آسان ترین رہنمائی · 3 خصوصی پورٹلز",
+      gatewayTitle: "آج آپ کس شعبے میں داخل ہونا چاہتے ہیں؟",
+      gatewayDesc: "مکمل شفافیت اور تیز ترین سروس کے ساتھ تیار کردہ ہمارے پورٹلز ملاحظہ فرمائیں:",
+      realEstatePortal: "واٹیک رئیل اسٹیٹ",
+      realEstateDesc: "پنجاب اور چنیوٹ کے 100% تصدیق شدہ لگژری گھر، انویسٹمنٹ پلاٹس، کمرشل پلازے اور آسان اقساط کے منصوبے۔",
+      realEstatePoints: [
+        "رجسٹری و انتقال کی 100% قانونی جانچ",
+        "رقبہ اور تعمیراتی لاگت کا فوری حساب",
+        "مالک مکان اور مجاز ایجنٹ سے براہِ راست رابطہ",
+      ],
+      realEstateBtn: "رئیل اسٹیٹ پورٹل دیکھیں",
+      furniturePortal: "چنیوٹ رائل فرنیچر",
+      furnitureDesc: "خالص چنیوٹی شیشم لکڑی کے برائیڈل بیڈ سیٹس، ہاتھ سے کندہ صوفے، ڈائننگ ٹیبلز اور حسبِ منشا فرنیچر۔",
+      furniturePoints: [
+        "100% سیزنڈ خالص شیشم لکڑی کی گارنٹی",
+        "اپنی مرضی کا فرنیچر آرڈر ڈیزائن ٹول",
+        "براہِ راست فیکٹری ریٹ (بغیر کسی مڈل مین)",
+      ],
+      furnitureBtn: "فرنیچر شوروم ملاحظہ کریں",
+      agencyPortal: "واٹیک ڈیجیٹل ایجنسی",
+      agencyDesc: "پاکستانی کاروباری اداروں کے لیے میٹا اشتہارات، جدید ویب پلیٹ فارمز اور 24 گھنٹے خودکار واٹس ایپ اے آئی سسٹمز۔",
+      agencyPoints: [
+        "3.8 گنا سے زیادہ مصدقہ ایڈز منافع (ROAS)",
+        "اشتہاری خرچ اور خالص منافع کیلکولیٹر",
+        "مفت 15 منٹ کاروباری گروتھ مشاورت",
+      ],
+      agencyBtn: "ڈیجیٹل سروسز ملاحظہ کریں",
+      enterpriseTitle: "کاروباری ترقی اور جدید ٹیکنالوجی سسٹمز",
+      enterpriseDesc: "زیادہ منافع بخش مارکیٹنگ، خودکار واٹس ایپ سی آر ایم، اور تیز رفتار ویب سائٹس جو وزٹرز کو گاہکوں میں تبدیل کریں۔",
+      servicesPillars: [
+        {
+          tag: "میٹا اور گوگل ایڈز",
+          title: "پرفارمنس مارکیٹنگ",
+          desc: "فیس بک، انسٹاگرام اور گوگل پر ٹارگٹڈ اشتہارات جن سے معیاری خریدار اور لیڈز حاصل ہوں۔",
+        },
+        {
+          tag: "فوری جواب",
+          title: "خودکار واٹس ایپ سی آر ایم",
+          desc: "انکوائری پر صفر سیکنڈ میں فوری جواب، کسٹمر فلٹریشن اور خودکار سیلز میسجنگ۔",
+        },
+        {
+          tag: "Next.js 16 اسپیڈ",
+          title: "جدید ویب پلیٹ فارمز",
+          desc: "انتہائی تیز رفتار ویب سائٹس جن میں لوکل پیمنٹ سسٹم اور واٹس ایپ آرڈرنگ شامل ہو۔",
+        },
+        {
+          tag: "انٹرپرائز سافٹ ویئر",
+          title: "ایف ایم سی جی و پراپرٹی سافٹ ویئر",
+          desc: "انوینٹری کنٹرول، فیلڈ سیلز فورس ٹریکنگ اور ڈیلر کمیشن مینجمنٹ سسٹمز۔",
+        },
+      ],
+      auditHeading: "اپنے کاروبار کے لیے 15 منٹ کا مفت واٹس ایپ آڈٹ حاصل کریں",
+      auditDesc: "ہم آپ کی ڈیجیٹل مارکیٹنگ اور سیلز طریقہ کار کا جائزہ لے کر ایک جامع اور عملی گروتھ پلان دیں گے۔",
+      auditBtn: "مفت آڈٹ حاصل کریں",
+      fiveSectorsTag: "جامع خدمات",
+      fiveSectorsTitle: "پاکستان کے 5 اہم کاروباری شعبے جنہیں ہم بااختیار بناتے ہیں",
+      fmcgTitle: "ایف ایم سی جی ڈسٹری بیوشن و سیلز کنسلٹنگ",
+      fmcgDesc: "17+ سالہ تجارتی قیادت — نئے اور پرانے برانڈز کے لیے ملک گیر ڈسٹری بیوشن نیٹ ورک، ریٹیل روٹ پلاننگ اور سیلز ٹیم کی تعیناتی۔",
+      cateringTitle: "کھانا، دیگ اور کیٹرنگ سروسز",
+      cateringDesc: "تصدیق شدہ شاہی پکوان سینٹرز، تازہ دیگ ڈلیوری، لائیو باربی کیو کیٹرنگ اور بینکوئٹ ہال بکنگ کے انتظامات۔",
+      founderHeading: "“ہر کاروباری ڈیل اور پارٹنرشپ پر ذاتی ذمہ داری اور دیانت داری۔”",
+      founderDesc1: "واٹیک سلوشنز میں خوش آمدید۔ آن لائن دنیا میں شفافیت کی کمی کو دور کرنے کے لیے ہم نے ایک ایسا پلیٹ فارم بنایا ہے جو پاکستان کے روایتی اور جدید شعبوں کو اعتماد سے جوڑتا ہے۔",
+      founderDesc2: "چاہے آپ لاہور میں تصدیق شدہ پلاٹ خرید رہے ہوں، چنیوٹ سے خالص شیشم فرنیچر بنوا رہے ہوں، یا اپنے برانڈ کی فروخت بڑھانے کے لیے ہماری ایجنسی کی خدمات لے رہے ہوں — آپ کو ہمیشہ معیاری اور مخلصانہ رہنمائی ملے گی۔",
+      founderDirectBtn: "بانی سے براہِ راست واٹس ایپ رابطہ",
+      founderStoryBtn: "ہمارا مکمل ویژن اور سفر پڑھیں",
+    },
+    roman: {
+      gatewayTag: "Zero-Confusion Navigation · 3 Dedicated Portals",
+      gatewayTitle: "Aap Aaj Kis Sector Mein Dakhil Hona Chahte Hain?",
+      gatewayDesc: "Mukammal shafafiyat aur asani ke sath hamare specialized portals explore karein:",
+      realEstatePortal: "WATECH Real Estate",
+      realEstateDesc: "Punjab aur Chiniot ke 100% verified luxury bungalows, investment plots, commercial plazas aur asan iqsaat ke projects.",
+      realEstatePoints: [
+        "Registry Aur Inteqal 100% Verified",
+        "Plot Aur Tameerati Kharch Calculator",
+        "Direct Owner Aur Verified Agent Se Rabta",
+      ],
+      realEstateBtn: "Real Estate Portal Dekhein",
+      furniturePortal: "Chiniot Royal Furniture",
+      furnitureDesc: "Asal Chinioti Sheesham lakri ke bridal bedroom sets, hand-carved sofas, dining tables aur customized orders.",
+      furniturePoints: [
+        "100% Seasoned Pure Sheesham Wood",
+        "Custom Furniture Order Builder Tool",
+        "Direct Factory Pricing (Bina Kisi Agent Ke)",
+      ],
+      furnitureBtn: "Furniture Showroom Dekhein",
+      agencyPortal: "WATECH AI & Digital Agency",
+      agencyDesc: "Pakistani businesses ke liye high-converting Meta Ads, Next.js web platforms aur 24/7 automated WhatsApp AI systems.",
+      agencyPoints: [
+        "3.8x+ Average Verified Client ROAS",
+        "Live Ad Spend Aur Munafa Calculator",
+        "Muft 15-Minute Karobari Audit",
+      ],
+      agencyBtn: "Digital Agency Services Dekhein",
+      enterpriseTitle: "Enterprise Business Growth & Tech Solutions",
+      enterpriseDesc: "Pakistani businesses ke liye high-ROI Omnichannel Performance Marketing, Automated WhatsApp CRM Systems, aur Tez tareen Web Portals.",
+      servicesPillars: [
+        {
+          tag: "Meta & Google Ads",
+          title: "Omnichannel Paid Ads",
+          desc: "Meta aur Google Ads ke zariye high-ticket verified buyers ko target karne wali campaigns.",
+        },
+        {
+          tag: "0s Lead Latency",
+          title: "Automated WhatsApp CRM",
+          desc: "Inquiry par foran zero-second response, customer verification aur automated lead follow-ups.",
+        },
+        {
+          tag: "Next.js 16 Speed",
+          title: "Custom Web Platforms",
+          desc: "Tez tareen Next.js 16 web portals with local payment options, WhatsApp checkout aur analytics.",
+        },
+        {
+          tag: "Enterprise Systems",
+          title: "FMCG & Real Estate Tech",
+          desc: "Specialized inventory management, sales force route tracking aur dealer commission engines.",
+        },
+      ],
+      auditHeading: "Apne Karobar Ke Liye Free 15-Minute WhatsApp Growth Audit Hasil Karein",
+      auditDesc: "Hum aapke digital marketing aur current sales pipeline ka audit karke practical scaling blueprint share karenge.",
+      auditBtn: "Claim Free Audit",
+      fiveSectorsTag: "Bunyadi Salahiyatein",
+      fiveSectorsTitle: "Pakistan Ke 5 Ahem Sectors Jinhein Hum Power Karte Hain",
+      fmcgTitle: "FMCG Distribution & Commercial Consulting",
+      fmcgDesc: "17+ saala on-ground tajurba — Naye aur puraney FMCG brands ke liye Nationwide Distribution Network Setup, Retail Territory Route Mapping aur Sales Force deployment.",
+      cateringTitle: "Food, Pakwan & Daig Catering",
+      cateringDesc: "Verified Shahi Pakwan centers, taaza daig delivery, live BBQ catering, banquet halls aur corporate events management.",
+      founderHeading: "“Har Karobari Deal Aur Partnership Par Zaati Zimadari.”",
+      founderDesc1: "WATECH Solutions par khushamdeed. Online karobar mein aitemad aur shafafiyat qayam karne ke liye humne WATECH ki bunyad rakhi.",
+      founderDesc2: "Chahe aap Lahore mein verified plot khareed rahe hon, Chiniot se lakri ka furniture banwa rahe hon, ya digital agency se apni sales barha rahe hon — aapko mukammal asalat aur qabil-e-aitemad nataij milenge.",
+      founderDirectBtn: "Founder Se Direct WhatsApp Rabta",
+      founderStoryBtn: "Mukammal Vision Aur Story Parhein",
+    },
+  }[language] || sectorsContent.en;
+
   return (
-    <div className="w-full bg-white selection:bg-slate-900 selection:text-white">
+    <div className="w-full bg-white selection:bg-slate-900 selection:text-white" dir={isRTL ? "rtl" : "ltr"}>
       {/* =========================================
-          HERO SECTION (Full Viewport Height)
+          HERO SECTION
           ========================================= */}
       <section className="relative min-h-[calc(100vh-5rem)] py-14 flex flex-col items-center justify-center overflow-hidden px-6">
-        {/* Subtle Animated Gradient Background */}
+        {/* Subtle Animated Background */}
         <motion.div
           animate={{
             background: [
@@ -81,11 +295,11 @@ export default function HomePage() {
           className="absolute inset-0 -z-10"
         />
 
-        {/* Hero Content Container */}
+        {/* Hero Content */}
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center justify-center">
-          {/* Subheading with Typewriter Effect */}
+          {/* Subheading Typewriter */}
           <div className="mb-5 flex items-center justify-center min-h-[1.75rem]">
-            <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-blue-600 font-mono">
+            <span className="text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-blue-600 font-mono">
               {displayedText}
               <motion.span
                 animate={{ opacity: [1, 0, 1] }}
@@ -95,55 +309,54 @@ export default function HomePage() {
             </span>
           </div>
 
-          {/* Massive Heading */}
+          {/* Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-[4.8rem] font-black text-slate-900 tracking-tight leading-[1.08] max-w-4xl"
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-[4.6rem] font-black text-slate-900 tracking-tight leading-[1.12] max-w-4xl"
           >
-            Building Pakistan&apos;s
+            {t.hero.titlePart1}
             <br />
-            Leading Growth Ecosystem.
+            <span className="text-blue-600">{t.hero.titlePart2}</span>
+            <br />
+            {t.hero.titlePart3}
           </motion.h1>
 
           <p className="text-base sm:text-lg text-slate-600 mt-5 max-w-2xl leading-relaxed">
-            17+ saala on-ground tajurba aur cutting-edge technology ka sangam — Omnichannel Digital Marketing, FMCG Corporate Consulting, Verified Real Estate aur Asal Chinioti Craft.
+            {t.hero.description}
           </p>
 
           {/* Hero CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-7">
-            <Link
-              href="/services"
-              className="px-8 py-4 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 hover:shadow-xl hover:scale-105 transition-all"
-            >
-              Enterprise Digital Services
-            </Link>
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
             <Link
               href="/marketplace"
+              className="px-8 py-4 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 hover:shadow-xl hover:scale-105 transition-all"
+            >
+              {t.hero.primaryCta}
+            </Link>
+            <Link
+              href="/tools"
               className="px-8 py-4 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md hover:scale-105 transition-all"
             >
-              Products & Wholesale Marketplace
+              {t.hero.secondaryCta}
             </Link>
           </div>
 
           {/* Authority Metrics Numbers Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-10 w-full max-w-3xl pt-6 border-t border-slate-200/80">
             {[
-              { num: "17+", label: "Years On-Ground", sub: "FMCG Leadership" },
-              { num: "774+", label: "Authentic Designs", sub: "Chinioti Woodcraft" },
-              { num: "<30s", label: "WhatsApp Lead", sub: "Auto-Response Engine" },
-              { num: "100%", label: "Verified Deals", sub: "Deals & Partnership JVs" },
+              { num: t.stats.fmcgExp, label: t.stats.fmcgExpLabel },
+              { num: t.stats.toolsCount, label: t.stats.toolsCountLabel },
+              { num: t.stats.propertiesCount, label: t.stats.propertiesCountLabel },
+              { num: t.stats.furnitureCount, label: t.stats.furnitureCountLabel },
             ].map((m, idx) => (
-              <div key={idx} className="flex flex-col items-center text-center p-2 rounded-2xl bg-white/50 border border-slate-100">
+              <div key={idx} className="flex flex-col items-center text-center p-3 rounded-2xl bg-white/70 border border-slate-100 shadow-xs">
                 <span className="text-2xl sm:text-3xl font-black text-[#2563EB] tracking-tight font-mono">
                   {m.num}
                 </span>
-                <span className="text-xs font-bold text-slate-900 mt-0.5">
+                <span className="text-xs font-semibold text-slate-700 mt-1 leading-snug">
                   {m.label}
-                </span>
-                <span className="text-[10px] text-slate-500 font-medium">
-                  {m.sub}
                 </span>
               </div>
             ))}
@@ -165,18 +378,20 @@ export default function HomePage() {
             </div>
             <div className="text-left">
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-bold text-white tracking-tight">Waseem Abbas</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono font-semibold">Founder & CEO</span>
+                <span className="text-xs font-bold text-white tracking-tight">{t.founder.name}</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono font-semibold">
+                  {t.founder.title}
+                </span>
               </div>
               <p className="text-[11px] text-slate-400 truncate max-w-[280px] sm:max-w-md">
-                "Direct accountability on every deal & digital partnership."
+                {t.founder.quote}
               </p>
             </div>
-            <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all" />
+            <ArrowRight className={`w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-all ${isRTL ? "rotate-180" : "group-hover:translate-x-1"}`} />
           </Link>
         </div>
 
-        {/* Minimal Blinking Scroll Indicator */}
+        {/* Blinking Scroll Indicator */}
         <motion.div
           animate={{ y: [0, 8, 0], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -191,20 +406,20 @@ export default function HomePage() {
       </section>
 
       {/* =========================================
-          DOMINANT 3-GATEWAY SPECIALIZED PORTALS NAVIGATOR (ZERO COMPLEXITY)
+          3 DEDICATED PORTALS NAVIGATOR
           ========================================= */}
       <section className="w-full py-16 px-4 sm:px-6 lg:px-8 bg-slate-900 border-b border-slate-800 relative z-20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-wider mb-3">
               <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-              <span>Zero-Confusion Navigation · 3 Dedicated Portals</span>
+              <span>{sectorsContent.gatewayTag}</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-              Aap Aaj Kis Sector Mein Dakhil Hona Chahte Hain?
+              {sectorsContent.gatewayTitle}
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 mt-2">
-              Complexity khatam! Har niche ke liye mukammal dedicated website banayi gayi hai taake aap asani se explore kar sakein:
+              {sectorsContent.gatewayDesc}
             </p>
           </div>
 
@@ -218,30 +433,24 @@ export default function HomePage() {
                     <Building2 className="w-6 h-6" />
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
-                    Dedicated Portal
+                    {t.pillars.realEstateTag}
                   </span>
                 </div>
 
                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">
-                  WATECH Real Estate
+                  {sectorsContent.realEstatePortal}
                 </h3>
                 <p className="text-xs text-slate-400 mb-5 leading-relaxed">
-                  Punjab & Chiniot ke 100% verified luxury bungalows, investment plots, commercial plazas aur installment schemes.
+                  {sectorsContent.realEstateDesc}
                 </p>
 
                 <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Registry & Intiqal 100% Checked</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Area & Construction Cost Calculator</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Direct Owner / Agent WhatsApp Verification</span>
-                  </div>
+                  {sectorsContent.realEstatePoints.map((pt, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>{pt}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -249,8 +458,8 @@ export default function HomePage() {
                 href="/real-estate"
                 className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2 group/btn"
               >
-                <span>Explore Real Estate Website</span>
-                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                <span>{sectorsContent.realEstateBtn}</span>
+                <ArrowRight className={`w-4 h-4 transition-transform ${isRTL ? "rotate-180" : "group-hover/btn:translate-x-1"}`} />
               </Link>
             </div>
 
@@ -262,30 +471,24 @@ export default function HomePage() {
                     <Sofa className="w-6 h-6" />
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-bold uppercase tracking-wider">
-                    Dedicated Showroom
+                    {t.pillars.furnitureTag}
                   </span>
                 </div>
 
                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
-                  Chiniot Royal Furniture
+                  {sectorsContent.furniturePortal}
                 </h3>
                 <p className="text-xs text-slate-400 mb-5 leading-relaxed">
-                  Asal Chinioti Sheesham lakri ke bridal bedroom sets, hand-carved sofas, dining tables aur custom wooden orders.
+                  {sectorsContent.furnitureDesc}
                 </p>
 
                 <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span>100% Seasoned Pure Sheesham Wood</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span>Custom Furniture Order Builder Tool</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span>Direct Factory Pricing (Zero Middleman)</span>
-                  </div>
+                  {sectorsContent.furniturePoints.map((pt, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>{pt}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -293,8 +496,8 @@ export default function HomePage() {
                 href="/furniture"
                 className="w-full py-3.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2 group/btn"
               >
-                <span>Explore Furniture Showroom</span>
-                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                <span>{sectorsContent.furnitureBtn}</span>
+                <ArrowRight className={`w-4 h-4 transition-transform ${isRTL ? "rotate-180" : "group-hover/btn:translate-x-1"}`} />
               </Link>
             </div>
 
@@ -306,30 +509,24 @@ export default function HomePage() {
                     <Rocket className="w-6 h-6" />
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-wider">
-                    Dedicated Agency
+                    {t.agency.tag}
                   </span>
                 </div>
 
                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
-                  WATECH AI & Digital Agency
+                  {sectorsContent.agencyPortal}
                 </h3>
                 <p className="text-xs text-slate-400 mb-5 leading-relaxed">
-                  Pakistani businesses ke liye high-converting Meta Ads, Google Ads, Next.js web platforms aur WhatsApp AI automation.
+                  {sectorsContent.agencyDesc}
                 </p>
 
                 <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
-                    <span>3.8x+ Average Verified ROAS</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
-                    <span>Live Ad Spend & ROI Calculator</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
-                    <span>Free 20-Min Growth Strategy Audit</span>
-                  </div>
+                  {sectorsContent.agencyPoints.map((pt, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
+                      <span>{pt}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -337,8 +534,8 @@ export default function HomePage() {
                 href="/agency"
                 className="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 group/btn"
               >
-                <span>Explore Agency Website</span>
-                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                <span>{sectorsContent.agencyBtn}</span>
+                <ArrowRight className={`w-4 h-4 transition-transform ${isRTL ? "rotate-180" : "group-hover/btn:translate-x-1"}`} />
               </Link>
             </div>
           </div>
@@ -346,30 +543,26 @@ export default function HomePage() {
       </section>
 
       {/* =========================================
-          SMART INTERACTIVE SALES FUNNEL CONCIERGE (5 VISIBLE TILES)
+          SMART INTERACTIVE SALES FUNNEL
           ========================================= */}
       <SmartSalesFunnel />
 
       {/* =========================================
-          SECTION 01: SERVICES TOP SECTION (HIGH PRIORITY)
+          DIGITAL AGENCY SERVICES SECTION
           ========================================= */}
       <section className="w-full py-20 px-6 bg-slate-950 text-white relative overflow-hidden border-b border-slate-800">
-        {/* Glow Accents */}
-        <div className="absolute -top-24 right-10 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 left-10 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
-
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
             <div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 border border-blue-400/25 text-blue-400 text-xs font-bold uppercase tracking-wider mb-3">
                 <Rocket className="w-3.5 h-3.5" />
-                <span>Primary Journey · WATECH Digital Agency</span>
+                <span>{t.agency.tag}</span>
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
-                Enterprise Business Growth & Tech Solutions
+                {sectorsContent.enterpriseTitle}
               </h2>
               <p className="text-sm sm:text-base text-slate-400 mt-2 max-w-2xl">
-                Pakistani businesses ke liye high-ROI Omnichannel Performance Marketing (Meta & Google Ads), Automated WhatsApp CRM Systems, aur Modern Web Platforms.
+                {sectorsContent.enterpriseDesc}
               </p>
             </div>
 
@@ -378,41 +571,17 @@ export default function HomePage() {
                 href="/services"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#2563EB] hover:bg-blue-600 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all group"
               >
-                <span>View All 7 Services</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <span>{t.common.exploreMore}</span>
+                <ArrowRight className={`w-4 h-4 transition-transform ${isRTL ? "rotate-180" : "group-hover:translate-x-1"}`} />
               </Link>
             </div>
           </div>
 
           {/* 4 Core Pillars Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: Zap,
-                title: "Omnichannel Paid Ads",
-                desc: "Laser-targeted customer acquisition campaigns across Meta & Google Ads for high-ticket verified buyers.",
-                tag: "Meta & Google Ads",
-              },
-              {
-                icon: MessageCircle,
-                title: "Automated WhatsApp CRM",
-                desc: "Instant zero-second inquiry responses, smart customer qualification aur automated broadcast lead funnels.",
-                tag: "0s Lead Latency",
-              },
-              {
-                icon: TrendingUp,
-                title: "Custom Web Platforms",
-                desc: "Lightning fast Next.js 16 portals with local Pakistani payment systems, WhatsApp checkout & analytics.",
-                tag: "Next.js 16 Speed",
-              },
-              {
-                icon: ShieldCheck,
-                title: "FMCG & Real Estate Tech",
-                desc: "Specialized inventory management, on-ground sales force tracking aur automated dealer commission engines.",
-                tag: "Enterprise Systems",
-              },
-            ].map((srv, idx) => {
-              const SrvIcon = srv.icon;
+            {sectorsContent.servicesPillars.map((srv, idx) => {
+              const icons = [Zap, MessageCircle, TrendingUp, ShieldCheck];
+              const SrvIcon = icons[idx] || Zap;
               return (
                 <div
                   key={idx}
@@ -433,42 +602,42 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="pt-6 mt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-300 group-hover:text-blue-400 font-semibold">
-                    <span>Learn More</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    <span>{t.common.learnMore}</span>
+                    <ArrowRight className={`w-3.5 h-3.5 transition-transform ${isRTL ? "rotate-180" : "group-hover:translate-x-1"}`} />
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Quick WhatsApp Growth Audit Banner */}
+          {/* Growth Audit Banner */}
           <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-900/50 via-slate-900 to-indigo-950/60 border border-blue-800/40 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-blue-400">
-                Corporate Consultation
+                {t.agency.tag}
               </span>
               <h4 className="text-lg sm:text-xl font-bold text-white mt-1">
-                Apne Karobar Ke Liye Free 15-Minute WhatsApp Growth Audit Hasil Karein
+                {sectorsContent.auditHeading}
               </h4>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Hum aapke digital marketing, current sales pipeline aur lead conversion ka audit karke practical scaling blueprint share karenge.
+                {sectorsContent.auditDesc}
               </p>
             </div>
             <a
-              href="https://wa.me/923270831470?text=Assalam%20o%20Alaikum%20WATECH%2C%20Mujhe%20apne%20karobar%20ke%20liye%20Free%2015-Minute%20Growth%20Audit%20chahiye."
+              href="https://wa.me/923270831470"
               target="_blank"
               rel="noopener noreferrer"
               className="py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:shadow-emerald-500/20 transition-all shrink-0 cursor-pointer"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>Claim Free Audit</span>
+              <span>{sectorsContent.auditBtn}</span>
             </a>
           </div>
         </div>
       </section>
 
       {/* =========================================
-          INTEGRATED CAPABILITIES (FIVE SECTOR STRIPS)
+          FIVE SECTORS OVERVIEW
           ========================================= */}
       <section className="w-full border-t border-slate-100 bg-white">
         <div className="max-w-7xl mx-auto px-6 pt-24 pb-12 text-center">
@@ -479,10 +648,10 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
           >
             <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
-              Integrated Capabilities
+              {sectorsContent.fiveSectorsTag}
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mt-2">
-              Five Sectors We Power Across Pakistan
+              {sectorsContent.fiveSectorsTitle}
             </h2>
           </motion.div>
         </div>
@@ -494,9 +663,7 @@ export default function HomePage() {
           viewport={{ once: true, margin: "-80px" }}
           className="w-full flex flex-col"
         >
-          {/* ------------------------------------------------
-              STRIP 1: REAL ESTATE MARKETPLACE (BLUE #2563EB)
-              ------------------------------------------------ */}
+          {/* STRIP 1: REAL ESTATE */}
           <motion.div
             variants={itemVariants}
             className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-blue-50/40 via-white to-white transition-all hover:bg-blue-50/60"
@@ -508,13 +675,13 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#2563EB]">
-                    Sector 01 · Real Estate
+                    {t.pillars.realEstateTag}
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    Real Estate Marketplace
+                    {t.pillars.realEstateTitle}
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Buy, sell, and invest in premium properties across Pakistan. Verified plots, luxury houses, and commercial opportunities in LDA/RDA approved prime societies.
+                    {t.pillars.realEstateDesc}
                   </p>
                 </div>
               </div>
@@ -524,16 +691,14 @@ export default function HomePage() {
                   href="/marketplace?tab=properties"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#2563EB] text-white font-semibold text-sm shadow-md hover:shadow-blue-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
-                  Explore Properties
-                  <ArrowRight className="w-4 h-4" />
+                  <span>{t.pillars.realEstateCta}</span>
+                  <ArrowRight className={`w-4 h-4 ${isRTL ? "rotate-180" : ""}`} />
                 </Link>
               </div>
             </div>
           </motion.div>
 
-          {/* ------------------------------------------------
-              STRIP 2: CHINIOTI WOOD & FURNITURE (GREEN #16A34A)
-              ------------------------------------------------ */}
+          {/* STRIP 2: FURNITURE */}
           <motion.div
             variants={itemVariants}
             className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-emerald-50/40 via-white to-white transition-all hover:bg-emerald-50/60"
@@ -545,13 +710,13 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#16A34A]">
-                    Sector 02 · Craftsmanship (774+ Designs)
+                    {t.pillars.furnitureTag}
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    Chinioti Wood & Handcrafted Furniture
+                    {t.pillars.furnitureTitle}
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Handcrafted luxury for your home — authentic 100% seasoned Sheesham wood, bridal sets, royal sofas, jhoolas and dining suites straight from Chiniot master artisans.
+                    {t.pillars.furnitureDesc}
                   </p>
                 </div>
               </div>
@@ -561,16 +726,14 @@ export default function HomePage() {
                   href="/marketplace?tab=furniture"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#16A34A] text-white font-semibold text-sm shadow-md hover:shadow-emerald-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
-                  Browse Furniture
-                  <ArrowRight className="w-4 h-4" />
+                  <span>{t.pillars.furnitureCta}</span>
+                  <ArrowRight className={`w-4 h-4 ${isRTL ? "rotate-180" : ""}`} />
                 </Link>
               </div>
             </div>
           </motion.div>
 
-          {/* ------------------------------------------------
-              STRIP 3: WATECH FMCG DIVISION (17+ YEARS AUTHORITY)
-              ------------------------------------------------ */}
+          {/* STRIP 3: FMCG */}
           <motion.div
             variants={itemVariants}
             className="w-full py-16 border-b border-slate-100 bg-gradient-to-r from-amber-50/50 via-orange-50/30 to-white transition-all hover:bg-amber-50/70"
@@ -583,54 +746,36 @@ export default function HomePage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold uppercase tracking-wider text-amber-600">
-                      Sector 03 · FMCG Corporate Hub
+                      {t.founder.tag}
                     </span>
                     <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 text-[10px] font-black uppercase font-mono">
-                      17+ Yrs On-Ground
+                      {t.stats.fmcgExp}
                     </span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    FMCG Distribution & Sales Consulting
+                    {sectorsContent.fmcgTitle}
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    17 saala on-ground tajurba — Naye aur established FMCG Brands ke liye Nationwide Distribution Network Setup, Retail Territory Route Mapping, Order Bookers Training aur Strategic Dealership Alliances.
+                    {sectorsContent.fmcgDesc}
                   </p>
-                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-600">
-                    <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
-                      <Award className="w-3.5 h-3.5 text-amber-600" />
-                      Brand Distribution Setup
-                    </span>
-                    <span>·</span>
-                    <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Route Planning & Sales Force
-                    </span>
-                    <span>·</span>
-                    <span className="inline-flex items-center gap-1 font-semibold text-slate-800">
-                      <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
-                      Dealership Joint Ventures
-                    </span>
-                  </div>
                 </div>
               </div>
 
               <div className="shrink-0 flex flex-col sm:flex-row gap-3">
                 <a
-                  href="https://wa.me/923270831470?text=Assalam%20o%20Alaikum%20WATECH%2C%20Main%20FMCG%20Distribution%20%26%20Sales%20Consulting%20ke%20silsilay%20mein%20baat%20karna%20chahta%20hoon."
+                  href="https://wa.me/923270831470"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md hover:shadow-amber-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>FMCG Consulting Inquiry</span>
+                  <span>{t.founder.connectCta}</span>
                 </a>
               </div>
             </div>
           </motion.div>
 
-          {/* ------------------------------------------------
-              STRIP 4: FOOD & CATERING (ORANGE #EA580C)
-              ------------------------------------------------ */}
+          {/* STRIP 4: FOOD & CATERING */}
           <motion.div
             variants={itemVariants}
             className="w-full py-16 bg-gradient-to-r from-orange-50/40 via-white to-white transition-all hover:bg-orange-50/60"
@@ -642,13 +787,13 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#EA580C]">
-                    Sector 04 · Food & Hospitality
+                    {t.pillars.cateringTag}
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mt-1">
-                    Food, Pakwan & Daig Catering
+                    {t.pillars.cateringTitle}
                   </h3>
                   <p className="text-base text-gray-600 mt-2 max-w-xl leading-relaxed">
-                    Verified Shahi Pakwan Centers, Daig delivery, live BBQ catering, marriage halls aur corporate events management across Pakistan.
+                    {t.pillars.cateringDesc}
                   </p>
                 </div>
               </div>
@@ -658,8 +803,8 @@ export default function HomePage() {
                   href="/marketplace?tab=food-catering"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#EA580C] text-white font-semibold text-sm shadow-md hover:shadow-orange-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
-                  Explore Food & Catering
-                  <ArrowRight className="w-4 h-4" />
+                  <span>{t.pillars.cateringCta}</span>
+                  <ArrowRight className={`w-4 h-4 ${isRTL ? "rotate-180" : ""}`} />
                 </Link>
               </div>
             </div>
@@ -668,74 +813,70 @@ export default function HomePage() {
       </section>
 
       {/* =========================================
-          PROMINENT FOUNDER & CEO LEADERSHIP SHOWCASE
+          FOUNDER & CEO LEADERSHIP SHOWCASE
           ========================================= */}
       <section className="w-full py-24 px-6 bg-slate-950 text-white relative overflow-hidden border-b border-slate-800">
-        {/* Ambient Glow */}
-        <div className="absolute top-1/3 left-10 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
-
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left: Founder Portrait Card */}
+            {/* Left: Founder Portrait */}
             <div className="lg:col-span-5 flex justify-center">
               <div className="relative group max-w-sm w-full">
                 <div className="absolute -inset-2 bg-gradient-to-tr from-[#0066FF] via-cyan-400 to-[#16A34A] rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition duration-500" />
                 <div className="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 shadow-2xl">
                   <Image
                     src="/images/founder-waseem-abbas.jpg"
-                    alt="Waseem Abbas - Founder & CEO of WATECH Solutions"
+                    alt="Waseem Abbas - Founder & CEO"
                     width={400}
                     height={500}
                     className="w-full h-auto object-cover object-top transition duration-500 group-hover:scale-105"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent p-5 text-center">
-                    <h4 className="text-xl font-black text-white tracking-tight">Waseem Abbas</h4>
+                    <h4 className="text-xl font-black text-white tracking-tight">{t.founder.name}</h4>
                     <p className="text-xs text-blue-400 font-mono tracking-wider uppercase mt-0.5">
-                      Founder & Chief Executive Officer
+                      {t.founder.title}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right: Message & Authority Credentials */}
+            {/* Right: Vision & Credentials */}
             <div className="lg:col-span-7 space-y-6 text-left">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-400 text-xs font-bold uppercase tracking-wider">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Executive Leadership · Founder's Note</span>
+                  <span>{t.founder.tag}</span>
                 </div>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                  "Personal Accountability on Every Deal & Partnership."
+                  {sectorsContent.founderHeading}
                 </h2>
               </div>
 
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                Welcome to <strong>WATECH Solutions</strong>. In an era where online business is often faceless and transactional, we built WATECH to bring personal trust and tangible results back to Pakistan's biggest sectors.
+                {sectorsContent.founderDesc1}
               </p>
 
               <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-                Whether you are investing in a verified residential plot in DHA Lahore, commissioning hand-carved pure Sheesham furniture from our master artisans in Chiniot, or hiring our digital marketing agency to generate scalable business leads — you deal with an organization built on authenticity, precision, and verified results.
+                {sectorsContent.founderDesc2}
               </p>
 
-              {/* 3 Executive Pillars */}
+              {/* 3 Metrics */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-2">
                 <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
                   <div className="text-2xl font-black text-white">100%</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">Verified Deals & Contracts</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">{t.hero.verifiedBadge}</div>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
-                  <div className="text-2xl font-black text-[#0066FF]">17+ Yrs</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">On-Ground Heritage</div>
+                  <div className="text-2xl font-black text-[#0066FF]">{t.stats.fmcgExp}</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">{t.stats.fmcgExpLabel}</div>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 col-span-2 sm:col-span-1">
                   <div className="text-2xl font-black text-emerald-400">&lt; 30s</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">Direct WhatsApp Response</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">{t.nav.whatsapp}</div>
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Buttons */}
               <div className="flex flex-wrap items-center gap-4 pt-3">
                 <a
                   href="https://wa.me/923270831470"
@@ -744,14 +885,14 @@ export default function HomePage() {
                   className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-[#0066FF] text-white text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-all shadow-xl shadow-blue-600/30 hover:scale-105"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>Direct WhatsApp with Founder</span>
+                  <span>{sectorsContent.founderDirectBtn}</span>
                 </a>
                 <Link
                   href="/about"
                   className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-slate-900 text-slate-200 hover:text-white hover:bg-slate-800 text-xs font-bold uppercase tracking-wider transition-all border border-slate-700 hover:scale-105"
                 >
-                  <span>Read Full Vision & Story</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>{sectorsContent.founderStoryBtn}</span>
+                  <ArrowRight className={`w-4 h-4 ${isRTL ? "rotate-180" : ""}`} />
                 </Link>
               </div>
             </div>
@@ -769,7 +910,7 @@ export default function HomePage() {
       </section>
 
       {/* =========================================
-          HIGH CONVERTING FAQS SECTION
+          FAQS SECTION
           ========================================= */}
       <HomeFaqs />
     </div>

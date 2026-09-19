@@ -4,9 +4,11 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, ShoppingBag, MessageCircle, User } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
 
 export const MobileBottomNav = () => {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   // Hide on admin routes so admin panel has its own clean interface
   if (pathname.startsWith("/admin")) {
@@ -14,10 +16,10 @@ export const MobileBottomNav = () => {
   }
 
   const navTabs = [
-    { label: "Home", href: "/", icon: Home },
-    { label: "Marketplace", href: "/marketplace", icon: ShoppingBag },
-    { label: "Inquiries", href: "/services#contact", icon: MessageCircle },
-    { label: "Partner App", href: "/partners/dashboard", icon: User },
+    { label: t.nav.home, href: "/", icon: Home },
+    { label: t.nav.marketplace, href: "/marketplace", icon: ShoppingBag },
+    { label: t.nav.contactUs, href: "/services#contact", icon: MessageCircle },
+    { label: t.nav.partners, href: "/partners", icon: User },
   ];
 
   return (
@@ -31,7 +33,7 @@ export const MobileBottomNav = () => {
 
         return (
           <Link
-            key={tab.label}
+            key={tab.href}
             href={tab.href}
             className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
               isActive

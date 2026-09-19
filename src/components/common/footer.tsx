@@ -1,9 +1,15 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { SocialIcons } from "@/components/common/social-icons";
 import { BrandLogo } from "@/components/common/brand-logo";
+import { useTranslation } from "@/lib/i18n/context";
+import { LanguageSwitcher } from "@/components/common/language-switcher";
 
 export const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -12,7 +18,7 @@ export const Footer = () => {
             <BrandLogo size="md" isDark={true} />
           </Link>
           <p className="text-sm text-slate-400 leading-relaxed">
-            Pakistan's integrated ecosystem connecting Real Estate, Chinioti Handcrafted Furniture, and Food & Catering with modern technology.
+            {t.footer.brandDesc}
           </p>
           <div className="flex items-center gap-3 pt-2">
             <a
@@ -59,43 +65,43 @@ export const Footer = () => {
           </div>
 
           <div className="text-xs text-slate-500 pt-2">
-            © {new Date().getFullYear()} Watech Solutions. All rights reserved.
+            © {new Date().getFullYear()} Watech Solutions. {t.footer.rightsReserved}
           </div>
         </div>
 
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-4">
-            Three Journeys
+            {t.footer.quickLinks}
           </h4>
           <ul className="space-y-2.5 text-sm">
             <li>
               <Link href="/tools" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors flex items-center gap-1.5">
-                <span>⚡ 100 Free Pakistan Tools</span>
+                <span>⚡ {t.nav.tools}</span>
               </Link>
             </li>
             <li>
               <Link href="/tracker" className="text-amber-400 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1.5">
-                <span>🔥 Life & Daily Growth Tracker</span>
+                <span>🔥 {t.nav.tracker}</span>
               </Link>
             </li>
             <li>
               <Link href="/services" className="hover:text-blue-400 transition-colors">
-                Digital Services & Agency
+                {t.nav.agency}
               </Link>
             </li>
             <li>
               <Link href="/marketplace" className="hover:text-green-400 transition-colors">
-                Marketplace (Products)
+                {t.nav.marketplace}
               </Link>
             </li>
             <li>
               <Link href="/partners" className="hover:text-orange-400 transition-colors">
-                Partner Ecosystem (Free Join)
+                {t.nav.partners}
               </Link>
             </li>
             <li>
               <Link href="/blog" className="hover:text-blue-400 transition-colors">
-                Blog & Insights Hub
+                {t.nav.blog}
               </Link>
             </li>
           </ul>
@@ -103,22 +109,27 @@ export const Footer = () => {
 
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-4">
-            Marketplace Sectors
+            {t.footer.ecosystem}
           </h4>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link href="/marketplace?tab=properties" className="hover:text-white transition-colors">
-                Real Estate Listings
+              <Link href="/real-estate" className="hover:text-white transition-colors">
+                {t.pillars.realEstateTitle}
               </Link>
             </li>
             <li>
-              <Link href="/marketplace?tab=furniture" className="hover:text-white transition-colors">
-                Chinioti Handcrafted Wood
+              <Link href="/furniture" className="hover:text-white transition-colors">
+                {t.pillars.furnitureTitle}
               </Link>
             </li>
             <li>
               <Link href="/marketplace?tab=food-catering" className="hover:text-white transition-colors">
-                Food & Catering
+                {t.pillars.cateringTitle}
+              </Link>
+            </li>
+            <li>
+              <Link href="/download" className="hover:text-white transition-colors">
+                {t.nav.downloadApp}
               </Link>
             </li>
           </ul>
@@ -126,13 +137,13 @@ export const Footer = () => {
 
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-4">
-            Contact & Support
+            {t.footer.contactInfo}
           </h4>
           <ul className="space-y-2 text-sm">
-            <li>Lahore, Faisalabad & Islamabad, Pakistan</li>
+            <li>{t.footer.address}</li>
             <li>
-              <a href="mailto:waseem000094@gmail.com" className="hover:text-white transition-colors">
-                waseem000094@gmail.com
+              <a href={`mailto:${t.footer.email}`} className="hover:text-white transition-colors">
+                {t.footer.email}
               </a>
             </li>
             <li>
@@ -152,10 +163,18 @@ export const Footer = () => {
                 rel="noopener noreferrer"
                 className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
               >
-                Direct WhatsApp Support (0327-0831470) →
+                WhatsApp: {t.footer.phone} →
               </a>
             </li>
           </ul>
+
+          {/* Language Switcher in Footer */}
+          <div className="pt-5 mt-4 border-t border-slate-800">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-2">
+              {t.footer.selectLanguage}:
+            </span>
+            <LanguageSwitcher variant="pills" />
+          </div>
         </div>
       </div>
 
