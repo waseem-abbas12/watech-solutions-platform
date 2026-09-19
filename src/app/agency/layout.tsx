@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Top Digital Marketing & Meta Ads Agency in Lahore & Islamabad | WATECH Agency',
+  title: 'Digital Marketing & Meta Ads Agency | WATECH Agency',
   description:
-    'Scale your business with high-ROAS Facebook, Instagram & TikTok ad campaigns, real estate funnels, custom web apps & CRM across Lahore, Islamabad, Faisalabad & Karachi.',
+    'Scale your brand with high-ROAS Meta & TikTok ads, real estate buyer pipelines, custom Next.js web apps & CRM across Pakistan.',
   keywords: [
     'Digital marketing agency Pakistan',
     'Digital marketing agency in Lahore',
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://www.waseemabbas.online/agency' },
   openGraph: {
-    title: 'Top Digital Marketing & Meta Ads Agency in Lahore & Islamabad | WATECH Agency',
+    title: 'Digital Marketing & Meta Ads Agency | WATECH Agency',
     description:
-      'High-ROAS Meta & TikTok ad campaigns, real estate buyer pipelines, and automated WhatsApp CRM for businesses across Lahore, Islamabad, Faisalabad & Karachi.',
+      'Scale your brand with high-ROAS Meta & TikTok ads, real estate buyer pipelines, custom Next.js web apps & CRM across Pakistan.',
     url: 'https://www.waseemabbas.online/agency',
     siteName: 'WATECH Solutions Platform',
     locale: 'en_PK',

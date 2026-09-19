@@ -14,6 +14,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // 1.5. Canonical Domain 301 Redirect: waseemabbas.online -> www.waseemabbas.online
+  if (host === "waseemabbas.online") {
+    const canonicalUrl = new URL(request.url);
+    canonicalUrl.host = "www.waseemabbas.online";
+    canonicalUrl.protocol = "https:";
+    return NextResponse.redirect(canonicalUrl, 301);
+  }
+
   // 2. Protect all /admin routes except /admin/login
   if (pathname.startsWith("/admin")) {
     const adminCookie = request.cookies.get("watech_admin_session");

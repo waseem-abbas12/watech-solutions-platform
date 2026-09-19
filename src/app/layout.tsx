@@ -24,11 +24,11 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "WATECH Solutions | Free Business Tools, Digital Agency, Real Estate & Chinioti Furniture",
+    default: "WATECH Solutions | Free Business Tools, Agency & Real Estate",
     template: "%s | WATECH Solutions",
   },
   description:
-    "Pakistan's premier multi-sector ecosystem: 100 Free Online Business Calculators, Performance Digital Marketing Agency (Meta/TikTok Ads), Verified Real Estate & Authentic Handcrafted Chinioti Furniture.",
+    "Access 100+ free business tools, scale with Meta/TikTok ads, buy verified plots, and order authentic Chinioti furniture. Pakistan's trusted growth platform.",
   keywords: [
     "Watech Solutions",
     "Free business calculators Pakistan",
@@ -52,19 +52,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "WATECH Solutions | Free Business Tools, Digital Agency, Real Estate & Chinioti Furniture",
+    title: "WATECH Solutions | Free Business Tools, Agency & Real Estate",
     description:
-      "Access 100 free calculators, scale with performance digital marketing, buy verified real estate plots, and order authentic Chinioti luxury woodcraft.",
+      "Access 100+ free business tools, scale with Meta/TikTok ads, buy verified plots, and order authentic Chinioti furniture. Pakistan's trusted growth platform.",
     url: siteUrl,
     siteName: "WATECH Solutions Platform",
     locale: "en_PK",
     type: "website",
+    images: [
+      {
+        url: `${siteUrl}/images/watech-official-logo.png`,
+        width: 1200,
+        height: 630,
+        alt: "WATECH Solutions Multi-Sector Growth Ecosystem",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "WATECH | Multi-Sector Platform & Digital Agency in Pakistan",
+    title: "WATECH Solutions | Free Business Tools, Agency & Real Estate",
     description:
-      "Powering Pakistan's Real Estate, Chinioti Woodcraft, and Food & Catering through modern technology.",
+      "Access 100+ free business tools, scale with Meta/TikTok ads, buy verified plots, and order authentic Chinioti furniture.",
+    images: [`${siteUrl}/images/watech-official-logo.png`],
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -75,6 +84,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
     ],
@@ -198,10 +208,65 @@ export default function RootLayout({
                   "@id": `${siteUrl}/#website`,
                   url: siteUrl,
                   name: "WATECH Solutions",
+                  alternateName: "Watech Solutions Ecosystem",
                   publisher: {
                     "@id": `${siteUrl}/#organization`,
                   },
-                  inLanguage: "en-PK",
+                  inLanguage: ["en-PK", "ur-PK"],
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: {
+                      "@type": "EntryPoint",
+                      urlTemplate: `${siteUrl}/tools?search={search_term_string}`,
+                    },
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+                {
+                  "@type": "FAQPage",
+                  "@id": `${siteUrl}/#faq`,
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name: "What is WATECH Solutions Platform?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Watech Solutions is Pakistan's integrated growth ecosystem combining performance digital marketing, verified real estate deals, authentic factory-direct Chinioti woodcraft, and over 100 free online business calculators.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "How do you guarantee authentic Chinioti wood furniture?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "All our furniture items are hand-carved by master artisans in Chiniot using 100% seasoned, authentic solid Sheesham wood with lifetime durability against termite and structural decay.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Are the real estate listings legally verified?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Every plot, house, and commercial property listed on our marketplace undergoes rigorous title deed, registry, and ownership verification before being displayed.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Are the 100+ business calculators really free?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes, completely free forever with no sign-up or paywalls. You can calculate property installments, ad spend ROI, wood estimates, and business taxes anytime.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "How can businesses hire WATECH digital marketing agency?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Businesses can book a consultation on our website or contact us directly on WhatsApp at +923270831470 for performance Meta/TikTok ads, software engineering, and CRM automation.",
+                      },
+                    },
+                  ],
                 },
               ],
             }),
