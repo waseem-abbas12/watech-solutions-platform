@@ -15,6 +15,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   const isDedicatedPortal =
     pathname.startsWith("/real-estate") ||
     pathname.startsWith("/furniture") ||
+    pathname.startsWith("/events") ||
     pathname.startsWith("/agency") ||
     pathname.startsWith("/admin");
 

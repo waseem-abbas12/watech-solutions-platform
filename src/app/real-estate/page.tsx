@@ -28,6 +28,8 @@ import {
   CalendarCheck,
   Check,
   Compass,
+  Sofa,
+  Calendar,
 } from "lucide-react";
 import { INITIAL_PROPERTIES, PropertyItem } from "@/lib/mock-data";
 import { PropertyCalculatorModal } from "@/components/marketplace/property-calculator-modal";
@@ -153,15 +155,17 @@ export default function RealEstatePortalPage() {
             <span className="text-slate-400">100% Registry, Intiqal & NOC Verified Listings</span>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px] text-slate-400">
-            <Link href="/" className="hover:text-white transition-colors">
-              Main Hub
+          <div className="flex items-center gap-3 sm:gap-4 text-[11px] text-slate-400">
+            <Link href="/services" className="text-blue-400 hover:text-white transition-colors flex items-center gap-1 font-medium">
+              <span>← Parent Hub: Services</span>
             </Link>
-            <Link href="/furniture" className="hover:text-white transition-colors">
-              Chinioti Furniture
+            <span className="text-slate-600">|</span>
+            <span className="text-slate-500 hidden md:inline">Nested Sister Websites:</span>
+            <Link href="/furniture" className="text-amber-400 hover:text-white transition-colors font-medium">
+              🪵 Chinioti Furniture
             </Link>
-            <Link href="/agency" className="hover:text-white transition-colors">
-              Agency & Tech
+            <Link href="/events" className="text-purple-400 hover:text-white transition-colors font-medium">
+              🎪 Events & Banquets
             </Link>
             <span className="text-slate-600">|</span>
             <span>Helpline: <strong className="text-white font-mono">+92 327 0831470</strong></span>
@@ -195,7 +199,7 @@ export default function RealEstatePortalPage() {
           </Link>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-slate-600">
+          <nav className="hidden lg:flex items-center gap-4 text-xs font-semibold text-slate-600">
             <button
               onClick={() => {
                 setSelectedType("House");
@@ -241,6 +245,25 @@ export default function RealEstatePortalPage() {
             >
               Installment Plans
             </button>
+
+            <span className="w-px h-4 bg-slate-200 mx-1" />
+
+            {/* Nested Sub-Websites */}
+            <Link
+              href="/furniture"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 text-[11px] font-bold transition-all shadow-xs"
+            >
+              <Sofa className="w-3.5 h-3.5 text-amber-700" />
+              <span>Chinioti Furniture</span>
+            </Link>
+
+            <Link
+              href="/events"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-800 hover:bg-purple-100 border border-purple-200 text-[11px] font-bold transition-all shadow-xs"
+            >
+              <Calendar className="w-3.5 h-3.5 text-purple-700" />
+              <span>Events & Banquets</span>
+            </Link>
           </nav>
 
           {/* Actions */}
@@ -637,6 +660,122 @@ export default function RealEstatePortalPage() {
               <MessageCircle className="w-4 h-4 fill-current" />
               <span>Connect with Overseas Desk</span>
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 7.5 NESTED SISTER WEBSITES SHOWCASE: FURNITURE & EVENTS ECOSYSTEM */}
+      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white border border-slate-800 shadow-xl relative overflow-hidden">
+          <div className="max-w-3xl mb-10">
+            <span className="px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              Integrated Living Ecosystem
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black mt-3 tracking-tight">
+              Ghar Aur Property Ke Sath: <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-purple-400">
+                Chinioti Furniture Aur Event Banquets Ki Alag Web Sites
+              </span>
+            </h2>
+            <p className="text-slate-400 text-sm sm:text-base mt-2 leading-relaxed">
+              Jab aap WATECH Real Estate se naya ghar, villa ya commercial plot letay hain, to uski interior furnishing aur inaugurations/events ke liye hamari do mukammal standalone websites isi ecosystem se direct juri hui hain:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Sister Website 1: Chinioti Furniture */}
+            <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-amber-500/50 transition-all group">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Sofa className="w-6 h-6" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                    Standalone Website
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
+                  Chinioti Royal Wood Furniture Website
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Apne naye ghar ke liye 100% seasoned pure Sheesham ki bridal bedroom sets, hand-carved deewan, royal dining suites aur custom woodwork orders direct factory rate par.
+                </p>
+
+                <ul className="space-y-2 mt-4 text-xs text-slate-400 border-t border-slate-700/60 pt-4">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                    <span>2.4x Zoom & HD Lightbox Inspection</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Termite & Seasoning Lifetime Guarantee</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Custom Wood & Polish Design Studio</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-6 mt-6 border-t border-slate-700/60 flex items-center justify-between">
+                <Link
+                  href="/furniture"
+                  className="px-6 py-3 rounded-full bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-2 shadow-md transition-all group-hover:gap-3"
+                >
+                  <span>Open Furniture Website</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <span className="text-[11px] text-slate-400 font-mono">100+ Masterpieces</span>
+              </div>
+            </div>
+
+            {/* Sister Website 2: Events & Banquets */}
+            <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-purple-500/50 transition-all group">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Calendar className="w-6 h-6" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                    Standalone Website
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
+                  Events & Banquet Management Website
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Society inaugurations, wedding ceremonies, family milads, aur corporate catering ke liye verified banquet halls, Shahi pakwan centers aur live BBQ setups.
+                </p>
+
+                <ul className="space-y-2 mt-4 text-xs text-slate-400 border-t border-slate-700/60 pt-4">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Verified Lahore, Islamabad & Karachi Venues</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Transparent Per-Head Menus & Deg Booking</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Dedicated Event Coordinator on WhatsApp</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-6 mt-6 border-t border-slate-700/60 flex items-center justify-between">
+                <Link
+                  href="/events"
+                  className="px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-2 shadow-md transition-all group-hover:gap-3"
+                >
+                  <span>Open Events Website</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <span className="text-[11px] text-slate-400 font-mono">Banquets & Catering</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

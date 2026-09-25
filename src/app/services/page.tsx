@@ -19,6 +19,8 @@ import {
   PhoneCall,
   Search,
   Building2,
+  Home,
+  ShieldCheck,
 } from "lucide-react";
 import { createLead } from "@/lib/services/leads";
 
@@ -298,6 +300,114 @@ export default function ServicesPage() {
               </div>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* FLAGSHIP ECOSYSTEM SECTION: REAL ESTATE COMPLETE WEBSITE */}
+      <section className="py-20 px-6 bg-slate-900 text-white border-y border-slate-800 relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            <div className="lg:w-7/12 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span>WATECH Flagship Sector Ecosystem</span>
+              </div>
+
+              <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
+                Pakistan Real Estate <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+                  Complete Flagship Website
+                </span>
+              </h2>
+
+              <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+                As part of our high-impact tech infrastructure, we power and operate a complete, 100% verified Real Estate platform. Featuring LDA/CDA approved houses, investment plots, commercial plazas, and flexible installment plans across Lahore, Islamabad, Faisalabad, and Chiniot.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-4 flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                    <Home className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white">Verified Listings & Title Checks</h4>
+                    <p className="text-xs text-slate-400 mt-0.5">100% Registry, Intiqal, and NOC verified family homes & commercial plots.</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-4 flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                    <Building2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white">Integrated Sister Portals</h4>
+                    <p className="text-xs text-slate-400 mt-0.5">Directly connected with Chinioti Furniture & Event Banquet management inside.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/real-estate"
+                  className="px-8 py-4 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-emerald-900/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 group"
+                >
+                  <span>Launch Real Estate Website</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+
+                <div className="flex items-center gap-3 text-xs text-slate-400">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    Live Portal Active
+                  </span>
+                  <span>•</span>
+                  <span>100+ Verified Properties</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual preview card */}
+            <div className="lg:w-5/12 w-full">
+              <div className="bg-slate-800/90 border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl relative">
+                <div className="flex items-center justify-between pb-6 border-b border-slate-700/60">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold">PORTAL DIRECT ACCESS</span>
+                    <h3 className="text-xl font-bold text-white mt-1">WATECH Real Estate</h3>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold">
+                    v2.4 Live
+                  </span>
+                </div>
+
+                <div className="space-y-4 py-6">
+                  <div className="flex items-center justify-between text-xs text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                    <span className="font-semibold text-slate-300">Plots & Commercial Plazas</span>
+                    <span className="text-emerald-400 font-mono font-bold">5 Marla - 2 Kanal</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                    <span className="font-semibold text-slate-300">Built-in Interior Living</span>
+                    <span className="text-amber-400 font-mono font-bold">Chinioti Woodcraft</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                    <span className="font-semibold text-slate-300">Society Events & Banquets</span>
+                    <span className="text-purple-400 font-mono font-bold">Pakwan & Catering</span>
+                  </div>
+                </div>
+
+                <Link
+                  href="/real-estate"
+                  className="w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/10 transition-all text-center"
+                >
+                  <span>Explore Real Estate Ecosystem</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

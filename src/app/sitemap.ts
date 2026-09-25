@@ -78,6 +78,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: getAlternates("/furniture"),
     },
     {
+      url: `${baseUrl}/events`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.95, // Core Sector (Banquet Halls & Catering)
+      alternates: getAlternates("/events"),
+    },
+    {
       url: `${baseUrl}/services`,
       lastModified: currentDate,
       changeFrequency: "weekly",

@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Sparkles, Sofa, Rocket, Home } from "lucide-react";
+import { Building2, Sparkles, Sofa, Rocket, Home, Calendar } from "lucide-react";
 
 interface EcosystemTopBarProps {
-  currentPortal: "main" | "real-estate" | "furniture" | "agency";
+  currentPortal: "main" | "real-estate" | "furniture" | "agency" | "events";
 }
 
 export function EcosystemTopBar({ currentPortal }: EcosystemTopBarProps) {
@@ -26,6 +26,12 @@ export function EcosystemTopBar({ currentPortal }: EcosystemTopBarProps) {
       label: "Chiniot Furniture",
       localUrl: "/furniture",
       icon: Sofa,
+    },
+    {
+      id: "events",
+      label: "Events & Banquets",
+      localUrl: "/events",
+      icon: Calendar,
     },
     {
       id: "agency",
