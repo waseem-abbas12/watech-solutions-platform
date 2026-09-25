@@ -74,76 +74,76 @@ const MASTER_PILLARS: MasterPillar[] = [
     whatsappMessage: "Assalam o Alaikum WATECH, Mujhe apne karobar ke liye Digital Marketing, Meta/Google Ads aur WhatsApp CRM services ki detail chahiye.",
   },
 
-  // 2. INVESTMENT OPPORTUNITIES (FOOD, REAL ESTATE & FMCG)
+  // 2. INVESTMENT OPPORTUNITIES (REAL ESTATE CAPITAL & PROPTECH)
   {
     id: "investments",
-    tabLabel: "💼 Investment Opportunities",
-    shortTag: "Food · Property · FMCG",
+    tabLabel: "💼 Real Estate Investments",
+    shortTag: "Prime Property Capital",
     badge: "Verified High-Yield Ventures",
-    title: "Verified Investment Opportunities in Food, Real Estate & FMCG",
-    tagline: "Daily essential cashflow, high-turnover inventory financing, aur prime capital appreciation — 100% legal security aur transparent monthly profit sharing.",
+    title: "Verified Real Estate Capital & High-Yield Commercial Ventures",
+    tagline: "Prime plots, commercial rental shops, aur high-capital appreciation — 100% legal registry security aur transparent documentation.",
     howItWorks:
-      "WATECH investors ko aam unverified schemes mein nahi, balki Pakistan ki 3 sab se zaroori aur daily-cashflow industries mein strategic partnership mohayya karta hai. Har venture ki complete audited accounting, legal partnership deed, aur direct inventory/asset backing hoti hai taake aapka capital mehfooz rahe aur continuous return generate ho.",
+      "WATECH investors ko unverified schemes se mehfooz rakh kar LDA, CDA, aur RDA approved prime property ventures mein direct access mohayya karta hai. Har deal ki complete legal verification, land title search, aur asset-backed ownership security hoti hai.",
     accentColor: "#16A34A",
     bgGradient: "from-emerald-600 via-teal-700 to-slate-900",
     icon: TrendingUp,
     deliverables: [
       {
-        title: "FMCG Sector Working Capital",
-        desc: "Inventory-backed daily essentials (Ghee, Atta, Rice) financing with fast turnover & zero dead-stock.",
+        title: "Prime Land & Plots Portfolio",
+        desc: "LDA, CDA & Bahria verified plots with clear registry and guaranteed capital appreciation.",
       },
       {
-        title: "Real Estate Capital Projects",
-        desc: "High-appreciation LDA/RDA approved plots, commercial rental shops & guaranteed buyback deals.",
+        title: "Commercial Rental Shops",
+        desc: "High-yield commercial plaza units with pre-leased corporate tenants and regular monthly rental income.",
       },
       {
-        title: "Food & Pakwan Franchises",
-        desc: "Commercial cloud kitchens, high-volume wedding catering daigs & event hall operational joint ventures.",
+        title: "Installment Projects",
+        desc: "Flexible 3-year installment schemes in approved housing developments across Punjab and Islamabad.",
       },
       {
         title: "Complete Legal Security",
-        desc: "Formal partnership deeds, bank-audited profit distribution, aur transparent executive dashboards.",
+        desc: "100% Registry, Intiqal, and NOC legal checking before any token payment.",
       },
     ],
     primaryCtaText: "Investor Opportunities Discuss Karein",
-    primaryCtaLink: "/partners",
-    whatsappMessage: "Assalam o Alaikum WATECH, Main Food, Real Estate ya FMCG sector mein verified investment & partnership opportunities ke liye baat karna chahta hoon.",
+    primaryCtaLink: "/real-estate",
+    whatsappMessage: "Assalam o Alaikum WATECH, Main Real Estate investment aur commercial rental property opportunities ke liye baat karna chahta hoon.",
   },
 
-  // 3. FMCG SETUP SE MARKETING TAK (17+ YRS GROUND + TECH)
+  // 3. HOUSING SOCIETY LAUNCH SE SALES TAK (PROPTECH + ADS)
   {
-    id: "fmcg-turnkey",
-    tabLabel: "🏢 FMCG Setup Se Marketing",
-    shortTag: "17+ Yrs Ground + Tech",
-    badge: "17+ Years Ground Leadership",
-    title: "FMCG Brand Launch, Distribution Setup Se Consumer Pull Tak",
-    tagline: "17 saala on-ground tajurba aur modern technology ka sangam — Naye aur existing FMCG brands ke liye nationwide distribution, retail route mapping aur sales force automation.",
+    id: "society-launch",
+    tabLabel: "🏛️ Society Launch Se Sales",
+    shortTag: "PropTech + Ads Scale",
+    badge: "Real Estate Project Authority",
+    title: "Housing Society & Developer Project Launch Se 100% Sales Tak",
+    tagline: "Developers aur Builders ke liye Complete Digital Marketing, 4K Drone Production, WhatsApp Lead Qualification, aur Nationwide Investor Roadshows.",
     howItWorks:
-      "FMCG brand sirf achhi packaging banane se kamyab nahi hota; use retail shelf par pohanchana aur consumer se uthwana parta hai. Hamara 17 saal ka field tajurba territory mapping aur distributor network khara karta hai, jabke hamari digital tech order booking aur Meta/Google ads ke zariye retailer push aur consumer demand pull dono create karti hai.",
+      "Naya housing project ya commercial plaza sirf hoarding lagane se nahi bikta. Hum high-intent local aur overseas buyers ko target karne wali digital marketing campaigns chalate hain, 4K drone walkthroughs se on-ground progress dikhate hain, aur <30 seconds automated WhatsApp qualification se daily verified buyer leads deliver karte hain.",
     accentColor: "#D97706",
     bgGradient: "from-amber-600 via-orange-600 to-stone-900",
     icon: Briefcase,
     deliverables: [
       {
-        title: "Brand Strategy & Pricing",
-        desc: "Product positioning, retailer margin structure, packaging audit aur competitor landscape analysis.",
+        title: "Overseas Buyer Targeting Ads",
+        desc: "Targeted Meta & Google Ads for Gulf, UK, and US Pakistanis seeking genuine residential & commercial plots.",
       },
       {
-        title: "Route Planning & Beat Mapping",
-        desc: "On-ground retail territory planning, shop-by-shop beat optimization aur market coverage schedule.",
+        title: "4K Drone Walkthroughs & Media",
+        desc: "On-site aerial drone videography, society road network coverage, and development milestone showcase.",
       },
       {
-        title: "Distributor & Dealer Network",
-        desc: "Punjab aur nationwide reliable wholesale stockists ki appointment aur direct agreement execution.",
+        title: "Automated WhatsApp Lead Bot",
+        desc: "Instant lead response with rate lists, installment schedules, and direct booking desk routing.",
       },
       {
-        title: "Sales Force Automation & Ads",
-        desc: "Order bookers field training, mobile order booking app setup, aur Meta/Google consumer demand ads.",
+        title: "Authorized Dealer Commission Portal",
+        desc: "Real-time inventory tracking, dealer commission calculation, and client token confirmation.",
       },
     ],
-    primaryCtaText: "FMCG Corporate Solutions",
+    primaryCtaText: "Project Marketing Consultation",
     primaryCtaLink: "/services",
-    whatsappMessage: "Assalam o Alaikum WATECH, Main apne FMCG Brand ke complete setup, nationwide distribution network aur on-ground sales force consulting ke liye rabta karna chahta hoon.",
+    whatsappMessage: "Assalam o Alaikum WATECH, Main apne Real Estate housing project / commercial plaza ki complete digital marketing aur sales strategy ke liye rabta karna chahta hoon.",
   },
 
   // 4. FOOD & CATERING SERVICES

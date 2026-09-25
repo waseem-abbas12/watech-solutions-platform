@@ -30,11 +30,11 @@ export const enDictionary: Dictionary = {
     secondaryCta: "Free Growth Tools",
     exploreToolsCta: "Calculate Business ROI",
     verifiedBadge: "100% Verified Deals",
-    experienceBadge: "17+ Years FMCG Authority",
+    experienceBadge: "17+ Years Real Estate Authority",
   },
   stats: {
-    fmcgExp: "17+ Years",
-    fmcgExpLabel: "FMCG Commercial Leadership",
+    realEstateExp: "PKR 15B+",
+    realEstateExpLabel: "Verified Property Pipeline",
     toolsCount: "100+",
     toolsCountLabel: "Free Online Business Tools",
     propertiesCount: "500+",
@@ -110,8 +110,8 @@ export const enDictionary: Dictionary = {
     title: "Founder & Chief Executive Officer",
     quote:
       "“Our mission is to eliminate middlemen, digitize traditional Pakistani industries, and empower every small business owner with world-class tools and verified market access.”",
-    bio: "Bringing 17+ years of rigorous executive leadership in Pakistan's fast-moving consumer goods (FMCG) distribution and modern digital technology to build sustainable, high-trust commerce.",
-    fmcgHighlight: "17+ Years High-Volume Distribution Authority",
+    bio: "Bringing 17+ years of rigorous executive leadership in Pakistan's commercial trade, real estate proptech, and modern digital technology to build sustainable, high-trust commerce.",
+    realEstateHighlight: "17+ Years Commercial & Real Estate Authority",
     connectCta: "Connect on WhatsApp",
   },
   funnel: {

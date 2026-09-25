@@ -43,8 +43,8 @@ export interface HeroTranslations {
 }
 
 export interface StatsTranslations {
-  fmcgExp: string;
-  fmcgExpLabel: string;
+  realEstateExp: string;
+  realEstateExpLabel: string;
   toolsCount: string;
   toolsCountLabel: string;
   propertiesCount: string;
@@ -102,7 +102,7 @@ export interface FounderTranslations {
   title: string;
   quote: string;
   bio: string;
-  fmcgHighlight: string;
+  realEstateHighlight: string;
   connectCta: string;
 }
 

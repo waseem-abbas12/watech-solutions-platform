@@ -30,11 +30,11 @@ export const romanDictionary: Dictionary = {
     secondaryCta: "Muft Business Tools",
     exploreToolsCta: "Karobari Takhmeena Lagayein",
     verifiedBadge: "100% Tasdeeq Shuda Deals",
-    experienceBadge: "17+ Saal FMCG Leadership",
+    experienceBadge: "17+ Saal Real Estate Authority",
   },
   stats: {
-    fmcgExp: "17+ Saal",
-    fmcgExpLabel: "FMCG Commercial Leadership",
+    realEstateExp: "PKR 15B+",
+    realEstateExpLabel: "Verified Property Pipeline",
     toolsCount: "100+",
     toolsCountLabel: "Muft Online Business Tools",
     propertiesCount: "500+",
@@ -110,8 +110,8 @@ export const romanDictionary: Dictionary = {
     title: "Founder & Chief Executive Officer",
     quote:
       "“Hamara maqsad darmian ke agents ko khatam karna, Pakistani karobariyon ko ba-ikhtiyar banana aur har chote bare tajir ko aalmi miyar ke digital tools faraham karna hai.”",
-    bio: "Pakistan ke FMCG distribution sector mein 17 saal se zyada executive experience aur jadeed technology ke sath ek mustehkam, ba-aitemad business platform ki tameer.",
-    fmcgHighlight: "17+ Saal High-Volume Distribution Authority",
+    bio: "Pakistan ke commercial real estate, property development aur digital technology sector mein 17 saal se zyada leadership experience ke sath ek mustehkam business platform ki tameer.",
+    realEstateHighlight: "17+ Saal Real Estate & Commercial Leadership",
     connectCta: "WhatsApp Par Rabta Karein",
   },
   funnel: {
